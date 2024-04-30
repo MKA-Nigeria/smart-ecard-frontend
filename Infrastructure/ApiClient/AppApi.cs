@@ -3206,66 +3206,108 @@ namespace Infrastructure.ApiClient
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v11.0.0.0))")]
-    public partial interface IClient : IApiService
+    public partial interface ICardRequestsClient : IApiService
     {
+        /// <summary>
+        /// Search card or get all card requests
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<PaginationResponseOfCardRequestDto> Search_card_or_get_all_card_requestsAsync(SearchCardRequest cardRequest);
+        System.Threading.Tasks.Task<PaginationResponseOfCardRequestDto> SearchAsync(SearchCardRequest cardRequest);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Search card or get all card requests
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<PaginationResponseOfCardRequestDto> Search_card_or_get_all_card_requestsAsync(SearchCardRequest cardRequest, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<PaginationResponseOfCardRequestDto> SearchAsync(SearchCardRequest cardRequest, System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Get card requests
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<CardRequestDto> Get_card_requestsAsync(System.Guid id);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<CardRequestDto> Get_card_requestsAsync(System.Guid id, System.Threading.CancellationToken cancellationToken);
-
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<MemberData> Get_member_informationAsync(string id);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<MemberData> Get_member_informationAsync(string id, System.Threading.CancellationToken cancellationToken);
-
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Guid> Request_for_new_card_with_unique_IdAsync(CreateCardRequest cardRequest);
+        System.Threading.Tasks.Task<CardRequestDto> GetAsync(System.Guid id);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get card requests
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Guid> Request_for_new_card_with_unique_IdAsync(CreateCardRequest cardRequest, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<CardRequestDto> GetAsync(System.Guid id, System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Get member information
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Guid> Approve_card_requestAsync(System.Guid id);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Guid> Approve_card_requestAsync(System.Guid id, System.Threading.CancellationToken cancellationToken);
-
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Guid> Reject_card_requestAsync(System.Guid id);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Guid> Reject_card_requestAsync(System.Guid id, System.Threading.CancellationToken cancellationToken);
-
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Guid> Cancel_card_requestAsync(System.Guid id);
+        System.Threading.Tasks.Task<MemberData> GetMemberDataAsync(string id);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get member information
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Guid> Cancel_card_requestAsync(System.Guid id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<MemberData> GetMemberDataAsync(string id, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Request for new card with unique Id
+        /// </summary>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Guid> CreateAsync(CreateCardRequest cardRequest);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Request for new card with unique Id
+        /// </summary>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Guid> CreateAsync(CreateCardRequest cardRequest, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Approve card request
+        /// </summary>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Guid> ApproveAsync(System.Guid id);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Approve card request
+        /// </summary>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Guid> ApproveAsync(System.Guid id, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Reject card request
+        /// </summary>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Guid> RejectAsync(System.Guid id);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Reject card request
+        /// </summary>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Guid> RejectAsync(System.Guid id, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Cancel card request
+        /// </summary>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Guid> CancelAsync(System.Guid id);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Cancel card request
+        /// </summary>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Guid> CancelAsync(System.Guid id, System.Threading.CancellationToken cancellationToken);
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v11.0.0.0))")]
-    public partial class Client : IClient
+    public partial class CardRequestsClient : ICardRequestsClient
     {
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public Client(System.Net.Http.HttpClient httpClient)
+        public CardRequestsClient(System.Net.Http.HttpClient httpClient)
         {
             _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
@@ -3286,15 +3328,21 @@ namespace Infrastructure.ApiClient
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
 
+        /// <summary>
+        /// Search card or get all card requests
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<PaginationResponseOfCardRequestDto> Search_card_or_get_all_card_requestsAsync(SearchCardRequest cardRequest)
+        public virtual System.Threading.Tasks.Task<PaginationResponseOfCardRequestDto> SearchAsync(SearchCardRequest cardRequest)
         {
-            return Search_card_or_get_all_card_requestsAsync(cardRequest, System.Threading.CancellationToken.None);
+            return SearchAsync(cardRequest, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Search card or get all card requests
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<PaginationResponseOfCardRequestDto> Search_card_or_get_all_card_requestsAsync(SearchCardRequest cardRequest, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<PaginationResponseOfCardRequestDto> SearchAsync(SearchCardRequest cardRequest, System.Threading.CancellationToken cancellationToken)
         {
             if (cardRequest == null)
                 throw new System.ArgumentNullException("cardRequest");
@@ -3379,15 +3427,21 @@ namespace Infrastructure.ApiClient
             }
         }
 
+        /// <summary>
+        /// Get card requests
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<CardRequestDto> Get_card_requestsAsync(System.Guid id)
+        public virtual System.Threading.Tasks.Task<CardRequestDto> GetAsync(System.Guid id)
         {
-            return Get_card_requestsAsync(id, System.Threading.CancellationToken.None);
+            return GetAsync(id, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get card requests
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<CardRequestDto> Get_card_requestsAsync(System.Guid id, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<CardRequestDto> GetAsync(System.Guid id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -3469,15 +3523,21 @@ namespace Infrastructure.ApiClient
             }
         }
 
+        /// <summary>
+        /// Get member information
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<MemberData> Get_member_informationAsync(string id)
+        public virtual System.Threading.Tasks.Task<MemberData> GetMemberDataAsync(string id)
         {
-            return Get_member_informationAsync(id, System.Threading.CancellationToken.None);
+            return GetMemberDataAsync(id, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get member information
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<MemberData> Get_member_informationAsync(string id, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<MemberData> GetMemberDataAsync(string id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -3559,15 +3619,21 @@ namespace Infrastructure.ApiClient
             }
         }
 
+        /// <summary>
+        /// Request for new card with unique Id
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Guid> Request_for_new_card_with_unique_IdAsync(CreateCardRequest cardRequest)
+        public virtual System.Threading.Tasks.Task<System.Guid> CreateAsync(CreateCardRequest cardRequest)
         {
-            return Request_for_new_card_with_unique_IdAsync(cardRequest, System.Threading.CancellationToken.None);
+            return CreateAsync(cardRequest, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Request for new card with unique Id
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Guid> Request_for_new_card_with_unique_IdAsync(CreateCardRequest cardRequest, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Guid> CreateAsync(CreateCardRequest cardRequest, System.Threading.CancellationToken cancellationToken)
         {
             if (cardRequest == null)
                 throw new System.ArgumentNullException("cardRequest");
@@ -3652,15 +3718,21 @@ namespace Infrastructure.ApiClient
             }
         }
 
+        /// <summary>
+        /// Approve card request
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Guid> Approve_card_requestAsync(System.Guid id)
+        public virtual System.Threading.Tasks.Task<System.Guid> ApproveAsync(System.Guid id)
         {
-            return Approve_card_requestAsync(id, System.Threading.CancellationToken.None);
+            return ApproveAsync(id, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Approve card request
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Guid> Approve_card_requestAsync(System.Guid id, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Guid> ApproveAsync(System.Guid id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -3729,15 +3801,21 @@ namespace Infrastructure.ApiClient
             }
         }
 
+        /// <summary>
+        /// Reject card request
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Guid> Reject_card_requestAsync(System.Guid id)
+        public virtual System.Threading.Tasks.Task<System.Guid> RejectAsync(System.Guid id)
         {
-            return Reject_card_requestAsync(id, System.Threading.CancellationToken.None);
+            return RejectAsync(id, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Reject card request
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Guid> Reject_card_requestAsync(System.Guid id, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Guid> RejectAsync(System.Guid id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -3806,15 +3884,21 @@ namespace Infrastructure.ApiClient
             }
         }
 
+        /// <summary>
+        /// Cancel card request
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Guid> Cancel_card_requestAsync(System.Guid id)
+        public virtual System.Threading.Tasks.Task<System.Guid> CancelAsync(System.Guid id)
         {
-            return Cancel_card_requestAsync(id, System.Threading.CancellationToken.None);
+            return CancelAsync(id, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Cancel card request
+        /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Guid> Cancel_card_requestAsync(System.Guid id, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Guid> CancelAsync(System.Guid id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");

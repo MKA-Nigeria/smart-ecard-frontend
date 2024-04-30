@@ -52,7 +52,7 @@ public class JwtAuthenticationService : AuthenticationStateProvider, IAuthentica
     public void NavigateToExternalLogin(string returnUrl) =>
         throw new NotImplementedException();
 
-    public async Task<bool> LoginAsync(string tenantId, TokenRequest request)
+    public async Task<bool> LoginAsync(TokenRequest request)
     {
         var tokenResponse = await _tokensClient.GetTokenAsync(request);
 

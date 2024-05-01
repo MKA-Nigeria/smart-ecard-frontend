@@ -1,0 +1,38 @@
+﻿@page "/cardrequests"
+@using System.Net.Http.Json
+@using Infrastructure.ApiClient
+@inject HttpClient httpClient
+
+
+    <MudTable ServerData="@(new Func<TableState, Task<TableData<CardRequestDto>>>(ServerReload))"
+              Dense="true" Hover="true" @ref="table">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">CardRequests</MudText>
+            <MudSpacer />
+            <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh><MudTableSortLabel SortLabel="externalId" T="CardRequestDto">Id</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortLabel="firstName" T="MemberData">FirstName</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortLabel="lastName" T="MemberData">LastName</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortLabel="dateofBirth" T="MemberData">Date Of Birth</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortLabel="lastName" T="CardRequestDto">Status</MudTableSortLabel></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Nr">@context.ExternalId</MudTd>
+            <MudTd DataLabel="Sign">@context.MemberData.FirstName</MudTd>
+            <MudTd DataLabel="Name">@context.MemberData.LastName</MudTd>
+            <MudTd DataLabel="Name">@context.MemberData.DateOfBirth</MudTd>
+            <MudTd DataLabel="Name">@context.Status</MudTd>
+        </RowTemplate>
+        <NoRecordsContent>
+            <MudText>No matching records found</MudText>
+        </NoRecordsContent>
+        <LoadingContent>
+            <MudText>Loading...</MudText>
+        </LoadingContent>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>

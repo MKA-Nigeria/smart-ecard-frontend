@@ -1,9 +1,13 @@
 ﻿@page "/cardrequest/{CardRequestId:guid}"
+@if (!_loaded)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
 
-
-<MudGrid>
-    <MudItem xs="12" sm="8" md="8">
-        <EditForm Model="@CardRequest.MemberData" OnValidSubmit="Submit">
+    <MudGrid>
+        <MudItem xs="12" sm="8" md="8">
             <MudCard Elevation="25">
                 <MudCardHeader>
                     <CardHeaderContent>
@@ -34,83 +38,76 @@
                         </MudItem>
 
                         <MudItem xs="12" md="6">
-                            <MudField Label="Date of Birth" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.DateOfBirth</span></MudField>
+                            <MudField Label="Date of Birth" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.DateOfBirth.ToString("yyyy-MM-dd")</span></MudField>
                         </MudItem>
                         <MudItem xs="12" md="6">
                             <MudField Label="Address" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.Address</span></MudField>
                         </MudItem>
-
-
-                        @foreach (var data in CardRequest.MemberData.CustomData)
-                        {
-                            <MudItem xs="12" md="6">
-                                <MudField Label="@data.Key" Variant="Variant.Outlined"><span style="color: green;">@data.Value</span></MudField>
-                            </MudItem>
-                        }
                     </MudGrid>
                 </MudCardContent>
-                <MudCardActions Class="pb-4 pl-4">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" StartIcon="@Icons.Filled.Save"
-                               ButtonType="ButtonType.Submit">Submit Card Request</MudButton>
-                </MudCardActions>
             </MudCard>
-        </EditForm>
-    </MudItem>
-    <MudItem xs="12" sm="8" md="8">
-        <EditForm Model="@CardRequest.MemberData" OnValidSubmit="Submit">
-            <MudCard Elevation="25">
-                <MudCardHeader>
-                    <CardHeaderContent>
-                        <MudText FontSize="FontSize.Large"><span style="color: green;">Member Information</span></MudText>
-                    </CardHeaderContent>
-                </MudCardHeader>
-                <MudCardContent>
-                    <MudGrid>
-                        <MudItem xs="12" md="6">
-                            <MudField Label="FirstName" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.FirstName</span></MudField>
-                        </MudItem>
-                        <MudItem xs="12" md="6">
-                            <MudField Label="LastName" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.LastName</span></MudField>
-                        </MudItem>
-                        <MudItem xs="12" md="6">
-                            <MudField Label="MiddleName" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.MiddleName</span></MudField>
-                        </MudItem>
+        </MudItem>
+        <MudItem xs="12" sm="8" md="8">
+            <EditForm Model="@CardRequest.MemberData" OnValidSubmit="Submit">
+                <MudCard Elevation="25">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText FontSize="FontSize.Large"><span style="color: green;">Member Additional Information</span></MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudGrid>
+                            @foreach (var data in CardRequest.MemberData.CustomData)
+                            {
+                                <MudItem xs="12" md="6">
+                                    <MudField Label="@data.Key" Variant="Variant.Outlined"><span style="color: green;">@data.Value</span></MudField>
+                                </MudItem>
+                                if (data.Key.ToLower() == "bloodgroup")
+                                {
+                                    _showBloodGroup = false;
+                                }
+                                if (data.Key.ToLower() != "genotype")
+                                {
+                                    _showGenotype = false;
+                                }
 
-                        <MudItem xs="12" md="6">
-                            <MudField Label="PhoneNumber" Variant="Variant.Outlined">
-                                <span style="color: green;">
-                                    @CardRequest.MemberData.PhoneNumber
-                                </span>
-                            </MudField>
-                        </MudItem>
-                        <MudItem xs="12" md="6">
-                            <MudField Label="Email" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.Email</span></MudField>
-                        </MudItem>
-
-                        <MudItem xs="12" md="6">
-                            <MudField Label="Date of Birth" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.DateOfBirth</span></MudField>
-                        </MudItem>
-                        <MudItem xs="12" md="6">
-                            <MudField Label="Address" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.Address</span></MudField>
-                        </MudItem>
-
-
-                        @foreach (var data in CardRequest.MemberData.CustomData)
-                        {
-                            <MudItem xs="12" md="6">
-                                <MudField Label="@data.Key" Variant="Variant.Outlined"><span style="color: green;">@data.Value</span></MudField>
-                            </MudItem>
-                        }
+                                if (_showBloodGroup)
+                                {
+                                    <MudItem xs="12" md="6">
+                                        <MudSelect Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" xs="12" md="6" T="string" Label="Blood Group" @bind-Value="@BloodGroup" For="@(() => BloodGroup)">
+                                            <MudSelectItem Value="@("BloodGroup")">APositive</MudSelectItem>
+                                            <MudSelectItem Value="@("ANegative")">ANegative</MudSelectItem>
+                                            <MudSelectItem Value="@("BPositive")">BPositive</MudSelectItem>
+                                            <MudSelectItem Value="@("BNegative")">BNegative</MudSelectItem>
+                                            <MudSelectItem Value="@("OPositive")">OPositive</MudSelectItem>
+                                            <MudSelectItem Value="@("ONegative")">ONegative</MudSelectItem>
+                                            <MudSelectItem Value="@("ABPositive")">ABPositive</MudSelectItem>
+                                        </MudSelect>
+                                    </MudItem>
+                                }
+                                if (_showGenotype)
+                                {
+                                    <MudSelect Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" xs="12" md="6" T="string" Label="Genotype" @bind-Value="@Genotype" For="@(() => Genotype)" placeholder="Select Genotype">
+                                        <MudSelectItem Value="@("AA")">AA</MudSelectItem>
+                                        <MudSelectItem Value="@("AS")">AS</MudSelectItem>
+                                        <MudSelectItem Value="@("AC")">AC</MudSelectItem>
+                                        <MudSelectItem Value="@("SS")">SS</MudSelectItem>
+                                        <MudSelectItem Value="@("SC")">SC</MudSelectItem>
+                                    </MudSelect>
+                                }
+                            }
                     </MudGrid>
-                </MudCardContent>
-                <MudCardActions Class="pb-4 pl-4">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" StartIcon="@Icons.Filled.Save"
-                               ButtonType="ButtonType.Submit">Submit Card Request</MudButton>
-                </MudCardActions>
-            </MudCard>
-        </EditForm>
-    </MudItem>
-</MudGrid>
+                        </MudCardContent>
+                    <MudCardActions Class="pb-4 pl-4">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" StartIcon="@Icons.Filled.Save"
+                                   ButtonType="ButtonType.Submit">Approve Card Request</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </EditForm>
+        </MudItem>
+    </MudGrid>
+}
+
 @code {
 
 }

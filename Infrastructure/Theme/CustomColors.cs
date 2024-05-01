@@ -21,8 +21,8 @@ public static class CustomColors
 
     public static class Light
     {
-        public const string Primary = "#3eaf7c";
-        public const string Secondary = "#2196f3";
+        public const string Primary = "#084545";
+        public const string Secondary = "#6ACFC7";
         public const string Background = "#FFF";
         public const string AppbarBackground = "#FFF";
         public const string AppbarText = "#6e6e6e";

@@ -1,32 +1,100 @@
 ﻿@page "/login"
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
-<div class="d-flex justify-center">
-    <img src="idcard-image.png" Style="height:120px; border-radius:100%" />
-</div>
-<br />
-<EditForm Model="@_tokenRequest" OnSubmit="Submit">
-    <MudGrid>
-        <MudItem xs="12">
 
-            <MudTextField T="string" Label="Username" Required="true" RequiredError="User name is required!" @bind-Value="_tokenRequest.UserName"
-                          For="@(() => _tokenRequest.UserName)" />
-        </MudItem>
+<style>
+    .full-height {
+        height: 100%;
+    }
 
-        <MudItem xs="12">
-            <MudTextField T="string" Label="Password"
-                          InputType="InputType.Password"
-                          @bind-Value="_tokenRequest.Password"
-                          For="@(() => _tokenRequest.Password)"
-                          Adornment="Adornment.End"
-                          Required="true"
-                          RequiredError="Password is required!" />
-        </MudItem>
-        <MudItem xs="12" md="6">
-            <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Success" Class="ml-auto">Login</MudButton>
-        </MudItem>
-        <MudItem xs="12" Class="d-flex justify-center">
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Forget Password</MudButton>
-        </MudItem>
-    </MudGrid>
-</EditForm>
+    h2 {
+        color: #6ACFC7; /* Downy Teal for highlights */
+    }
+
+    p {
+        color: #ffffff;
+        font-size: large;/* White text for readability on a dark background */
+    }
+
+    img {
+        border-radius: 8px; /* Rounded corners for images */
+        max-width: 100%; /* Ensure the image is responsive and does not overflow the container */
+    }
+
+    .info-section, .form-section {
+        height: 100%; /* Ensure both sections fill the container vertically */
+    }
+
+    .info-section {
+        background-color: #0C1A1A; /* Cardin Green background */
+    }
+
+    .form-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Vertically center the form content */
+    }
+</style>
+
+<MudGrid Class="full-height">
+    <!-- Left Grid for Images and Information -->
+    <MudItem xs="12" md="6" Class="info-section">
+        <h2>Smart e-Card</h2>
+        <p>The Smart-ID portal is easy to use, even if it is your first portal experience 
+            or the first time you’ve used electronic authentication. 
+            Give it a go, the digital revolution has never been easier!.</p>
+        <p>
+            Discover the convenience and security of our digital e-card services
+        .</p>
+        <MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
+            <MudCarouselItem Transition="transition">
+                <div class="d-flex" style="height:100%; width:100%">
+                    <img src="logecard.jpg" alt="E-Card Information" />
+                </div>
+            </MudCarouselItem>
+            <MudCarouselItem Transition="transition">
+                <div class="d-flex" style="height:100%; width:100%">
+                    <img src="logecard2.jpg" alt="E-Card Information" />
+                </div>
+            </MudCarouselItem>
+            <MudCarouselItem Transition="transition">
+                <div class="d-flex" style="height:100%; width:100%">
+                    <img src="logecard.jpg" alt="E-Card Information" />
+                </div>
+            </MudCarouselItem>
+        </MudCarousel>
+    </MudItem>
+
+    <!-- Right Grid for Login Form -->
+    <MudItem xs="12" md="6" Class="form-section p-5">
+        <div class="d-flex justify-content-center">
+            <img src="ecard.jpg" style="height: 120px; border-radius: 100%" />
+        </div>
+        <EditForm Model="@_tokenRequest" OnSubmit="Submit">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudTextField T="string" Label="Username" Required="true" RequiredError="User name is required!" @bind-Value="_tokenRequest.UserName"
+                                  For="@(() => _tokenRequest.UserName)" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField T="string" Label="Password" InputType="InputType.Password" @bind-Value="_tokenRequest.Password"
+                                  For="@(() => _tokenRequest.Password)" Adornment="Adornment.End" Required="true" RequiredError="Password is required!" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Style="background-color:#6ACFC7; color:white" Class="ml-auto">Login</MudButton>
+                </MudItem>
+               @*  <MudItem xs="12">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Forget Password</MudButton>
+                </MudItem> *@
+            </MudGrid>
+        </EditForm>
+    </MudItem>
+</MudGrid>
+
+@code {
+    private bool arrows = false;
+    private bool bullets = false;
+    private bool enableSwipeGesture = false;
+    private bool autocycle = true;
+    private Transition transition = Transition.Slide;
+}

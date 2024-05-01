@@ -2,26 +2,26 @@
 @using Client.Components.Common
 @using MudBlazor
 @using Infrastructure.ApiClient
-<MudCard Style="width: 50%; padding: 20px;">
-    <div class="d-flex justify-center">
-        <img src="full-stack-hero-logo.png" Style="height:120px" />
+<MudCard Style="max-width: 600px; margin: auto; padding: 32px;">
+    <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+        <img src="ecard.jpg" Size="Size.Large" Style="width: 120px; height: 120px;" />
     </div>
-    <div class="fsh-center-text">
-        <MudText Typo="Typo.h4" GutterBottom="true">Identificaation Card</MudText>
-        <MudText>Enter the unique membership number.</MudText>
-    </div>
-    <br />
-    <EditForm Model="@UserRequest" OnValidSubmit="SubmitAsync">
-        <MudGrid>
-            <DataAnnotationsValidator />
-            <CustomValidation @ref="_customValidation" />
-            <MudItem xs="12">
-                <MudTextField T="string" Label="Membership No" Variant="Variant.Outlined" @bind-Value="UserRequest.ExternalId"
-                              For="@(() => UserRequest.ExternalId)" />
+    @* <MudText Typo="Typo.h4" GutterBottom="true" Align="Align.Center">Identification Card Request</MudText> *@
+    <MudText Align="Align.Center" Color="Color.Primary">Please, input the member verification/identification number.</MudText>
+    <EditForm Model="@UserRequest" OnValidSubmit="SubmitAsync" Class="mt-4">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <MudGrid Justify="Justify.Center">
+            <MudItem xs="12" md="8">
+                <MudTextField Style="color:#084545"  T="string" Label="Identification No" Variant="Variant.Outlined" FullWidth @bind-Value="UserRequest.ExternalId"
+                              HelperText="Field is required." />
             </MudItem>
-            <MudItem xs="12" Class="d-flex justify-center">
-                <MudButton ButtonType="ButtonType.Submit" Disabled="BusySubmitting" Variant="Variant.Filled"
-                           Color="Color.Primary" Size="Size.Large" StartIcon="@Icons.Filled.Login" Style="width: 100%;">Search</MudButton>
+            <MudItem xs="12" md="4" Style="padding-top: 16px;">
+                <!-- Added padding for alignment with the text field -->
+                <MudButton ButtonType="ButtonType.Submit" Disabled="@BusySubmitting" Variant="Variant.Filled"
+                           Color="Color.Primary" Size="Size.Large" Style="background-color:#084545"  FullWidth StartIcon="@Icons.Filled.Search">
+                    Search
+                </MudButton>
             </MudItem>
         </MudGrid>
     </EditForm>

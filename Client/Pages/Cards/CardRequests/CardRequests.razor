@@ -27,7 +27,22 @@
             <MudTd DataLabel="Sign">@context.MemberData.FirstName</MudTd>
             <MudTd DataLabel="Name">@context.MemberData.LastName</MudTd>
         <MudTd DataLabel="Name">@context.MemberData.DateOfBirth.ToString("yyyy-MM-dd")</MudTd>
-            <MudTd DataLabel="Name">@context.Status</MudTd>
+        @if(@context.Status == CardRequestStatus.Pending)
+        {
+            <MudTd DataLabel="Name"><MudChip Color="Color.Warning">@context.Status</MudChip></MudTd>
+        }
+        @if(@context.Status == CardRequestStatus.Approved)
+        {
+            <MudTd DataLabel="Name"><MudChip Color="Color.Success">@context.Status</MudChip></MudTd>
+        }
+        @if (@context.Status == CardRequestStatus.Cancelled)
+        {
+            <MudTd DataLabel="Name"><MudChip Color="Color.Secondary">@context.Status</MudChip></MudTd>
+        }
+        @if (@context.Status == CardRequestStatus.Rejected)
+        {
+            <MudTd DataLabel="Name"><MudChip Color="Color.Error">@context.Status</MudChip></MudTd>
+        }
         </RowTemplate>
         <NoRecordsContent>
             <MudText>No matching records found</MudText>

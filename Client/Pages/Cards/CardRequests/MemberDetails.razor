@@ -6,115 +6,98 @@
 }
 else
 {
+
     <MudGrid>
-        @*  <MudItem xs="12" sm="4" md="4">
-    <MudCard Elevation="25">
-    <MudCardContent Style="padding:0px!important">
-    <div class="d-flex justify-center mb-4">
-    @if (!string.IsNullOrEmpty(_imageUrl))
-    {
-    <MudAvatar Square="true" Image="@_imageUrl" Style=" width:100%;height:auto;"> </MudAvatar>
-    }
-    else if (dataLoaded)
-    {
-    <MudProgressCircular Color="Color.Success" Size="Size.Medium" Indeterminate="true" />
-    <span>Loading Image ...</span>
-    }
-    else
-    {
-    <MudAvatar Square="true" Color="Color.Primary" Style="width:100%;height:300px;">
-    @_firstLetterOfName
-    </MudAvatar>
-    }
-    </div>
-    <MudText Typo="Typo.h6" Align="Align.Center">@_firstName @_lastName</MudText>
-    <MudText Align="Align.Center">@_chandaNo</MudText>
-    </MudCardContent>
-    <MudCardActions Class="d-flex justify-center">
-    <InputFile id="fileInput" OnChange="UploadProfileImage" hidden accept=".jpg,.jpeg,.png" />
-    <div style="padding-bottom:20px">
-    @if (_uploaded)
-    {
+        <MudItem xs="12" sm="8" md="8">
+            <MudCard Elevation="25">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText FontSize="FontSize.Large"><span style="color: green;">Member Information</span></MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="FirstName" Variant="Variant.Outlined"><span style="color: green;">@MemberData.FirstName</span></MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="LastName" Variant="Variant.Outlined"><span style="color: green;">@MemberData.LastName</span></MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="MiddleName" Variant="Variant.Outlined"><span style="color: green;">@MemberData.MiddleName</span></MudField>
+                        </MudItem>
 
-    <MudProgressCircular Color="Color.Success" Size="Size.Medium" Indeterminate="true" />
-    }
-    else
-    {
-    <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small"
-    StartIcon="@Icons.Filled.CloudUpload" for="fileInput">
-    Upload & Save
-    </MudButton>
-    }
+                        <MudItem xs="12" md="6">
+                            <MudField Label="PhoneNumber" Variant="Variant.Outlined">
+                                <span style="color: green;">
+                                    @MemberData.PhoneNumber
+                                </span>
+                            </MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Email" Variant="Variant.Outlined"><span style="color: green;">@MemberData.Email</span></MudField>
+                        </MudItem>
 
-    </div>
-
-    </MudCardActions>
-    </MudCard>
-    </MudItem> *@
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Date of Birth" Variant="Variant.Outlined"><span style="color: green;">@MemberData.DateOfBirth.ToString("yyyy-MM-dd")</span></MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Address" Variant="Variant.Outlined"><span style="color: green;">@MemberData.Address</span></MudField>
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
         <MudItem xs="12" sm="8" md="8">
             <EditForm Model="@MemberData" OnValidSubmit="SubmitCardRequestAsync">
                 <MudCard Elevation="25">
                     <MudCardHeader>
                         <CardHeaderContent>
-                            <MudText FontSize="FontSize.Large"><span style="color: green;">Member Information</span></MudText>
+                            <MudText FontSize="FontSize.Large"><span style="color: green;">Member Additional Information</span></MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent>
                         <MudGrid>
-                            <MudItem xs="12" md="6">
-                                <MudField Label="FirstName" Variant="Variant.Outlined"><span style="color: green;">@MemberData.FirstName</span></MudField>
-                            </MudItem>
-                            <MudItem xs="12" md="6">
-                                <MudField Label="LastName" Variant="Variant.Outlined"><span style="color: green;">@MemberData.LastName</span></MudField>
-                            </MudItem>
-                            <MudItem xs="12" md="6">
-                                <MudField Label="MiddleName" Variant="Variant.Outlined"><span style="color: green;">@MemberData.MiddleName</span></MudField>
-                            </MudItem>
-
-                            <MudItem xs="12" md="6">
-                                <MudField Label="PhoneNumber" Variant="Variant.Outlined">
-                                    <span style="color: green;">
-                                        @MemberData.PhoneNumber
-                                    </span>
-                                </MudField>
-                            </MudItem>
-                            <MudItem xs="12" md="6">
-                                <MudField Label="Email" Variant="Variant.Outlined"><span style="color: green;">@MemberData.Email</span></MudField>
-                            </MudItem>
-
-                            <MudItem xs="12" md="6">
-                                <MudField Label="Date of Birth" Variant="Variant.Outlined"><span style="color: green;">@MemberData.DateOfBirth</span></MudField>
-                            </MudItem>
-                            <MudItem xs="12" md="6">
-                                <MudField Label="Address" Variant="Variant.Outlined"><span style="color: green;">@MemberData.Address</span></MudField>
-                            </MudItem>
-
-
                             @foreach (var data in MemberData.CustomData)
                             {
                                 <MudItem xs="12" md="6">
                                     <MudField Label="@data.Key" Variant="Variant.Outlined"><span style="color: green;">@data.Value</span></MudField>
                                 </MudItem>
+                                if (data.Key.ToLower() == "bloodgroup")
+                                {
+                                    _showBloodGroup = false;
+                                }
+                                if (data.Key.ToLower() == "genotype")
+                                {
+                                    _showGenotype = false;
+                                }
                             }
-                            @*
-                        <MudSelect Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" xs="12" md="6" T="Genotype" Label="Genotype" @bind-Value="@_genotype" For="@(() => _profileModel.Genotype)" placeholder="Select Genotype">
-                        <MudSelectItem Value="@Genotype.AA">AA</MudSelectItem>
-                        <MudSelectItem Value="@Genotype.AS">AS</MudSelectItem>
-                        <MudSelectItem Value="@Genotype.AC">AC</MudSelectItem>
-                        <MudSelectItem Value="@Genotype.SS">SS</MudSelectItem>
-                        <MudSelectItem Value="@Genotype.SC">SC</MudSelectItem>
-                        </MudSelect>
 
-                        <MudSelect Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" xs="12" md="6" T="BloodGroup" Label="Blood Group" @bind-Value="@_bloodGroup" For="@(() => _profileModel.BloodGroup)">
-                        <MudSelectItem Value="@BloodGroup.APositive">APositive</MudSelectItem>
-                        <MudSelectItem Value="@BloodGroup.ANegative">ANegative</MudSelectItem>
-                        <MudSelectItem Value="@BloodGroup.BPositive">BPositive</MudSelectItem>
-                        <MudSelectItem Value="@BloodGroup.BNegative">BNegative</MudSelectItem>
-                        <MudSelectItem Value="@BloodGroup.OPositive">OPositive</MudSelectItem>
-                        <MudSelectItem Value="@BloodGroup.ONegative">ONegative</MudSelectItem>
-                        <MudSelectItem Value="@BloodGroup.ABPositive">ABPositive</MudSelectItem>
-                        </MudSelect> *@
+                            @if (_showBloodGroup)
+                            {
+                            <MudItem xs="12" md="6">
+                                <MudSelect Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" xs="12" md="6" T="string" Label="Blood Group" @bind-Value="@BloodGroup" For="@(() => BloodGroup)">
+                                    <MudSelectItem Value="@("BloodGroup")">APositive</MudSelectItem>
+                                    <MudSelectItem Value="@("ANegative")">ANegative</MudSelectItem>
+                                    <MudSelectItem Value="@("BPositive")">BPositive</MudSelectItem>
+                                    <MudSelectItem Value="@("BNegative")">BNegative</MudSelectItem>
+                                    <MudSelectItem Value="@("OPositive")">OPositive</MudSelectItem>
+                                    <MudSelectItem Value="@("ONegative")">ONegative</MudSelectItem>
+                                    <MudSelectItem Value="@("ABPositive")">ABPositive</MudSelectItem>
+                                </MudSelect>
+                            </MudItem>
+                            }
 
+                            @if (_showGenotype)
+                            {
+                            <MudSelect Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" xs="12" md="6" T="string" Label="Genotype" @bind-Value="@Genotype" For="@(() => Genotype)" placeholder="Select Genotype">
+                                <MudSelectItem Value="@("AA")">AA</MudSelectItem>
+                                <MudSelectItem Value="@("AS")">AS</MudSelectItem>
+                                <MudSelectItem Value="@("AC")">AC</MudSelectItem>
+                                <MudSelectItem Value="@("SS")">SS</MudSelectItem>
+                                <MudSelectItem Value="@("SC")">SC</MudSelectItem>
+                            </MudSelect>
+                            }
                         </MudGrid>
                     </MudCardContent>
                     <MudCardActions Class="pb-4 pl-4">
@@ -125,4 +108,8 @@ else
             </EditForm>
         </MudItem>
     </MudGrid>
+}
+
+@code {
+
 }

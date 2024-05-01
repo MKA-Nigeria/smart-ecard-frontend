@@ -15,6 +15,12 @@ namespace Client.Pages.Cards.CardRequests
         bool BusySubmitting;
         [Inject]
         protected ICardRequestsClient CardRequestsClient { get; set; } = default!;
+
+
+        bool _showGenotype = true;
+        bool _showBloodGroup = true;
+        string BloodGroup;
+        string Genotype;
         protected override async Task OnInitializedAsync()
         {
             //BusySubmitting = true;
@@ -29,13 +35,26 @@ namespace Client.Pages.Cards.CardRequests
         }
         public async Task SubmitCardRequestAsync()
         {
+
             BusySubmitting = true;
+            if (_showBloodGroup)
+            {
+                MemberData.CustomData.Add("BloodGroup", BloodGroup);
+            }
+            if (_showGenotype)
+            {
+                MemberData.CustomData.Add("Genotype", Genotype);
+            }
             CreateCardRequest cardRequest = new();
             cardRequest.ExternalId = ExternalId;
             cardRequest.MemberData = MemberData;
-            await ApiHelper.ExecuteCallGuardedAsync(
+            
+            if(await ApiHelper.ExecuteCallGuardedAsync(
                 () => CardRequestsClient.CreateAsync(cardRequest),
-            Snackbar);
+            Snackbar) is Guid id)
+            {
+                Navigation.NavigateTo($"/cardrequests");
+            }
 
             BusySubmitting = false;
         }

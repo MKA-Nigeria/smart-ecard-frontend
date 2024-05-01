@@ -20,10 +20,13 @@
             <MudTh><MudTableSortLabel SortLabel="lastName" T="CardRequestDto">Status</MudTableSortLabel></MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="Nr">@context.ExternalId</MudTd>
+        <MudTd DataLabel="Id">
+            <MudLink Href="@("/cardrequest/" + @context.Id)" Underline="Underline.None">@context.ExternalId</MudLink>
+
+        </MudTd>
             <MudTd DataLabel="Sign">@context.MemberData.FirstName</MudTd>
             <MudTd DataLabel="Name">@context.MemberData.LastName</MudTd>
-            <MudTd DataLabel="Name">@context.MemberData.DateOfBirth</MudTd>
+        <MudTd DataLabel="Name">@context.MemberData.DateOfBirth.ToString("yyyy-MM-dd")</MudTd>
             <MudTd DataLabel="Name">@context.Status</MudTd>
         </RowTemplate>
         <NoRecordsContent>

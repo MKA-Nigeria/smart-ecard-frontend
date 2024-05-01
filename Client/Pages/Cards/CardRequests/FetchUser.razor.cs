@@ -18,14 +18,15 @@ namespace Client.Pages.Cards.CardRequests
         private async Task SubmitAsync()
         {
             BusySubmitting = true;
-
-            if (await ApiHelper.ExecuteCallGuardedAsync(
-                () => CardRequestClient.GetMemberDataAsync(UserRequest.ExternalId),
-                Snackbar,
-                _customValidation) is not null)
+            var response = await CardRequestClient.GetMemberDataAsync(UserRequest.ExternalId);
+            if (response is MemberData memberData)
             {
                 Snackbar.Add($"Member data retrieved", Severity.Info);
-                Navigation.NavigateTo($"/cardRequest/{UserRequest.ExternalId}");
+                Navigation.NavigateTo($"/member/{UserRequest.ExternalId}");
+            }
+            else
+            {
+                Snackbar.Add($"Error while fetching member data, check the provided info", Severity.Info);
             }
 
             BusySubmitting = false;

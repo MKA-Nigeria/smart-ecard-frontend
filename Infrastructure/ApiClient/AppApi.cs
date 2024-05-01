@@ -4012,6 +4012,7 @@ namespace Infrastructure.ApiClient
                     using (var jsonTextReader = new Newtonsoft.Json.JsonTextReader(streamReader))
                     {
                         var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);
+
                         var typedBody = serializer.Deserialize<T>(jsonTextReader);
                         return new ObjectResponseResult<T>(typedBody, string.Empty);
                     }

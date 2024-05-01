@@ -1,7 +1,6 @@
 ﻿using Client.Components.Common;
 using Client.Shared;
 using Infrastructure.ApiClient;
-using Mapster;
 using Microsoft.AspNetCore.Components;
 
 namespace Client.Pages.Cards.CardRequests
@@ -31,13 +30,12 @@ namespace Client.Pages.Cards.CardRequests
         public async Task SubmitCardRequestAsync()
         {
             BusySubmitting = true;
-
-            if (await ApiHelper.ExecuteCallGuardedAsync(
-                () => CardRequestsClient.CreateAsync(MemberData.Adapt<CreateCardRequest>()),
-            Snackbar) is Guid)
-            {
-                Snackbar.Add($"Card request submitted successfully", Severity.Info);
-            }
+            CreateCardRequest cardRequest = new();
+            cardRequest.ExternalId = ExternalId;
+            cardRequest.MemberData = MemberData;
+            await ApiHelper.ExecuteCallGuardedAsync(
+                () => CardRequestsClient.CreateAsync(cardRequest),
+            Snackbar);
 
             BusySubmitting = false;
         }

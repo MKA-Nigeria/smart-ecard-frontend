@@ -4,8 +4,7 @@
         <MudIconButton Icon="@Icons.Rounded.Notes" Color="Color.Inherit" Edge="Edge.Start"
             OnClick="@((e) => DrawerToggle())" />
     </MudTooltip>
-     <MudButton Variant="Variant.Text" DisableElevation="true" Link="/">
-            Smart e-Card</MudButton>
+    Smart e-Card
     <MudSpacer />
     <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
  
@@ -28,7 +27,7 @@
                         <MudText>Account</MudText>
                     </div>
                 </MudMenuItem>
-                <MudMenuItem Link="/dashboard">
+                <MudMenuItem Link="/">
                     <div class="d-flex">
                         <MudIcon Class="mx-2" Icon="@Icons.Material.Filled.Dashboard" />
                         <MudText>Dashboard</MudText>
@@ -45,7 +44,7 @@
     </MudMenu>
 </MudAppBar>
 
-<MudDrawer @bind-Open="_drawerOpen" Elevation="25" ClipMode="DrawerClipMode.Never" Style="background-color:#6ACFC7">
+<MudDrawer @bind-Open="_drawerOpen" Elevation="25" ClipMode="DrawerClipMode.Never" Style="background-color:#084545; font-size:15px">
     <NavMenu />
 </MudDrawer>
 

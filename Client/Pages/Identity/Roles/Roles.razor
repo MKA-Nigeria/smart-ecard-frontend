@@ -1,0 +1,29 @@
+﻿@page "/roles"
+@using Client.Common
+@using Client.Components.EntityTable
+@using global::Shared.Authorization
+@attribute [MustHavePermission(AppAction.View, Resource.Roles)]
+
+
+<FshTitle Title="Roles" Description="Manage Roles" />
+
+<EntityTable TEntity="RoleDto" TId="string" TRequest="CreateOrUpdateRoleRequest" Context="@Context">
+
+    <ExtraActions>
+        @if (_canViewRoleClaims)
+        {
+            <MudMenuItem @onclick="@(() => ManagePermissions(context.Id))">Manage Permission</MudMenuItem>
+        }
+    </ExtraActions>
+
+    <EditFormContent>
+        <MudItem xs="12" md="6">
+            <MudTextField For="@(() => context.Name)" @bind-Value="context.Name" Label="Role Name" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField For="@(() => context.Description)" @bind-Value="context.Description"
+                Label="Description" />
+        </MudItem>
+    </EditFormContent>
+
+</EntityTable>

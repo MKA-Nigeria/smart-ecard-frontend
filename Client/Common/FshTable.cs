@@ -1,4 +1,4 @@
-﻿/*using Infrastructure.Notifications;
+﻿using Infrastructure.Notifications;
 using Infrastructure.Preferences;
 using MediatR.Courier;
 using Microsoft.AspNetCore.Components;
@@ -19,7 +19,7 @@ public class FshTable<T> : MudTable<T>
             SetTablePreference(clientPreference.TablePreference);
         }
 
-        Courier.SubscribeWeak<NotificationWrapper<FshTablePreference>>(wrapper =>
+        Courier.SubscribeWeak<NotificationWrapper<TablePreference>>(wrapper =>
         {
             SetTablePreference(wrapper.Notification);
             StateHasChanged();
@@ -28,11 +28,11 @@ public class FshTable<T> : MudTable<T>
         await base.OnInitializedAsync();
     }
 
-    private void SetTablePreference(FshTablePreference tablePreference)
+    private void SetTablePreference(TablePreference tablePreference)
     {
         Dense = tablePreference.IsDense;
         Striped = tablePreference.IsStriped;
         Bordered = tablePreference.HasBorder;
         Hover = tablePreference.IsHoverable;
     }
-}*/
+}

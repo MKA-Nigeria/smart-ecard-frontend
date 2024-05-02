@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 
-namespace Authorization;
-public static class Roles
+namespace Shared.Authorization;
+public static class AppRoles
 {
     public static string Admin = nameof(Admin);
     public static string Basic = nameof(Basic);

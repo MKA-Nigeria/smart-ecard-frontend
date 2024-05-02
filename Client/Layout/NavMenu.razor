@@ -10,15 +10,16 @@
                 Requests
             </MudNavLink>
         </MudNavGroup>
-</MudNavMenu>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+    @if (CanViewAdministrationGroup)
     {
-        collapseNavMenu = !collapseNavMenu;
+        <MudText Typo="Typo.subtitle2" Color="Color.Primary" Class="ml-4 my-3">Administration</MudText>
+        @if (_canViewUsers)
+        {
+            <MudNavLink Match="NavLinkMatch.Prefix" Href="/users" Icon="@Icons.Material.Filled.PeopleAlt">Users</MudNavLink>
+        }
+        @if (_canViewRoles)
+        {
+            <MudNavLink Href="/roles" Icon="@Icons.Material.Filled.EmojiPeople">Roles</MudNavLink>
+        }
     }
-}
+</MudNavMenu>

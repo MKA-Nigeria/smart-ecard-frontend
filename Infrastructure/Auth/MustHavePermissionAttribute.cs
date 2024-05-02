@@ -1,5 +1,4 @@
-﻿using Authorization;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Shared.Authorization;
 
 namespace Infrastructure.Auth;

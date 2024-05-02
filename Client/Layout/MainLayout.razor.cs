@@ -1,6 +1,5 @@
 ﻿using Infrastructure.Preferences;
 using Microsoft.AspNetCore.Components;
-using Client.Shared.Dialogs;
 
 namespace Client.Layout
 {
@@ -47,13 +46,13 @@ namespace Client.Layout
         {
             var parameters = new DialogParameters
             {
-               /* { nameof(Dialogs.Logout.ContentText), "Logout Confirmation"},
+                { nameof(Dialogs.Logout.ContentText), "Logout Confirmation"},
                 { nameof(Dialogs.Logout.ButtonText), "Logout"},
-                { nameof(Dialogs.Logout.Color), Color.Error}*/
+                { nameof(Dialogs.Logout.Color), Color.Error}
             };
 
             var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
-           // DialogService.Show<Dialogs.Logout>("Logout", parameters, options);
+            DialogService.Show<Dialogs.Logout>("Logout", parameters, options);
         }
 
         private void Profile()

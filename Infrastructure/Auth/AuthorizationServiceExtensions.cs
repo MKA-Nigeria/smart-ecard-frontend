@@ -1,4 +1,4 @@
-﻿using Authorization;
+﻿using Shared.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Shared.Authorization;
 using System.Security.Claims;

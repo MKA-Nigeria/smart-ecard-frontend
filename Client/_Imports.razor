@@ -1,15 +1,29 @@
-﻿@using System.Net.Http
-@using System.Net.Http.Json
-@using Infrastructure.Preferences
+﻿@using System.Security.Claims
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using Microsoft.AspNetCore.Components.WebAssembly.Http
+@using Microsoft.Extensions.Configuration
+@using Microsoft.Extensions.DependencyInjection
+@using Microsoft.Extensions.Localization
 @using Microsoft.JSInterop
 @using Client
-@using Client.Layout
+@using Client.Shared
+@using Client.Pages.Authentication
+@using Client.Components.Common
+@using Infrastructure.ApiClient
+@using Infrastructure.Auth
+@using Infrastructure.Common
+@using Infrastructure.Notifications
+@using Infrastructure.Preferences
+@using Blazored.LocalStorage
+@using Mapster
+@using MediatR.Courier
 @using MudBlazor
 
 

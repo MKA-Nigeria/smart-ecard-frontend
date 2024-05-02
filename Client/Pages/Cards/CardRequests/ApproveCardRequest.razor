@@ -51,7 +51,6 @@ else
     </MudCard>
     </MudItem> *@
         <MudItem xs="12" sm="8" md="8">
-            <EditForm Model="@CardRequest" OnValidSubmit="Submit">
                 <MudCard Elevation="25">
                     <MudCardHeader>
                         <CardHeaderContent>
@@ -87,8 +86,23 @@ else
                             <MudItem xs="12" md="6">
                                 <MudField Label="Address" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.Address</span></MudField>
                             </MudItem>
+                        </MudGrid>
+                    </MudCardContent>
+                </MudCard>
+        </MudItem>
 
 
+
+        <MudItem xs="12" sm="8" md="8">
+            <EditForm Model="@CardRequest" OnValidSubmit="Submit">
+                <MudCard Elevation="25">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText FontSize="FontSize.Medium"><span style="color: green;">Member Additional Information</span></MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudGrid>
                             @foreach (var data in CardRequest.MemberData.CustomData)
                             {
                                 <MudItem xs="12" md="6">
@@ -101,7 +115,7 @@ else
 
                     <MudCardActions Class="pb-4 pl-4">
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" StartIcon="@Icons.Filled.Save"
-                                   ButtonType="ButtonType.Submit">Approve Card Request</MudButton>
+                                   ButtonType="ButtonType.Submit" Disabled="BusySubmitting">Approve Card Request</MudButton>
                     </MudCardActions>
                 </MudCard>
             </EditForm>

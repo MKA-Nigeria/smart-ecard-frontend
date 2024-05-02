@@ -11,7 +11,7 @@ namespace Client.Pages.Cards.CardRequests
         [Inject]
         private ICardRequestsClient CardRequestsClient { get; set; } = default!;
         CardRequestDto CardRequest { get; set; }
-
+        bool BusySubmitting;
         bool _loaded;
         protected override async Task OnInitializedAsync()
         {
@@ -24,6 +24,15 @@ namespace Client.Pages.Cards.CardRequests
         private async Task Submit()
         {
 
+            BusySubmitting = true;
+            if (await ApiHelper.ExecuteCallGuardedAsync(
+                () => CardRequestsClient.ApproveAsync(CardRequestId),
+            Snackbar) is Guid id)
+            {
+                Navigation.NavigateTo($"/cardrequests");
+            }
+
+            BusySubmitting = false;
         }
     }
 }

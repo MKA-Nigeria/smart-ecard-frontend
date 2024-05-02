@@ -19,14 +19,14 @@ namespace Client.Pages.Cards.CardRequests
         {
             BusySubmitting = true;
             var response = await CardRequestClient.GetMemberDataAsync(UserRequest.ExternalId);
-            if (response is MemberData memberData)
+            if (response.Status)
             {
                 Snackbar.Add($"Member data retrieved", Severity.Info);
                 Navigation.NavigateTo($"/member/{UserRequest.ExternalId}");
             }
             else
             {
-                Snackbar.Add($"Error while fetching member data, check the provided info", Severity.Info);
+                Snackbar.Add(response.Message, Severity.Error);
             }
 
             BusySubmitting = false;

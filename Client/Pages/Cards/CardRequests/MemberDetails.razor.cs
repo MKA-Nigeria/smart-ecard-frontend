@@ -23,12 +23,12 @@ namespace Client.Pages.Cards.CardRequests
         string Genotype;
         protected override async Task OnInitializedAsync()
         {
+            var response = await ApiHelper.ExecuteCallGuardedAsync(
+                    () => CardRequestsClient.GetMemberDataAsync(ExternalId), Snackbar);
             //BusySubmitting = true;
-            if (await ApiHelper.ExecuteCallGuardedAsync(
-                    () => CardRequestsClient.GetMemberDataAsync(ExternalId), Snackbar)
-                is MemberData member)
+            if (response.Status)
             {
-                MemberData = member;
+                MemberData = response.Data;
                 _loaded = true;
             }
             //BusySubmitting = false;

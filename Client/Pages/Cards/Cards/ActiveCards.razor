@@ -1,0 +1,50 @@
+﻿@page "/cards/active"
+@using System.Net.Http.Json
+@using Infrastructure.ApiClient
+@inject HttpClient httpClient
+
+
+<MudTable ServerData="@(new Func<TableState, Task<TableData<CardDto>>>(ServerReload))"
+          Dense="true" Hover="true" @ref="table">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Active Cards</MudText>
+        <MudSpacer />
+        <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortLabel="cardNumber" T="CardRequestDto">Card Number</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="name" T="MemberData">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="approvedDate" T="MemberData">Approved Date</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="isCollected" T="CardRequestDto">Is Collected</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="printStatus" T="MemberData">Print status</MudTableSortLabel></MudTh>
+
+        <MudTh>Action</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+
+        <MudTd DataLabel="CardNumber">@context.CardNumber</MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="ApprovedDate">@context.ApprovedDate.ToString("yyyy-MM-dd")</MudTd>
+        <MudTd DataLabel="ISCollected">@context.IsCollected</MudTd>
+        @if (@context.PrintStatus == PrintStatus.ReadyForPrint)
+        {
+            <MudTd DataLabel="PrintStatus"><MudChip Color="Color.Warning">@context.PrintStatus</MudChip></MudTd>
+        }
+        else if (@context.PrintStatus == PrintStatus.Printed)
+        {
+            <MudTd DataLabel="PrintStatus"><MudChip Color="Color.Success">@context.PrintStatus</MudChip></MudTd>
+        }
+        
+        <MudTd><MudButton DisableElevation Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Filled.Close" Disabled="@BusySubmitting" @onclick="( () => OpenModal(context.Id, context.Name))">Deactivate</MudButton></MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>No matching records found</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>

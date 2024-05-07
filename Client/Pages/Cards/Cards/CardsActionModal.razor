@@ -1,0 +1,42 @@
+﻿@typeparam T
+<MudDialog>
+    <DialogContent>
+        <MudText>@ContentText</MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="@Color" Variant="Variant.Filled" Disabled="BusySubmitting" OnClick="Submit">@ButtonText</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public string ContentText { get; set; }
+
+    [Parameter] public string ButtonText { get; set; }
+
+    [Parameter] public Color Color { get; set; }
+    [Parameter] public Func<Task<T>> SubmitAction { get; set; }
+    [Parameter] public Guid CardId { get; set; }
+    bool BusySubmitting;
+
+    async Task Submit()
+    {
+        BusySubmitting = true;
+
+
+        if (await ApiHelper.ExecuteCallGuardedAsync(
+            () => SubmitAction(),
+        Snackbar) is Guid id)
+        {
+            
+        }
+       
+        MudDialog.Close(DialogResult.Ok(true));
+
+        BusySubmitting = false;
+
+    } 
+
+    void Cancel() => MudDialog.Cancel();
+}

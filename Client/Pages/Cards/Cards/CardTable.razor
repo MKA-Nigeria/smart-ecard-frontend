@@ -1,0 +1,58 @@
+﻿@page "/cards"
+@using System.Net.Http.Json
+@using Infrastructure.ApiClient
+@inject HttpClient httpClient
+
+
+<MudTable ServerData="@(new Func<TableState, Task<TableData<CardDto>>>(ServerReload))"
+          Dense="true" Hover="true" @ref="table">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Cards</MudText>
+        <MudSpacer />
+        <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortLabel="cardNumber" T="CardDto">Card Number</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="memberNumber" T="CardDto">Member Number</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="fullName" T="CardDto">Full name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="cardStatus" T="CardDto">Card Status</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="isCollected" T="CardDto">Is Collected</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="printStatus" T="CardDto">Print status</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+
+        <MudTd DataLabel="CardNumber">
+            <MudLink Href="@("/card/" + @context.CardNumber)" Underline="Underline.None">@context.CardNumber</MudLink>
+            </MudTd>
+        <MudTd DataLabel="MemberNumber">@context.ExternalId</MudTd>
+        <MudTd DataLabel="FullName">@context.FullName</MudTd>
+        @if (@context.CardStatus == CardStatus.Active)
+        {
+            <MudTd DataLabel="CardStatus"><MudChip Color="Color.Secondary">@context.CardStatus</MudChip></MudTd>
+        }
+        else if (@context.CardStatus == CardStatus.InActive)
+        {
+            <MudTd DataLabel="CardStatus"><MudChip Color="Color.Error">@context.CardStatus</MudChip></MudTd>
+        }
+
+        <MudTd DataLabel="ISCollected">@context.IsCollected</MudTd>
+        @if (@context.PrintStatus == PrintStatus.ReadyForPrint)
+        {
+            <MudTd DataLabel="PrintStatus"><MudChip Color="Color.Warning">@context.PrintStatus</MudChip></MudTd>
+        }
+        else if (@context.PrintStatus == PrintStatus.Printed)
+        {
+            <MudTd DataLabel="PrintStatus"><MudChip Color="Color.Success">@context.PrintStatus</MudChip></MudTd>
+        }
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>No matching records found</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>

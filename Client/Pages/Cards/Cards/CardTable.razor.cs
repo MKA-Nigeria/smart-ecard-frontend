@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Client.Pages.Cards.Cards
 {
-    public partial class ActiveCards
+    public partial class CardTable
     {
         [Inject]
         private ICardsClient CardsClient { get; set; }
@@ -20,7 +20,7 @@ namespace Client.Pages.Cards.Cards
         }
 
 
-        private async Task Fetch(SearchActiveCardsRequest SearchCardRequest)
+        private async Task Fetch(SearchCardsRequest SearchCardRequest)
         {
             if (await ApiHelper.ExecuteCallGuardedAsync(() => CardsClient.SearchActiveAsync(SearchCardRequest), Snackbar) is PaginationResponseOfCardDto cards)
             {
@@ -34,7 +34,7 @@ namespace Client.Pages.Cards.Cards
         }
         private async Task<TableData<CardDto>> ServerReload(TableState state)
         {
-            var searchRequest = new SearchActiveCardsRequest
+            var searchRequest = new SearchCardsRequest
             {
                 Keyword = searchString,
                 PageNumber = state.Page,
@@ -46,19 +46,22 @@ namespace Client.Pages.Cards.Cards
             switch (state.SortLabel)
             {
                 case "cardNumber":
-                    data.Data = data.Data.OrderByDirection(state.SortDirection, o => o.CardNumber).ToList();
+                    data.Data = [.. data.Data.OrderByDirection(state.SortDirection, o => o.CardNumber)];
                     break;
-                case "name":
-                    data.Data = [.. data.Data.OrderByDirection(state.SortDirection, o => o.Name)];
+                case "memberNumber":
+                    data.Data = [.. data.Data.OrderByDirection(state.SortDirection, o => o.ExternalId)];
                     break;
-                case "approvedDate":
-                    data.Data = [.. data.Data.OrderByDirection(state.SortDirection, o => o.ApprovedDate)];
+                case "fullName":
+                    data.Data = [.. data.Data.OrderByDirection(state.SortDirection, o => o.FullName)];
+                    break;
+                case "cardStatus":
+                    data.Data = [.. data.Data.OrderByDirection(state.SortDirection, o => o.CardStatus)];
+                    break;               
+                case "isCollected":
+                    data.Data = [.. data.Data.OrderByDirection(state.SortDirection, o => o.IsCollected)];
                     break;
                 case "printStatus":
                     data.Data = [.. data.Data.OrderByDirection(state.SortDirection, o => o.PrintStatus)];
-                    break;
-                case "isCollected":
-                    data.Data = [.. data.Data.OrderByDirection(state.SortDirection, o => o.IsCollected)];
                     break;
             }
             return new TableData<CardDto>() { TotalItems = totalItems, Items = CardsResponse.Data };
@@ -68,36 +71,6 @@ namespace Client.Pages.Cards.Cards
         {
             searchString = text;
             table.ReloadServerData();
-        }
-
-
-        private void OpenModal(Guid id, string name)
-        {
-            var parameters = new DialogParameters<CardsActionModal<Guid>>
-            {
-                { x => x.ContentText, $"Are you sure you want to deactivate {name}" },
-                { x => x.ButtonText, "Deactivate" },
-                { x => x.Color, Color.Success },
-                { x => x.SubmitAction, () =>  Deactivate(id) }
-            };
-
-            DialogService.Show<CardsActionModal<Guid>>("Confirm", parameters);
-        }
-
-
-        private async Task<Guid> Deactivate(Guid cardId)
-        {
-
-            BusySubmitting = true;
-            if (await ApiHelper.ExecuteCallGuardedAsync(
-                () => CardsClient.DeactivateAsync(cardId),
-            Snackbar) is Guid id)
-            {
-                return id;
-            }
-
-            BusySubmitting = false;
-            return cardId;
         }
     }
 }

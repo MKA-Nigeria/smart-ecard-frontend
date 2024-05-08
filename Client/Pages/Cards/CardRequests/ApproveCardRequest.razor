@@ -51,6 +51,27 @@ else
     </MudCard>
     </MudItem> *@
         <MudItem xs="12" sm="8" md="8">
+                <MudCard Elevation="25">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                        <MudText FontSize="FontSize.Large"><span style="color: green;">Member Card Request Information (@CardRequest.MemberData.EntityId)</span></MudText>
+                        <MudText FontSize="FontSize.Large"><span style="color: green;">STATUS: @CardRequest.Status.ToString()</span></MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudGrid>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Identification Number" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.EntityId</span></MudField>
+                        </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudField Label="FirstName" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.FirstName</span></MudField>
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudField Label="LastName" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.LastName</span></MudField>
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudField Label="MiddleName" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.MiddleName</span></MudField>
+                            </MudItem>
             <MudCard Elevation="25">
                 <MudCardHeader>
                     <CardHeaderContent>
@@ -125,6 +146,13 @@ else
                                        @onclick="Approve">Approve</MudButton>
                         </MudItem>
                     </MudGrid>
+                    @if(CardRequest.Status == CardRequestStatus.Pending)
+                    {
+                        <MudCardActions Class="pb-4 pl-4">
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" StartIcon="@Icons.Filled.Save"
+                                       ButtonType="ButtonType.Submit" Disabled="BusySubmitting">Approve Card Request</MudButton>
+                        </MudCardActions>
+                    }       
                 </MudCard>
             </EditForm>
         </MudItem>

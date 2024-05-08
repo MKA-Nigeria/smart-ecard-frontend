@@ -115,11 +115,13 @@ else
 
                         </MudGrid>
                     </MudCardContent>
-
-                    <MudCardActions Class="pb-4 pl-4">
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" StartIcon="@Icons.Filled.Save"
-                                   ButtonType="ButtonType.Submit" Disabled="BusySubmitting">Approve Card Request</MudButton>
-                    </MudCardActions>
+                    @if(CardRequest.Status == CardRequestStatus.Pending)
+                    {
+                        <MudCardActions Class="pb-4 pl-4">
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" StartIcon="@Icons.Filled.Save"
+                                       ButtonType="ButtonType.Submit" Disabled="BusySubmitting">Approve Card Request</MudButton>
+                        </MudCardActions>
+                    }       
                 </MudCard>
             </EditForm>
         </MudItem>

@@ -55,7 +55,7 @@ else
                 </MudCardContent>
                 <MudCardActions Class="pb-4 pl-4">
                     <MudButton Variant="Variant.Filled" Color="Color.Secondary" Class="ml-auto" StartIcon="@Icons.Filled.Save"
-                               ButtonType="ButtonType.Submit" Disabled="@BusySubmitting">View ID Card</MudButton>
+                               ButtonType="ButtonType.Submit" OnClick="ViewCard" Disabled="@BusySubmitting">View ID Card</MudButton>
                     @if (Card.CardStatus == CardStatus.Active)
                     {
                         <MudButton Variant="Variant.Filled" Color="Color.Error" Class="ml-auto" StartIcon="@Icons.Filled.RollerShadesClosed"

@@ -58,6 +58,11 @@ namespace Client.Pages.Cards.Cards
 
             BusySubmitting = false;
         }
+        
+        public async Task ViewCard()
+        {
+            Navigation.NavigateTo($"http://localhost:3000/idcard?print={CardNumber}");
+        }
     }
 }
 

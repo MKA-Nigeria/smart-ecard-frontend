@@ -54,11 +54,15 @@ else
                 <MudCard Elevation="25">
                     <MudCardHeader>
                         <CardHeaderContent>
-                            <MudText FontSize="FontSize.Large"><span style="color: green;">Member Information</span></MudText>
+                        <MudText FontSize="FontSize.Large"><span style="color: green;">Member Card Request Information (@CardRequest.MemberData.EntityId)</span></MudText>
+                        <MudText FontSize="FontSize.Large"><span style="color: green;">STATUS: @CardRequest.Status.ToString()</span></MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent>
                         <MudGrid>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Identification Number" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.EntityId</span></MudField>
+                        </MudItem>
                             <MudItem xs="12" md="6">
                                 <MudField Label="FirstName" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.FirstName</span></MudField>
                             </MudItem>
@@ -69,32 +73,32 @@ else
                                 <MudField Label="MiddleName" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.MiddleName</span></MudField>
                             </MudItem>
 
-                            <MudItem xs="12" md="6">
-                                <MudField Label="PhoneNumber" Variant="Variant.Outlined">
-                                    <span style="color: green;">
-                                        @CardRequest.MemberData.PhoneNumber
-                                    </span>
-                                </MudField>
-                            </MudItem>
-                            <MudItem xs="12" md="6">
-                                <MudField Label="Email" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.Email</span></MudField>
-                            </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="PhoneNumber" Variant="Variant.Outlined">
+                                <span style="color: green;">
+                                    @CardRequest.MemberData.PhoneNumber
+                                </span>
+                            </MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Email" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.Email</span></MudField>
+                        </MudItem>
 
-                            <MudItem xs="12" md="6">
-                                <MudField Label="Date of Birth" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.DateOfBirth</span></MudField>
-                            </MudItem>
-                            <MudItem xs="12" md="6">
-                                <MudField Label="Address" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.Address</span></MudField>
-                            </MudItem>
-                        </MudGrid>
-                    </MudCardContent>
-                </MudCard>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Date of Birth" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.DateOfBirth</span></MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Address" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.Address</span></MudField>
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+            </MudCard>
         </MudItem>
 
 
 
         <MudItem xs="12" sm="8" md="8">
-            <EditForm Model="@CardRequest" OnValidSubmit="Submit">
+            <EditForm Model="@CardRequest">
                 <MudCard Elevation="25">
                     <MudCardHeader>
                         <CardHeaderContent>
@@ -109,14 +113,26 @@ else
                                     <MudField Label="@data.Key" Variant="Variant.Outlined"><span style="color: green;">@data.Value</span></MudField>
                                 </MudItem>
                             }
-
                         </MudGrid>
                     </MudCardContent>
-
-                    <MudCardActions Class="pb-4 pl-4">
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" StartIcon="@Icons.Filled.Save"
-                                   ButtonType="ButtonType.Submit" Disabled="BusySubmitting">Approve Card Request</MudButton>
-                    </MudCardActions>
+                   
+                    @if(CardRequest.Status == CardRequestStatus.Pending)
+                    {
+                        <MudGrid>
+                            <MudItem xs="12" sm="4" class="pb-4 pl-4">
+                                <MudButton Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Filled.Cancel"
+                                           @onclick="Cancel" Disabled="BusySubmitting">Cancel</MudButton>
+                            </MudItem>
+                            <MudItem xs="12" sm="4" class="pb-4 pl-4">
+                                <MudButton Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Filled.Close"
+                                           @onclick="Reject" Disabled="BusySubmitting">Reject</MudButton>
+                            </MudItem>
+                            <MudItem xs="12" sm="4" class="pb-4 pl-4">
+                                <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Filled.Check"
+                                           @onclick="Approve" Disabled="BusySubmitting">Approve</MudButton>
+                            </MudItem>
+                        </MudGrid>
+                    }       
                 </MudCard>
             </EditForm>
         </MudItem>

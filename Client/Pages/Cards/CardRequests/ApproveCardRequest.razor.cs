@@ -21,12 +21,40 @@ namespace Client.Pages.Cards.CardRequests
             }
             _loaded = true;
         }
-        private async Task Submit()
+        private async Task Approve()
         {
 
             BusySubmitting = true;
             if (await ApiHelper.ExecuteCallGuardedAsync(
                 () => CardRequestsClient.ApproveAsync(CardRequestId),
+            Snackbar) is Guid id)
+            {
+                Navigation.NavigateTo($"/cardrequests");
+            }
+
+            BusySubmitting = false;
+        }
+        
+        private async Task Reject()
+        {
+
+            BusySubmitting = true;
+            if (await ApiHelper.ExecuteCallGuardedAsync(
+                () => CardRequestsClient.RejectAsync(CardRequestId),
+            Snackbar) is Guid id)
+            {
+                Navigation.NavigateTo($"/cardrequests");
+            }
+
+            BusySubmitting = false;
+        }
+        
+        private async Task Cancel()
+        {
+
+            BusySubmitting = true;
+            if (await ApiHelper.ExecuteCallGuardedAsync(
+                () => CardRequestsClient.CancelAsync(CardRequestId),
             Snackbar) is Guid id)
             {
                 Navigation.NavigateTo($"/cardrequests");

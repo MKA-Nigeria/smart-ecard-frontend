@@ -2,6 +2,85 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<MudContainer>
+    <MudGrid>
+        <MudItem xs="12" sm="6" md="4">
+            <MudCard>
+                <MudCardContent>
+                    <MudText Typo="Typo.h5">Total Active Cards</MudText>
+                    <MudText>@data.TotalActiveCards</MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudCard>
+                <MudCardContent>
+                    <MudText Typo="Typo.h5">Total Inactive Cards</MudText>
+                    <MudText>@data.TotalInactiveCards</MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudCard>
+                <MudCardContent>
+                    <MudText Typo="Typo.h5">Card Renewals This Month</MudText>
+                    <MudText>@data.CardRenewalsThisMonth</MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+        <MudItem xs="12">
+            <MudCard>
+                <MudCardContent>
+                    <MudText Typo="Typo.h5">Monthly Requests Breakdown</MudText>
+                    <MudChart ChartType="ChartType.StackedBar" ChartSeries="@Series" XAxisLabels="@XAxisLabels" Width="100%" Height="350px">
+                        <CustomGraphics>
+                            <style>
+                                .heavy {
+                                    font: bold 30px Helvetica;
+                                }
 
-Welcome to your new app.
+                                .Rrrrr {
+                                    font: italic 40px Helvetica;
+                                    fill: rgb(62,44,221);
+                                }
+                            </style>
+                        </CustomGraphics>
+                    </MudChart>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+
+@code {
+    private bool _drawerOpen = true;
+
+    private DashboardData data = new DashboardData()
+        {
+            TotalRequests = 1024,
+            PendingApprovals = 45,
+            CardsPrintedToday = 20,
+            TotalActiveCards = 800,
+            TotalInactiveCards = 224,
+            CardRenewalsThisMonth = 75
+        };
+
+    public class DashboardData
+    {
+        public int TotalRequests { get; set; }
+        public int PendingApprovals { get; set; }
+        public int CardsPrintedToday { get; set; }
+        public int TotalActiveCards { get; set; }
+        public int TotalInactiveCards { get; set; }
+        public int CardRenewalsThisMonth { get; set; }
+    }
+
+    public List<ChartSeries> Series = new List<ChartSeries>()
+    {
+        new ChartSeries() { Name = "Khuddam", Data = new double[] { 40, 20, 25, 27, 46, 46, 48, 44, 15 } },
+        new ChartSeries() { Name = "Ansarullah", Data = new double[] { 19, 24, 35, 13, 28, 15, 13, 16, 40 } },
+        new ChartSeries() { Name = "Lajna", Data = new double[] { 8, 6, 11, 13, 4, 16, 10, 16, 20 } },
+    };
+    public string[] XAxisLabels = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep" };
+}

@@ -1,0 +1,38 @@
+@using MudBlazor
+
+<style>
+    .card-content {
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .auto-adjust-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+</style>
+
+<MudCard Style="margin: 16px; width: 300px; height: 150px;" Elevation="4">
+    <MudCardContent Class="card-content">
+        <MudText Typo="Typo.h6" Class="auto-adjust-text">@Title</MudText>
+        <MudText Typo="Typo.h3" Class="auto-adjust-text">@Value</MudText>
+        <MudIcon Icon="@Icon" Class="ml-2" Style="color: #084545;"></MudIcon>
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public int Value { get; set; }
+
+    [Parameter]
+    public string Icon { get; set; }
+}

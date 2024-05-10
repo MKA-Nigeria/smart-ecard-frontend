@@ -1,51 +1,44 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Dashboard - ID Card Management</PageTitle>
 
-<MudContainer>
+<MudContainer MaxWidth="MaxWidth.Large" Class="py-4">
+    <MudText>Dashboard - ID Card Management</MudText>
+    <MudGrid Justify="Justify.Center">
+        <!-- Active and Inactive Cards -->
+        <MudItem xs="12" md="4">
+            <StatisticsCard Title="Total Active Cards" Value="@data.TotalActiveCards" Icon="@Icons.Filled.Badge" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <StatisticsCard Title="Total Inactive Cards" Value="@data.TotalInactiveCards" Icon="@Icons.Filled.Cancel" />
+        </MudItem>
+        <!-- Renewals and New Cards Issued -->
+        <MudItem xs="12" md="4">
+            <StatisticsCard Title="Card Renewals" Value="@data.CardRenewalsThisMonth" Icon="@Icons.Filled.Autorenew" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <StatisticsCard Title="New Cards Issued" Value="@data.NewCardsIssued" Icon="@Icons.Filled.CreditCard" />
+        </MudItem>
+        <!-- Requests and Approvals -->
+        <MudItem xs="12" md="4">
+            <StatisticsCard Title="Pending Approvals" Value="@data.PendingApprovals" Icon="@Icons.Filled.HourglassEmpty" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <StatisticsCard Title="Total Requests" Value="@data.TotalRequests" Icon="@Icons.Filled.ListAlt" />
+        </MudItem>
+    </MudGrid>
+    <!-- Chart with Dropdown for Time Period -->
     <MudGrid>
-        <MudItem xs="12" sm="6" md="4">
-            <MudCard>
-                <MudCardContent>
-                    <MudText Typo="Typo.h5">Total Active Cards</MudText>
-                    <MudText>@data.TotalActiveCards</MudText>
-                </MudCardContent>
-            </MudCard>
-        </MudItem>
-        <MudItem xs="12" sm="6" md="4">
-            <MudCard>
-                <MudCardContent>
-                    <MudText Typo="Typo.h5">Total Inactive Cards</MudText>
-                    <MudText>@data.TotalInactiveCards</MudText>
-                </MudCardContent>
-            </MudCard>
-        </MudItem>
-        <MudItem xs="12" sm="6" md="4">
-            <MudCard>
-                <MudCardContent>
-                    <MudText Typo="Typo.h5">Card Renewals This Month</MudText>
-                    <MudText>@data.CardRenewalsThisMonth</MudText>
-                </MudCardContent>
-            </MudCard>
-        </MudItem>
         <MudItem xs="12">
             <MudCard>
                 <MudCardContent>
-                    <MudText Typo="Typo.h5">Monthly Requests Breakdown</MudText>
-                    <MudChart ChartType="ChartType.StackedBar" ChartSeries="@Series" XAxisLabels="@XAxisLabels" Width="100%" Height="350px">
-                        <CustomGraphics>
-                            <style>
-                                .heavy {
-                                    font: bold 30px Helvetica;
-                                }
-
-                                .Rrrrr {
-                                    font: italic 40px Helvetica;
-                                    fill: rgb(62,44,221);
-                                }
-                            </style>
-                        </CustomGraphics>
-                    </MudChart>
+                    <MudText Typo="Typo.h5" Class="my-2">Card Record Breakdown</MudText>
+                    <MudSelect T="string" Label="Select Time Period" SelectedValue="@selectedPeriod" SelectedValueChanged="@UpdateChart">
+                        <MudSelectItem Value="@selectedPeriod" />
+                       @*  <MudSelectItem Value="Monthly" />
+                        <MudSelectItem Value="Yearly" /> *@
+                    </MudSelect>
+                    <MudChart ChartType="ChartType.StackedBar" ChartSeries="@currentSeries" XAxisLabels="@currentLabels" Height="350px" />
                 </MudCardContent>
             </MudCard>
         </MudItem>
@@ -58,29 +51,47 @@
 
     private DashboardData data = new DashboardData()
         {
-            TotalRequests = 1024,
-            PendingApprovals = 45,
-            CardsPrintedToday = 20,
             TotalActiveCards = 800,
             TotalInactiveCards = 224,
-            CardRenewalsThisMonth = 75
+            CardRenewalsThisMonth = 75,
+            NewCardsIssued = 90,
+            PendingApprovals = 45,
+            TotalRequests = 1024
         };
+
+    private string selectedPeriod = "Monthly";
+    private List<ChartSeries> currentSeries;
+    private string[] currentLabels;
 
     public class DashboardData
     {
-        public int TotalRequests { get; set; }
-        public int PendingApprovals { get; set; }
-        public int CardsPrintedToday { get; set; }
         public int TotalActiveCards { get; set; }
         public int TotalInactiveCards { get; set; }
         public int CardRenewalsThisMonth { get; set; }
+        public int NewCardsIssued { get; set; }
+        public int PendingApprovals { get; set; }
+        public int TotalRequests { get; set; }
     }
 
-    public List<ChartSeries> Series = new List<ChartSeries>()
+    private Dictionary<string, (List<ChartSeries>, string[])> chartData = new Dictionary<string, (List<ChartSeries>, string[])>
     {
-        new ChartSeries() { Name = "Khuddam", Data = new double[] { 40, 20, 25, 27, 46, 46, 48, 44, 15 } },
-        new ChartSeries() { Name = "Ansarullah", Data = new double[] { 19, 24, 35, 13, 28, 15, 13, 16, 40 } },
-        new ChartSeries() { Name = "Lajna", Data = new double[] { 8, 6, 11, 13, 4, 16, 10, 16, 20 } },
+        {"Daily", (new List<ChartSeries>{ /* Data for daily stats */ }, new string[]{ /* Labels for daily stats */ })},
+        {"Monthly", (new List<ChartSeries>{
+            new ChartSeries() { Name = "Khuddam", Data = new double[] { 40, 20, 25, 27, 46, 46, 48, 44, 15 } },
+            new ChartSeries() { Name = "Ansarullah", Data = new double[] { 19, 24, 35, 13, 28, 15, 13, 16, 40 } },
+            new ChartSeries() { Name = "Lajna", Data = new double[] { 8, 6, 11, 13, 4, 16, 10, 16, 20 } }
+        }, new string[]{ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep" })},
+        {"Yearly", (new List<ChartSeries>{ /* Data for yearly stats */ }, new string[]{ /* Labels for yearly stats */ })}
     };
-    public string[] XAxisLabels = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep" };
+
+    protected override void OnInitialized()
+    {
+        UpdateChart(selectedPeriod);
+    }
+
+    private void UpdateChart(string period)
+    {
+        selectedPeriod = period;
+        (currentSeries, currentLabels) = chartData[period];
+    }
 }

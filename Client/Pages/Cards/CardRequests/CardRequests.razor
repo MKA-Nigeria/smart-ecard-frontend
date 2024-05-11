@@ -17,20 +17,25 @@
         <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="@(NewRequest)">New Request</MudButton>
     </ToolBarContent>
         <HeaderContent>
-            <MudTh><MudTableSortLabel SortLabel="externalId" T="CardRequestDto">Id</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortLabel="externalId" T="CardRequestDto">Photo</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="externalId" T="CardRequestDto">Unique Id</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortLabel="firstName" T="MemberData">FirstName</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortLabel="lastName" T="MemberData">LastName</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortLabel="middleName" T="MemberData">OtherName</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortLabel="lastName" T="CardRequestDto">Status</MudTableSortLabel></MudTh>
         </HeaderContent>
         <RowTemplate>
+        <MudTd>
+            <div style="position: relative; text-align: center;">
+                <div style="max-width: 100px; max-height: 100px; position: relative;">
+                    <img src="ecard.jpg" alt="User Image" style="max-width: 100%; max-height: 100%; cursor: pointer;" onclick="enlargeImage(this)" />
+                    <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); cursor: pointer; color: #084545; font-weight: bold; text-decoration: underline;" onclick="enlargeImage(this.previousElementSibling)">ENLARGE</div>
+                </div>
+            </div>
+        </MudTd>
         <MudTd DataLabel="Id">
             <MudLink Href="@("/cardrequest/" + @context.Id)" Underline="Underline.None">@context.ExternalId</MudLink>
 
-        </MudTd>
-        <MudTd>
-            <img src="ecard.jpg" alt="User Image" style="max-width: 100px; max-height: 100px;" />
         </MudTd>
             <MudTd DataLabel="Sign">@context.MemberData.FirstName</MudTd>
             <MudTd DataLabel="Name">@context.MemberData.LastName</MudTd>
@@ -63,3 +68,35 @@
             <MudTablePager />
         </PagerContent>
     </MudTable>
+
+
+<script>
+    function enlargeImage(img) {
+        // Create a modal or lightbox element to display the enlarged image
+        var modal = document.createElement('div');
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.width = '100%';
+        modal.style.height = '100%';
+        modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        modal.style.zIndex = '9999';
+        modal.style.display = 'flex';
+        modal.style.alignItems = 'center';
+        modal.style.justifyContent = 'center';
+
+        var enlargedImg = document.createElement('img');
+        enlargedImg.src = img.src;
+        enlargedImg.style.maxWidth = '80%';
+        enlargedImg.style.maxHeight = '80%';
+
+        modal.appendChild(enlargedImg);
+
+        // Close the modal when clicking outside the image
+        modal.onclick = function () {
+            modal.remove();
+        };
+
+        document.body.appendChild(modal);
+    }
+</script>

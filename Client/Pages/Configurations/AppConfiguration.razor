@@ -1,0 +1,33 @@
+﻿@page "/app-configurations"
+@using System.Net.Http.Json
+@using Infrastructure.ApiClient
+@inject HttpClient httpClient
+
+<MudTable ServerData="@(new Func<TableState, Task<TableData<AppConfigurationDto>>>(ServerReload))"
+          Bordered="true" Dense="true" Hover="true" @ref="table">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">App Configurations</MudText>
+        <MudSpacer />
+        <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortLabel="key" T="AppConfigurationDto">Key</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="value" T="AppConfigurationDto">Value</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Key">
+            <MudLink Href="@("/app-configurations/" + @context.Key)" Underline="Underline.None">@context.Key</MudLink>
+        </MudTd>
+        <MudTd DataLabel="Value"> @context.Value </MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>No matching records found</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>

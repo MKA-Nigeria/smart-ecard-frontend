@@ -1,0 +1,51 @@
+﻿@page "/idcards"
+
+<DataGrid Items="@TUserData" PageSize="10" Class="table">
+    <DataGridColumns>
+        <DataGridColumn Field="@nameof(UserData.Name)" Title="Name" />
+        <DataGridColumn Field="@nameof(UserData.Email)" Title="Email" />
+        <DataGridColumn Field="@nameof(UserData.Age)" Title="Age" />
+       @*  <DataGridColumn Field="@nameof(UserData.ImageUrl)" Title="Image" RenderFragment="@(item => BuildImageColumn(item))" /> *@
+    </DataGridColumns>
+</DataGrid>
+
+@code {
+    List<UserData> TUserData { get; set; } = new List<UserData>();
+
+    protected override void OnInitialized()
+    {
+        // Initialize or fetch user data from an API or database
+        TUserData = GetUserData();
+    }
+
+    // Method to fetch user data
+    private List<UserData> GetUserData()
+    {
+        // Dummy data for demonstration
+        return new List<UserData>
+        {
+            new UserData { Name = "John Doe", Email = "john@example.com", Age = 30, ImageUrl = "https://example.com/user1.jpg" },
+            new UserData { Name = "Jane Smith", Email = "jane@example.com", Age = 25, ImageUrl = "https://example.com/user2.jpg" },
+            new UserData { Name = "Alice Johnson", Email = "alice@example.com", Age = 35, ImageUrl = "https://example.com/user3.jpg" },
+            // Add more user data as needed
+        };
+    }
+
+    // Method to render image column
+    private RenderFragment BuildImageColumn(UserData item) => 
+        (builder) =>
+        {
+            builder.OpenElement(0, "img");
+            builder.AddAttribute(1, "src", item.ImageUrl);
+            builder.AddAttribute(2, "alt", "User Image");
+            builder.CloseElement();
+        };
+
+    public class UserData
+    {
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public int Age { get; set; }
+        public string ImageUrl { get; set; }
+    }
+}

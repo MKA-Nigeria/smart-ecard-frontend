@@ -69,5 +69,10 @@ namespace Client.Pages.Cards.CardRequests
             searchString = text;
             table.ReloadServerData();
         }
+
+        private async Task NewRequest()
+        {
+            Navigation.NavigateTo($"/cardrequest/new");
+        }
     }
 }

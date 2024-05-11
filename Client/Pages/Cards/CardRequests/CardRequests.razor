@@ -3,17 +3,22 @@
 @using Infrastructure.ApiClient
 @inject HttpClient httpClient
 
-
+<MudText Typo="Typo.h6">Card Requests Dashboard</MudText>
     <MudTable ServerData="@(new Func<TableState, Task<TableData<CardRequestDto>>>(ServerReload))"
               Dense="true" Hover="true" @ref="table">
-        <ToolBarContent>
-            <MudText Typo="Typo.h6">CardRequests</MudText>
-            <MudSpacer />
-            <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
-                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-        </ToolBarContent>
+    <ToolBarContent>
+        <div style="border: none solid #084545; border-radius: 4px; width: 400px;">
+            <MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Search" Style="color: #084545; border: none; outline: none;" IconSize="Size.Medium" Class="mt-0 p-1"></MudTextField>
+        </div>
+        <MudSpacer />
+        <MudText Typo="Typo.subtitle1" Class="text-center font-weight-bold text-black">Total Count: 115</MudText>
+        <MudSpacer />
+        <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="@(NewRequest)">New Request</MudButton>
+    </ToolBarContent>
         <HeaderContent>
             <MudTh><MudTableSortLabel SortLabel="externalId" T="CardRequestDto">Id</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortLabel="externalId" T="CardRequestDto">Photo</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortLabel="firstName" T="MemberData">FirstName</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortLabel="lastName" T="MemberData">LastName</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortLabel="middleName" T="MemberData">OtherName</MudTableSortLabel></MudTh>
@@ -24,10 +29,13 @@
             <MudLink Href="@("/cardrequest/" + @context.Id)" Underline="Underline.None">@context.ExternalId</MudLink>
 
         </MudTd>
+        <MudTd>
+            <img src="ecard.jpg" alt="User Image" style="max-width: 100px; max-height: 100px;" />
+        </MudTd>
             <MudTd DataLabel="Sign">@context.MemberData.FirstName</MudTd>
             <MudTd DataLabel="Name">@context.MemberData.LastName</MudTd>
             <MudTd DataLabel="Name">@context.MemberData.MiddleName</MudTd>
-        @* <MudTd DataLabel="Name">@context.MemberData.DateOfBirth.ToString("yyyy-MM-dd")</MudTd> *@
+        
         @if(@context.Status == CardRequestStatus.Pending)
         {
             <MudTd DataLabel="Name"><MudChip Color="Color.Warning">@context.Status</MudChip></MudTd>

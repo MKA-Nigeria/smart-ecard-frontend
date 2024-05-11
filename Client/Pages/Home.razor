@@ -3,27 +3,21 @@
 <PageTitle>Dashboard - ID Card Management</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="py-4">
-    <MudText>Dashboard - ID Card Management</MudText>
+    <MudText Typo="Typo.h4">Dashboard ID Card Record</MudText>
     <MudGrid Justify="Justify.Center">
-        <!-- Active and Inactive Cards -->
-        <MudItem xs="12" md="4">
+        <!-- Active and Issued Cards -->
+        <MudItem xs="12" md="3">
             <StatisticsCard Title="Total Active Cards" Value="@data.TotalActiveCards" Icon="@Icons.Filled.Badge" />
         </MudItem>
-        <MudItem xs="12" md="4">
-            <StatisticsCard Title="Total Inactive Cards" Value="@data.TotalInactiveCards" Icon="@Icons.Filled.Cancel" />
-        </MudItem>
-        <!-- Renewals and New Cards Issued -->
-        <MudItem xs="12" md="4">
-            <StatisticsCard Title="Card Renewals" Value="@data.CardRenewalsThisMonth" Icon="@Icons.Filled.Autorenew" />
-        </MudItem>
-        <MudItem xs="12" md="4">
+        <MudItem xs="12" md="3">
             <StatisticsCard Title="New Cards Issued" Value="@data.NewCardsIssued" Icon="@Icons.Filled.CreditCard" />
         </MudItem>
+      
         <!-- Requests and Approvals -->
-        <MudItem xs="12" md="4">
+        <MudItem xs="12" md="3">
             <StatisticsCard Title="Pending Approvals" Value="@data.PendingApprovals" Icon="@Icons.Filled.HourglassEmpty" />
         </MudItem>
-        <MudItem xs="12" md="4">
+        <MudItem xs="12" md="3">
             <StatisticsCard Title="Total Requests" Value="@data.TotalRequests" Icon="@Icons.Filled.ListAlt" />
         </MudItem>
     </MudGrid>
@@ -33,12 +27,10 @@
             <MudCard>
                 <MudCardContent>
                     <MudText Typo="Typo.h5" Class="my-2">Card Record Breakdown</MudText>
-                    <MudSelect T="string" Label="Select Time Period" SelectedValue="@selectedPeriod" SelectedValueChanged="@UpdateChart">
+                  @*   <MudSelect T="string" Label="Select Time Period" SelectedValue="@selectedPeriod" SelectedValueChanged="@UpdateChart">
                         <MudSelectItem Value="@selectedPeriod" />
-                       @*  <MudSelectItem Value="Monthly" />
-                        <MudSelectItem Value="Yearly" /> *@
-                    </MudSelect>
-                    <MudChart ChartType="ChartType.StackedBar" ChartSeries="@currentSeries" XAxisLabels="@currentLabels" Height="350px" />
+                    </MudSelect> *@
+                    <MudChart ChartType="ChartType.Bar" ChartSeries="@currentSeries" XAxisLabels="@currentLabels" Height="350px" />
                 </MudCardContent>
             </MudCard>
         </MudItem>

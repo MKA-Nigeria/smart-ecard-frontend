@@ -1,21 +1,18 @@
 ﻿@using MudBlazor
-<MudNavMenu Class="text-white-50">
-    <MudText Typo="Typo.subtitle2" Color="Color.Primary" Class="ml-4 my-3">Smart E-Card</MudText>
+<MudNavMenu Class="" Color="Color.Success">
+    <MudText Typo="Typo.subtitle2" Color="Color.Success" Class="ml-4 my-3">Smart E-Card</MudText>
     <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Filled.Dashboard">Dashboard</MudNavLink>
-        <MudNavGroup Title="Cards" Expanded Icon="@Icons.Material.Filled.CardMembership">
-        <MudNavLink Href="/cardrequest/new" Icon="@Icons.Material.Filled.AddCard" Class="fsh-nav-child">
-                 Make New Request
-            </MudNavLink>
-        <MudNavLink Href="/cardrequests" Icon="@Icons.Material.Filled.RequestQuote" Class="fsh-nav-child">
+        <MudNavGroup Title="ID Cards" Expanded Icon="@Icons.Material.Filled.CardMembership">
+        <MudNavLink Href="/cardrequests" Icon="@Icons.Material.Filled.AddCard" Class="fsh-nav-child">
                 Requests
             </MudNavLink>
-        <MudNavLink Href="/cards" Icon="@Icons.Material.Filled.AssistantDirection" Class="fsh-nav-child">
+        <MudNavLink Href="/cards"  Icon="@Icons.Material.Filled.PhotoAlbum" Class="fsh-nav-child">
                 Cards
             </MudNavLink>
         </MudNavGroup>
     @if (CanViewAdministrationGroup)
     {
-        <MudText Typo="Typo.subtitle2" Color="Color.Primary" Class="ml-4 my-3">Administration</MudText>
+        <MudText Typo="Typo.subtitle2" Color="Color.Success" Class="ml-4 my-3">Administration</MudText>
         @if (_canViewUsers)
         {
             <MudNavLink Match="NavLinkMatch.Prefix" Href="/users" Icon="@Icons.Material.Filled.PeopleAlt">Users</MudNavLink>

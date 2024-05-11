@@ -12,7 +12,7 @@
                           AdornmentIcon="@Icons.Material.Filled.Search" Style="color: #084545; border: none; outline: none;" IconSize="Size.Medium" Class="mt-0 p-1"></MudTextField>
         </div>
         <MudSpacer />
-        <MudText Typo="Typo.subtitle1" Class="text-center font-weight-bold text-black" style="color: #084545; font-weight: bold">Total Count: 115</MudText>
+        <MudText Typo="Typo.subtitle1" Class="text-center font-weight-bold text-black" style="color: #084545; font-weight: bold">Total Count: @totalItems</MudText>
         <MudSpacer />
         <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="@(NewRequest)">New Request</MudButton>
     </ToolBarContent>
@@ -21,6 +21,7 @@
         <MudTh style="color: #084545; font-weight: bold"><MudTableSortLabel SortLabel="externalId" T="CardRequestDto">Unique Id</MudTableSortLabel></MudTh>
         <MudTh style="color: #084545; font-weight: bold">Information</MudTh>
         <MudTh style="color: #084545; font-weight: bold"><MudTableSortLabel SortLabel="status" T="CardRequestDto">Status</MudTableSortLabel></MudTh>
+        <MudTh style="color: #084545; font-weight: bold"><MudTableSortLabel SortLabel="status" T="CardRequestDto">Request Date</MudTableSortLabel></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd>
@@ -46,7 +47,7 @@
                 
             </div>
         </MudTd>
-        
+       
         @if(@context.Status == CardRequestStatus.Pending)
         {
             <MudTd DataLabel="Name"><MudChip Color="Color.Warning">@context.Status</MudChip></MudTd>
@@ -63,6 +64,7 @@
         {
             <MudTd DataLabel="Name"><MudChip Color="Color.Error">@context.Status</MudChip></MudTd>
         }
+        <MudTd>@DateTime.UtcNow.ToLocalTime()</MudTd>
         </RowTemplate>
 
         <NoRecordsContent>

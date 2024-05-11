@@ -1,0 +1,39 @@
+﻿@page "/app-configurations/{key}"
+@inject NavigationManager uriHelper;
+
+
+@if (_loading)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+    <EditForm Model="AppConfiguration" OnValidSubmit="Update">
+        <MudCard Elevation="4" Class="p-3">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6"> Edit App Configuration</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudGrid>
+                    <DataAnnotationsValidator />
+                    <MudItem xs="12" md="6">
+                        <div class="d-flex mb-2">
+                            <MudTextField @bind-Value="AppConfiguration.Key" Label="Key" Variant="Variant.Filled" Color="Color.Primary" class="mr-2" ReadOnly="true" />
+                        </div>
+                    </MudItem>
+
+                    <MudItem xs="12" md="6">
+                        <div class="d-flex mb-2">
+                            <MudTextField @bind-Value="AppConfiguration.Value" Label="Value" Variant="Variant.Filled" Color="Color.Primary"   Multiline="true" class="mr-2"/>
+                        </div>
+                    </MudItem>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" StartIcon="@Icons.Filled.Save"
+                               ButtonType="ButtonType.Submit" Disabled="@BusySubmitting">Update</MudButton>
+                </MudGrid>
+            </MudCardContent>
+
+        </MudCard>
+    </EditForm>
+}

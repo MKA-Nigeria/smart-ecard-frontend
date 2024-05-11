@@ -13,6 +13,7 @@ namespace Client.Pages.Cards.CardRequests
         private MudTable<CardRequestDto> table;
         private int totalItems;
         private string searchString = null;
+        bool BusySubmitting;
 
         protected override async Task OnInitializedAsync()
         {
@@ -74,5 +75,34 @@ namespace Client.Pages.Cards.CardRequests
         {
             Navigation.NavigateTo($"/cardrequest/new");
         }
+
+        private async Task Approve(Guid CardRequestId)
+        {
+
+            BusySubmitting = true;
+            if (await ApiHelper.ExecuteCallGuardedAsync(
+                () => CardRequestsClient.ApproveAsync(CardRequestId),
+            Snackbar) is Guid id)
+            {
+                Navigation.NavigateTo($"/cardrequests");
+            }
+
+            BusySubmitting = false;
+        }
+
+        private async Task Reject(Guid CardRequestId)
+        {
+
+            BusySubmitting = true;
+            if (await ApiHelper.ExecuteCallGuardedAsync(
+                () => CardRequestsClient.RejectAsync(CardRequestId),
+            Snackbar) is Guid id)
+            {
+                Navigation.NavigateTo($"/cardrequests");
+            }
+
+            BusySubmitting = false;
+        }
+
     }
 }

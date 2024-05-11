@@ -20,8 +20,9 @@
         <MudTh style="color: #084545; font-weight: bold"><MudTableSortLabel SortLabel="externalId" T="CardRequestDto">Photo</MudTableSortLabel></MudTh>
         <MudTh style="color: #084545; font-weight: bold"><MudTableSortLabel SortLabel="externalId" T="CardRequestDto">Unique Id</MudTableSortLabel></MudTh>
         <MudTh style="color: #084545; font-weight: bold">Information</MudTh>
-        <MudTh style="color: #084545; font-weight: bold"><MudTableSortLabel SortLabel="status" T="CardRequestDto">Status</MudTableSortLabel></MudTh>
         <MudTh style="color: #084545; font-weight: bold"><MudTableSortLabel SortLabel="status" T="CardRequestDto">Request Date</MudTableSortLabel></MudTh>
+        <MudTh style="color: #084545; font-weight: bold"><MudTableSortLabel SortLabel="status" T="CardRequestDto">Status</MudTableSortLabel></MudTh>
+        
     </HeaderContent>
     <RowTemplate>
         <MudTd>
@@ -47,10 +48,23 @@
                 
             </div>
         </MudTd>
-       
+        <MudTd>@DateTime.UtcNow.ToLocalTime()</MudTd>
         @if(@context.Status == CardRequestStatus.Pending)
         {
             <MudTd DataLabel="Name"><MudChip Color="Color.Warning">@context.Status</MudChip></MudTd>
+            <MudTd>
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between">
+                    <MudButton Variant="Variant.Filled" Class="light-button-success mr-2" StartIcon="@Icons.Filled.Approval" OnClick="@(e => Approve(context.Id))" Disabled="BusySubmitting">
+                        <MudIcon Icon="Icons.Filled.CheckCircleOutline" Size="Size.Small" />
+                        <span class="text-success">Approve</span>
+                    </MudButton>
+                    <MudButton Variant="Variant.Filled" Class="light-button-error ml-2" StartIcon="@Icons.Filled.Cancel" OnClick="@(e => Reject(context.Id))"  Disabled="BusySubmitting">
+                        <MudIcon Icon="Icons.Filled.Cancel" Size="Size.Small" />
+                        <span class="text-error">Reject</span>
+                    </MudButton>
+                </div>
+            </MudTd>
         }
         @if(@context.Status == CardRequestStatus.Approved)
         {
@@ -64,7 +78,6 @@
         {
             <MudTd DataLabel="Name"><MudChip Color="Color.Error">@context.Status</MudChip></MudTd>
         }
-        <MudTd>@DateTime.UtcNow.ToLocalTime()</MudTd>
         </RowTemplate>
 
         <NoRecordsContent>
@@ -109,3 +122,33 @@
         document.body.appendChild(modal);
     }
 </script>
+<style>
+    .text-success {
+        color: #4caf50; /* Green for approve */
+    }
+
+    .text-error {
+        color: #f44336; /* Red for reject */
+    }
+
+    .text-warning {
+        color: #ff9800; /* Orange for cancel */
+    }
+
+    .light-button-success {
+        background-color: #e8f5e9; /* Light green */
+    }
+
+    .light-button-error {
+        background-color: #ffebee; /* Light red */
+    }
+
+    .light-button-warning {
+        background-color: #fff3e0; /* Light orange */
+    }
+
+    .text-success, .text-error, .text-warning {
+        font-weight: bold;
+        text-transform: capitalize;
+    }
+</style>

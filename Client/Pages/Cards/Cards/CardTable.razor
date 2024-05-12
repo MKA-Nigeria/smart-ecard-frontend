@@ -13,30 +13,65 @@
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
+        <MudTh style="color: #084545; font-weight: bold"><MudTableSortLabel SortLabel="externalId" T="CardDto">Photo</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="cardNumber" T="CardDto">Card Number</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="memberNumber" T="CardDto">Member Number</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="fullName" T="CardDto">Full name</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="cardStatus" T="CardDto">Card Status</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="isCollected" T="CardDto">Is Collected</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="printStatus" T="CardDto">Print status</MudTableSortLabel></MudTh>
+       @*  <MudTh><MudTableSortLabel SortLabel="isCollected" T="CardDto">Is Collected</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="printStatus" T="CardDto">Print status</MudTableSortLabel></MudTh> *@
     </HeaderContent>
     <RowTemplate>
-
+        <MudTd>
+            <div style="position: relative; text-align: center;">
+                <div style="max-width: 100px; max-height: 100px; position: relative;">
+                    <img src="ecard.jpg" alt="User Image" style="max-width: 100%; max-height: 100%; cursor: pointer;" onclick="enlargeImage(this)" />
+                    <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); cursor: pointer; color: #084545; font-weight: bold; font-size:0.5em; text-decoration: underline;" onclick="enlargeImage(this.previousElementSibling)">ENLARGE</div>
+                </div>
+            </div>
+        </MudTd>
         <MudTd DataLabel="CardNumber">
             <MudLink Href="@("/card/" + @context.CardNumber)" Underline="Underline.None">@context.CardNumber</MudLink>
             </MudTd>
         <MudTd DataLabel="MemberNumber">@context.ExternalId</MudTd>
         <MudTd DataLabel="FullName">@context.FullName</MudTd>
+
         @if (@context.CardStatus == CardStatus.Active)
         {
             <MudTd DataLabel="CardStatus"><MudChip Color="Color.Secondary">@context.CardStatus</MudChip></MudTd>
+            <MudTd>
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between">
+                    <MudButton Variant="Variant.Filled" Class="light-button-error mr-2" StartIcon="@Icons.Filled.Cancel" OnClick="@(e => DeactivateCard(context.CardNumber))" Disabled="BusySubmitting">
+                        <MudIcon Icon="Icons.Filled.Cancel" Size="Size.Small" />
+                        <span class="text-error">Deactivate</span>
+                    </MudButton>
+                    <MudButton Variant="Variant.Filled" Class="light-button-warning ml-2" StartIcon="@Icons.Filled.Send" OnClick="@(e => Send(context.CardNumber))" Disabled="BusySubmitting">
+                        <MudIcon Icon="Icons.Filled.Send" Size="Size.Small" />
+                        <span class="text-warning">Send</span>
+                    </MudButton>
+                    <MudButton Variant="Variant.Filled" Class="light-button-info ml-2" StartIcon="@Icons.Filled.Print" OnClick="@(e => Print(context.CardNumber))" Disabled="BusySubmitting">
+                        <MudIcon Icon="Icons.Filled.Print" Size="Size.Small" />
+                        <span class="text-info">Print</span>
+                    </MudButton>
+                </div>
+            </MudTd>
         }
         else if (@context.CardStatus == CardStatus.InActive)
         {
             <MudTd DataLabel="CardStatus"><MudChip Color="Color.Error">@context.CardStatus</MudChip></MudTd>
+            <MudTd>
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between">
+                    <MudButton Variant="Variant.Filled" Class="light-button-success mr-2" StartIcon="@Icons.Filled.Cancel" OnClick="@(e => ActivateCard(context.CardNumber))" Disabled="BusySubmitting">
+                        <MudIcon Icon="Icons.Filled." Size="Size.Small" />
+                        <span class="text-success">Activate</span>
+                    </MudButton>
+                </div>
+            </MudTd>
         }
 
-        <MudTd DataLabel="ISCollected">@context.IsCollected</MudTd>
+       @*  <MudTd DataLabel="ISCollected">@context.IsCollected</MudTd>
         @if (@context.PrintStatus == PrintStatus.ReadyForPrint)
         {
             <MudTd DataLabel="PrintStatus"><MudChip Color="Color.Warning">@context.PrintStatus</MudChip></MudTd>
@@ -44,7 +79,7 @@
         else if (@context.PrintStatus == PrintStatus.Printed)
         {
             <MudTd DataLabel="PrintStatus"><MudChip Color="Color.Success">@context.PrintStatus</MudChip></MudTd>
-        }
+        } *@
     </RowTemplate>
     <NoRecordsContent>
         <MudText>No matching records found</MudText>
@@ -56,3 +91,72 @@
         <MudTablePager />
     </PagerContent>
 </MudTable>
+
+<script>
+    function enlargeImage(img) {
+        // Create a modal or lightbox element to display the enlarged image
+        var modal = document.createElement('div');
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.width = '100%';
+        modal.style.height = '100%';
+        modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        modal.style.zIndex = '9999';
+        modal.style.display = 'flex';
+        modal.style.alignItems = 'center';
+        modal.style.justifyContent = 'center';
+
+        var enlargedImg = document.createElement('img');
+        enlargedImg.src = img.src;
+        enlargedImg.style.maxWidth = '80%';
+        enlargedImg.style.maxHeight = '80%';
+
+        modal.appendChild(enlargedImg);
+
+        // Close the modal when clicking outside the image
+        modal.onclick = function () {
+            modal.remove();
+        };
+
+        document.body.appendChild(modal);
+    }
+</script>
+<style>
+    .text-success {
+        color: #4caf50; /* Green for approve, activate */
+    }
+
+    .text-error {
+        color: #f44336; /* Red for reject, deactivate */
+    }
+
+    .text-warning {
+        color: #ff9800; /* Orange for cancel, send */
+    }
+
+    .text-info {
+        color: #2196f3; /* Blue for print */
+    }
+
+    .light-button-success {
+        background-color: #e8f5e9; /* Light green */
+    }
+
+    .light-button-error {
+        background-color: #ffebee; /* Light red */
+    }
+
+    .light-button-warning {
+        background-color: #fff3e0; /* Light orange */
+    }
+
+    .light-button-info {
+        background-color: #e3f2fd; /* Light blue */
+    }
+
+    .text-success, .text-error, .text-warning, .text-info {
+        font-weight: bold;
+        text-transform: capitalize;
+    }
+</style>

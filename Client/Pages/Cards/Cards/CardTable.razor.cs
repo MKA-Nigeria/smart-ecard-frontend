@@ -1,4 +1,5 @@
-﻿using Client.Shared;
+﻿using Client.Pages.Cards.CardRequests;
+using Client.Shared;
 using Infrastructure.ApiClient;
 using Microsoft.AspNetCore.Components;
 
@@ -71,6 +72,50 @@ namespace Client.Pages.Cards.Cards
         {
             searchString = text;
             table.ReloadServerData();
+        }
+
+        public async Task ActivateCard(string CardNumber)
+        {
+
+            BusySubmitting = true;
+
+            if (await ApiHelper.ExecuteCallGuardedAsync(
+                () => CardsClient.ActivateAsync(CardNumber),
+            Snackbar) is Guid id)
+            {
+                Snackbar.Add("Card activated successfully", Severity.Success);
+                table.ReloadServerData();
+            }
+
+            BusySubmitting = false;
+        }
+
+        public async Task DeactivateCard(string CardNumber)
+        {
+
+            BusySubmitting = true;
+
+            if (await ApiHelper.ExecuteCallGuardedAsync(
+                () => CardsClient.DeactivateAsync(CardNumber),
+            Snackbar) is Guid id)
+            {
+                Snackbar.Add("Card deactivated successfully", Severity.Success);
+                table.ReloadServerData();
+            }
+
+            BusySubmitting = false;
+        }
+
+        private async Task Print(string CardNumber)
+        {
+
+            Navigation.NavigateTo($"/cardrequests");
+        }
+
+        private async Task Send(string CardNumber)
+        {
+
+            Navigation.NavigateTo($"/cardrequests");
         }
     }
 }

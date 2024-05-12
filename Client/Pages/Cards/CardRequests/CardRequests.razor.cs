@@ -84,7 +84,7 @@ namespace Client.Pages.Cards.CardRequests
                 () => CardRequestsClient.ApproveAsync(CardRequestId),
             Snackbar) is Guid id)
             {
-                Navigation.NavigateTo($"/cardrequests");
+                table.ReloadServerData();
             }
 
             BusySubmitting = false;
@@ -98,7 +98,7 @@ namespace Client.Pages.Cards.CardRequests
                 () => CardRequestsClient.RejectAsync(CardRequestId),
             Snackbar) is Guid id)
             {
-                Navigation.NavigateTo($"/cardrequests");
+                table.ReloadServerData();
             }
 
             BusySubmitting = false;

@@ -16,22 +16,26 @@ else
                 </CardHeaderContent>
             </MudCardHeader>
             <MudCardContent>
-                <MudGrid>
-                    <DataAnnotationsValidator />
-                    <MudItem xs="12" md="6">
+                <Grid>
+                    <GridItem xs="12" md="4">
                         <div class="d-flex mb-2">
                             <MudTextField @bind-Value="AppConfiguration.Key" Label="Key" Variant="Variant.Filled" Color="Color.Primary" class="mr-2" ReadOnly="true" />
                         </div>
-                    </MudItem>
+                    </GridItem>
 
-                    <MudItem xs="12" md="6">
+                    <GridItem xs="12" md="8">
                         <div class="d-flex mb-2">
-                            <MudTextField @bind-Value="AppConfiguration.Value" Label="Value" Variant="Variant.Filled" Color="Color.Primary"   Multiline="true" class="mr-2"/>
+                            <MudTextField @bind-Value="AppConfiguration.Value" Label="Value"
+                                          Lines="@CalculateLines(AppConfiguration.Value)" Variant="Variant.Filled"
+                                          Color="Color.Primary" Multiline="true" class="mr-2" />
                         </div>
-                    </MudItem>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" StartIcon="@Icons.Filled.Save"
-                               ButtonType="ButtonType.Submit" Disabled="@BusySubmitting">Update</MudButton>
-                </MudGrid>
+                    </GridItem>
+                    <GridItem class="ml-auto">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.Save"
+                                   ButtonType="ButtonType.Submit" Disabled="@BusySubmitting">Update</MudButton>
+                    </GridItem>
+                </Grid>
+
             </MudCardContent>
 
         </MudCard>

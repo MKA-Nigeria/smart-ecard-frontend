@@ -38,5 +38,16 @@ namespace Client.Pages.Configurations
 
             BusySubmitting = false;
         }
+
+        int CalculateLines(string text)
+        {
+            // Calculate the number of lines based on the length of the text
+            int textLength = text.Length;
+            int defaultLineCount = 1; 
+            int averageCharsPerLine = 30; 
+            int calculatedLines = textLength / averageCharsPerLine + 1; 
+            return Math.Max(defaultLineCount, calculatedLines); 
+        }
+
     }
 }

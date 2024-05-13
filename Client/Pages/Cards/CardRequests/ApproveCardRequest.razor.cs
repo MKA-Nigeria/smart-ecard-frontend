@@ -1,6 +1,7 @@
 ﻿using Client.Shared;
 using Infrastructure.ApiClient;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace Client.Pages.Cards.CardRequests
 {
@@ -13,6 +14,11 @@ namespace Client.Pages.Cards.CardRequests
         CardRequestDto CardRequest { get; set; }
         bool BusySubmitting;
         bool _loaded;
+        //private bool _loaded;
+        //private bool _uploaded;
+        private bool _uploaded;
+        private bool dataLoaded;
+        private string? _imageUrl;
         protected override async Task OnInitializedAsync()
         {
             if(await ApiHelper.ExecuteCallGuardedAsync(() => CardRequestsClient.GetAsync(CardRequestId), Snackbar) is CardRequestDto cardRequestDto)
@@ -61,6 +67,21 @@ namespace Client.Pages.Cards.CardRequests
             }
 
             BusySubmitting = false;
+        }
+
+        private async Task UploadProfileImage(InputFileChangeEventArgs e)
+        {
+
+            _uploaded = true;
+            StateHasChanged();
+            var fileRequest = await UploadFiles(e);
+
+            var image = "";// await CardRequestsClient.UploadImageAsync(_chandaNo, fileRequest);
+            using MemoryStream ms = new();
+            await image.Stream.CopyToAsync(ms);
+            _imageUrl = $"data:image/png;base64,{Convert.ToBase64String(ms.ToArray())}";
+            _uploaded = false;
+            StateHasChanged();
         }
     }
 }

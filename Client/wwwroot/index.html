@@ -17,6 +17,9 @@
     <link href="css/fsh.css" rel="stylesheet" />
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href="https://printjs-4de6.kxcdn.com/print.min.css" rel="stylesheet" />
+    
+    
     <style>
         .loading-container {
             text-align: center;
@@ -61,7 +64,7 @@
     <div id="app">
         <div class="loading-container" style="position:absolute; top:30vh; width:100%; text-align:center">
             <img src="ecard.jpg" alt="Smart e-Card Portal Logo" style="width: 150px; height: auto;">
-           <!--  <h1>Smart E-Identity Card Portal</h1> -->
+            <!--  <h1>Smart E-Identity Card Portal</h1> -->
             <div style="display:flex; gap:10px; justify-content:center; align-items:center">
                 <div class="spinner-border" role="status"></div>
                 <p class="loading-text">Smart-ID – The smart way to identify yourself...</p>
@@ -74,6 +77,18 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
+
+    <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+
+    <script>
+        function printCard() {
+            printJS({
+                printable: "container",
+                type: "html",
+               // targetStyles: ['*']
+            })
+        }
+    </script>
     <script src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
     <script src="_framework/blazor.webassembly.js"></script>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>

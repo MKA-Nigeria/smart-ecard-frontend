@@ -70,6 +70,47 @@ else
                 </MudCardActions>
             </MudCard>
         </MudItem>
+        <MudItem xs="6" sm="4" md="4">
+            <MudCard Elevation="25">
+                <MudCarousel Class="mud-width-full" Style="height:33pc;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
+                    <MudCarouselItem Transition="transition" style ="display: flex; justify-content: center; padding: 20px;">
+                        <div class="d-flex" style="height:100%">
+                            <div class="padding">
+                                <div class="font id-size">
+                                    <div class="top">
+
+                                        <div class=''>
+                                            <img class='id-logo' src="amjnLogo.png" alt="logo" width="2rem" />
+                                            <p class='ahm'><strong>AHMADIYYA</strong> <br /> <strong>MUSLIM JAMA'AT</strong> <br /> <span><strong>OF NIGERIA</strong></span></p>
+                                        </div>
+                                        <img class='id-img' src="ecard.jpg" alt="card" />
+                                    </div>
+                                    <div class="bottom">
+                                        <p style="font-size:19px; font-family:math; font-weight:bold">@Card.FullName</p>
+                                        <p id='cardNumber' hidden>@Card.CardNumber</p>
+                                        <p class="no"> Oluwo Jama'at, Monatan</p>
+                                        <div style="margin-top:12px">
+                                            <p style="font-size:14px; font-family:math; font-weight:bold">Membership No: @Card.ExternalId</p>
+                                            
+                                            <p style="font-size:14px; font-family:math; font-weight:bold">Wasiyat No: 2222</p>
+
+                                        </div>
+                                        <div class='end'>
+                                           <img src="qrcode.png" alt="Alternate Text" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </MudCarouselItem>
+                    <MudCarouselItem Transition="transition" Color="@Color.Secondary">
+                        <div class="d-flex" style="height:100%">
+                            <MudIcon Class="mx-auto my-auto" Icon="@Icons.Custom.Brands.MudBlazor" Size="@Size.Large" />
+                        </div>
+                    </MudCarouselItem>
+                </MudCarousel>
+            </MudCard>
+        </MudItem>
     </MudGrid>
 }
 

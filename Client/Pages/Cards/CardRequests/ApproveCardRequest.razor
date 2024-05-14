@@ -50,58 +50,6 @@ else
     </MudCardActions>
     </MudCard>
     </MudItem> *@
-
-
-        <MudItem xs="12" sm="4" md="4">
-            <MudCard Elevation="25">
-                <MudCardContent Style="padding:0px!important">
-                    <div class="d-flex justify-center mb-4">
-                        @if (!string.IsNullOrEmpty(_imageUrl))
-                        {
-                            <MudAvatar Square="true" Image="@_imageUrl" Style=" width:100%;height:auto;"> </MudAvatar>
-                        }
-                        else if (dataLoaded)
-                        {
-                            <MudProgressCircular Color="Color.Success" Size="Size.Medium" Indeterminate="true" />
-                            <span>Loading Image ...</span>
-                        }
-                        else
-                        {
-                            <MudAvatar Square="true" Color="Color.Primary" Style="width:100%;height:300px;">
-                                <img src="ecard.jpg" alt="User Image" style="max-width: 100%; max-height: 100%; cursor: pointer;" onclick="enlargeImage(this)" />
-                            </MudAvatar>
-                        }
-                    </div>
-                    <MudText Typo="Typo.h6" Align="Align.Center">@_firstName @_lastName</MudText>
-                    <MudText Align="Align.Center">@_chandaNo</MudText>
-                </MudCardContent>
-                <MudCardActions Class="d-flex justify-center">
-                    <InputFile id="fileInput" OnChange="UploadProfileImage" hidden accept=".jpg,.jpeg,.png" />
-                    <div style="padding-bottom:20px">
-                        @if (_uploaded)
-                        {
-
-                            <MudProgressCircular Color="Color.Success" Size="Size.Medium" Indeterminate="true" />
-                        }
-                        else
-                        {
-                            <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small"
-                                       StartIcon="@Icons.Filled.CloudUpload" for="fileInput">
-                                Upload & Save
-                            </MudButton>
-                        }
-
-                    </div>
-
-                </MudCardActions>
-            </MudCard>
-        </MudItem>
-
-
-
-
-
-
         <MudItem xs="12" sm="8" md="8">
             <MudCard Elevation="25">
                 <MudCardHeader>

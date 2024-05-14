@@ -269,7 +269,7 @@
 .bottom p {
     color: black;
     position: relative;
-    top: 130px;
+    top: 154px;
     text-align: center;
     text-transform: capitalize;
     font-weight: bold;
@@ -482,7 +482,7 @@
 
 .qr-des {
     width: 80px !important;
-    height: 72px !important;
+    height: 62px !important;
     right: 6.0pc;
     top: -6px;
     position: absolute;

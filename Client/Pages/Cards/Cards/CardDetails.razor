@@ -1,4 +1,7 @@
 ﻿@page "/card/{CardNumber}"
+
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
 @using Microsoft.AspNetCore.Components.Authorization
 @if (!_loaded)
 {
@@ -70,50 +73,125 @@ else
                 </MudCardActions>
             </MudCard>
         </MudItem>
-        <MudItem xs="6" sm="4" md="4">
+        <MudItem xs="12" sm="8" md="8">
             <MudCard Elevation="25">
-                <MudCarousel Class="mud-width-full" Style="height:33pc;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
-                    <MudCarouselItem Transition="transition" style ="display: flex; justify-content: center; padding: 20px;">
-                        <div class="d-flex" style="height:100%">
-                            <div class="padding">
-                                <div class="font id-size">
-                                    <div class="top">
+                <div class="container" id="container">
+                    <div class="padding">
+                        <div class="font id-size">
+                            <div class="top">
 
-                                        <div class=''>
-                                            <img class='id-logo' src="amjnLogo.png" alt="logo" width="2rem" />
-                                            <p class='ahm'><strong>AHMADIYYA</strong> <br /> <strong>MUSLIM JAMA'AT</strong> <br /> <span><strong>OF NIGERIA</strong></span></p>
-                                        </div>
-                                        <img class='id-img' src="ecard.jpg" alt="card" />
-                                    </div>
-                                    <div class="bottom">
-                                        <p style="font-size:19px; font-family:math; font-weight:bold">@Card.FullName</p>
-                                        <p id='cardNumber' hidden>@Card.CardNumber</p>
-                                        <p class="no"> Oluwo Jama'at, Monatan</p>
-                                        <div style="margin-top:12px">
-                                            <p style="font-size:14px; font-family:math; font-weight:bold">Membership No: @Card.ExternalId</p>
-                                            
-                                            <p style="font-size:14px; font-family:math; font-weight:bold">Wasiyat No: 2222</p>
+                                <div class=''>
+                                    <img class='id-logo' src='amjn-img/amjnLogo.png' alt="logo" width="2rem" />
+                                    <p class='ahm'><strong>AHMADIYYA</strong> <br /> <strong>MUSLIM JAMA'AT</strong> <br /> <span><strong>OF NIGERIA</strong></span></p>
+                                    <p class='ahm'><strong>AHMADIYYA</strong> <br /> <strong>MUSLIM JAMA'AT</strong> <br /> <span><strong>OF NIGERIA</strong></span></p>
+                                </div>
+                                <img class='id-img' src="ecard.jpg" alt="card" />
+                            </div>
+                            <div class="bottom">
+                                <p style="font-size:19px; font-family:math; font-weight:bold">@Card.FullName</p>
+                                <p class="no"> @Card.CustomData["JamaatName"] Jama'at, @Card.CustomData["circuitName"]</p>
+                                <div style="marginTop:12px">
+                                    <p style="fontSize:14px; font-family:math; font-weight:bold">Membership No: @Card.ExternalId</p>
+                                    @if(Card.CustomData["wasiyatNo"] is not null)
+                                    {
+                                        <p style="fontSize:14px font-family:math; font-weight:bold">Wasiyat No:  </p>
+                                    }
+                                    
+                                    
 
-                                        </div>
-                                        <div class='end'>
-                                           <img src="qrcode.png" alt="Alternate Text" />
-                                        </div>
-                                    </div>
+                                </div>
+                                <div class='end' style="background-color: green;">
+                                    <img src="qrcode.png" class='qr-des' />
                                 </div>
                             </div>
                         </div>
-                    </MudCarouselItem>
-                    <MudCarouselItem Transition="transition" Color="@Color.Secondary">
-                        <div class="d-flex" style="height:100%">
-                            <MudIcon Class="mx-auto my-auto" Icon="@Icons.Custom.Brands.MudBlazor" Size="@Size.Large" />
+                    </div>
+                    <div>
+                        <div style="position: relative" class="font id-size">
+                            <div class="top">
+
+                                <div class=''>
+                                    <p class='back-head-info'>The holder whose name and photograph </p>
+                                    <p class='back-head-info-2'>appears overleaf is a member of</p>
+
+                                </div>
+                                @if (Card.CustomData["auxillaryBodyName"] == "Lajna")
+                                {
+                                    <img class='id-back-logo' src="amjn-img/liman.png" alt="logo" width="2rem" />
+                                }
+
+                                @if (Card.CustomData["auxillaryBodyName"] == "Khuddam")
+                                {
+                                    <img class='id-back-logo' src="amjn-img/mkan.png" alt="logo" width="2rem" />
+                                }
+                                @if (Card.CustomData["auxillaryBodyName"] == "Ansarullah")
+                                {
+                                    <img class='id-back-logo' src="amjn-img/maan.png" alt="logo" width="2rem" />
+                                }
+
+                                @if (Card.CustomData["auxillaryBodyName"] == "Khuddam")
+                                {
+                                    <p class='ahm-back'><strong>MAJLIS KHUDDAM-UL-AHMADIYYA NIGERIA</strong> <br /></p>
+                                    <p class='ahm-back-khu-2'><span><strong>(Ahmadiyya Muslim Youth Organization)</strong></span></p>
+                                    <p class='ahm-back-2'><span><strong>AN AFFILIATE OF NATIONAL YOUTH COUNCIL OF NIGERIA</strong></span></p>
+                                }
+
+                                @if (Card.CustomData["auxillaryBodyName"] == "Ansarullah")
+                                {
+                                    <p class='ahm-back-maan'><strong>MAJLIS ANSARULLAH NIGERIA</strong> <br /></p>
+                                    <p class='ahm-back-maan-2'><span><strong>(Ahmadiyya Muslim Elders Association)</strong></span></p>
+                                    @* <p class='ahm-back-maan-3'><span><strong class='ahm-back-mr-2'>DILA: AGEGE</strong><strong>MUQAM: OJOKORO</strong></span></p> *@
+
+                                }
+
+
+                                @if (Card.CustomData["auxillaryBodyName"] == "Lajna")
+                                {
+                                    <p class='ahm-back-maan'><strong>LAJNA IMAILLAH NIGERIA</strong> <br /></p>
+                                    <p class='ahm-back-laj-2'><span><strong>(Women servant of Allah)</strong></span></p>
+                                    <p class='ahm-back-laj-3'><span><strong class='ahm-back-mr-2'>REGION: 1</strong><strong class='ahm-back-mr-2'>DISTRICT: OJOKORO</strong><strong>MUQAM: OJOKORO</strong></span></p>
+                                }
+
+
+                                <p class='ahm-back-laj-4'><span><strong class='ahm-back-mr-2'>BLOOD GROUP: @Card.CustomData["BloodGroup"]</strong><strong>GENOTYPE: @Card.CustomData["Genotype"]</strong></span></p>
+
+                                @* {/* <p class='ahm-back'><strong>AHMADIYYA MUSLIM JAMA'AT</strong> <br /> </p> */}
+                                {/* <p class='ahm-back-2'><span><strong>NIGERIA</strong></span></p> */}
+ *@
+
+
+                            </div>
+                            <div class='mid-info'>
+                                <p style="font-size:13px; font-family:math; font-weight:600; margin-bottom:-7px">Km 27, Lagos-Abeokuta Expressway,</p>
+                                <p style="font-size:13px; font-family:math; font-weight:600; margin-bottom:5px">Ojokoro, Via Agege, Abule Egba, Lagos</p>
+                                <p style="font-size:12px; font-family:math" class=''>ahmadiyya.ng.hq@gmail.com  <br/><span>+2347064290096</span></p>
+                            </div>
+                            
+                            <div class="bottom-back">
+                                <p style="font-size:12px; font-family:math; margin-bottom:-7px">If found, please kindly bring to the nearest </p>
+                                <p style="font-size:12px; font-family:math">Police Station or contact the above address</p>
+                                <p class="sig"> Authorized Signature </p>
+                                <hr class='underline' />
+                                <img class='sig-img' src="amjn-img/signature.png" alt="signature" />
+                                <p style="top: -1px" class="gensec"> General Secretary</p>
+
+                            </div>
                         </div>
-                    </MudCarouselItem>
-                </MudCarousel>
+                    </div>
+                </div>
+
+                <MudCardActions Class="pb-4 pl-4">
+                    <MudButton Variant="Variant.Filled" Color="Color.Surface" Class="ml-auto" StartIcon="@Icons.Filled.Print"
+                               OnClick="Print" Disabled="@BusySubmitting">Print Card</MudButton>
+                </MudCardActions>
             </MudCard>
         </MudItem>
     </MudGrid>
 }
 
 @code {
-
+    private async Task Print()
+    {
+        await JSRuntime.InvokeVoidAsync("printCard");
+    }
 }

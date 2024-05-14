@@ -81,11 +81,15 @@
     <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 
     <script>
+
+
+
         function printCard() {
             printJS({
                 printable: "container",
                 type: "html",
-               // targetStyles: ['*']
+                scanStyles: false,
+                css: "css/card.css"
             })
         }
     </script>

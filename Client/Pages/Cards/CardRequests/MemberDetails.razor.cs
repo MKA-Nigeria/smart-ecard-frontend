@@ -43,7 +43,7 @@ namespace Client.Pages.Cards.CardRequests
             BusySubmitting = true;
 
             // Prepare member data
-            MemberData.PictureUrl = _imageUrl;
+            MemberData.PhotoUrl = _imageUrl;
             if (_showBloodGroup)
             {
                 MemberData.CustomData.Add("BloodGroup", BloodGroup);

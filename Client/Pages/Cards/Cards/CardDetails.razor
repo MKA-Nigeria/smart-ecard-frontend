@@ -85,19 +85,29 @@ else
                                     <p class='ahm'><strong>AHMADIYYA</strong> <br /> <strong>MUSLIM JAMA'AT</strong> <br /> <span><strong>OF NIGERIA</strong></span></p>
                                     <p class='ahm'><strong>AHMADIYYA</strong> <br /> <strong>MUSLIM JAMA'AT</strong> <br /> <span><strong>OF NIGERIA</strong></span></p>
                                 </div>
-                                <img class='id-img' src="ecard.jpg" alt="card" />
+                                @if (@Card.MemberData.PhotoUrl is not null)
+                                {
+                                    var ImageUri = Config[ConfigNames.ApiBaseUrl] + @Card.MemberData.PhotoUrl;
+                                    <img class='id-img' src="@ImageUri" alt="card" />
+
+                                }
+                                else
+                                {
+                                    <img class='id-img' src="ecard.jpg" alt="card" />
+                                }
+
                             </div>
                             <div class="bottom">
                                 <p style="font-size:19px; font-family:math; font-weight:bold">@Card.FullName</p>
-                                <p class="no"> @Card.CustomData["JamaatName"] Jama'at, @Card.CustomData["circuitName"]</p>
-                                <div style="marginTop:12px">
-                                    <p style="fontSize:14px; font-family:math; font-weight:bold">Membership No: @Card.ExternalId</p>
-                                    @if(Card.CustomData["wasiyatNo"] is not null)
+                                <p class="no"> @Card.MemberData.CustomData["JamaatName"] Jama'at, @Card.MemberData.CustomData["circuitName"]</p>
+                                <div style="margin-top:12px">
+                                    <p style="font-size:14px; font-family:math; font-weight:bold">Membership No: @Card.ExternalId</p>
+                                    @if (Card.MemberData.CustomData["wasiyatNo"] is not null)
                                     {
-                                        <p style="fontSize:14px font-family:math; font-weight:bold">Wasiyat No:  </p>
+                                        <p style="font-size:14px font-family:math; font-weight:bold">Wasiyat No: @Card.MemberData.CustomData["wasiyatNo"] </p>
                                     }
-                                    
-                                    
+
+
 
                                 </div>
                                 <div class='end' style="background-color: green;">
@@ -115,28 +125,28 @@ else
                                     <p class='back-head-info-2'>appears overleaf is a member of</p>
 
                                 </div>
-                                @if (Card.CustomData["auxillaryBodyName"] == "Lajna")
+                                @if (Card.MemberData.CustomData["auxillaryBodyName"] == "Lajna")
                                 {
                                     <img class='id-back-logo' src="amjn-img/liman.png" alt="logo" width="2rem" />
                                 }
 
-                                @if (Card.CustomData["auxillaryBodyName"] == "Khuddam")
+                                @if (Card.MemberData.CustomData["auxillaryBodyName"] == "Khuddam")
                                 {
                                     <img class='id-back-logo' src="amjn-img/mkan.png" alt="logo" width="2rem" />
                                 }
-                                @if (Card.CustomData["auxillaryBodyName"] == "Ansarullah")
+                                @if (Card.MemberData.CustomData["auxillaryBodyName"] == "Ansarullah")
                                 {
                                     <img class='id-back-logo' src="amjn-img/maan.png" alt="logo" width="2rem" />
                                 }
 
-                                @if (Card.CustomData["auxillaryBodyName"] == "Khuddam")
+                                @if (Card.MemberData.CustomData["auxillaryBodyName"] == "Khuddam")
                                 {
                                     <p class='ahm-back'><strong>MAJLIS KHUDDAM-UL-AHMADIYYA NIGERIA</strong> <br /></p>
                                     <p class='ahm-back-khu-2'><span><strong>(Ahmadiyya Muslim Youth Organization)</strong></span></p>
                                     <p class='ahm-back-2'><span><strong>AN AFFILIATE OF NATIONAL YOUTH COUNCIL OF NIGERIA</strong></span></p>
                                 }
 
-                                @if (Card.CustomData["auxillaryBodyName"] == "Ansarullah")
+                                @if (Card.MemberData.CustomData["auxillaryBodyName"] == "Ansarullah")
                                 {
                                     <p class='ahm-back-maan'><strong>MAJLIS ANSARULLAH NIGERIA</strong> <br /></p>
                                     <p class='ahm-back-maan-2'><span><strong>(Ahmadiyya Muslim Elders Association)</strong></span></p>
@@ -145,7 +155,7 @@ else
                                 }
 
 
-                                @if (Card.CustomData["auxillaryBodyName"] == "Lajna")
+                                @if (Card.MemberData.CustomData["auxillaryBodyName"] == "Lajna")
                                 {
                                     <p class='ahm-back-maan'><strong>LAJNA IMAILLAH NIGERIA</strong> <br /></p>
                                     <p class='ahm-back-laj-2'><span><strong>(Women servant of Allah)</strong></span></p>
@@ -153,20 +163,20 @@ else
                                 }
 
 
-                                <p class='ahm-back-laj-4'><span><strong class='ahm-back-mr-2'>BLOOD GROUP: @Card.CustomData["BloodGroup"]</strong><strong>GENOTYPE: @Card.CustomData["Genotype"]</strong></span></p>
+                                <p class='ahm-back-laj-4'><span><strong class='ahm-back-mr-2'>BLOOD GROUP: @Card.MemberData.CustomData["BloodGroup"]</strong><strong>GENOTYPE: @Card.MemberData.CustomData["Genotype"]</strong></span></p>
 
                                 @* {/* <p class='ahm-back'><strong>AHMADIYYA MUSLIM JAMA'AT</strong> <br /> </p> */}
-                                {/* <p class='ahm-back-2'><span><strong>NIGERIA</strong></span></p> */}
- *@
+                            {/* <p class='ahm-back-2'><span><strong>NIGERIA</strong></span></p> */}
+                            *@
 
 
                             </div>
                             <div class='mid-info'>
                                 <p style="font-size:13px; font-family:math; font-weight:600; margin-bottom:-7px">Km 27, Lagos-Abeokuta Expressway,</p>
                                 <p style="font-size:13px; font-family:math; font-weight:600; margin-bottom:5px">Ojokoro, Via Agege, Abule Egba, Lagos</p>
-                                <p style="font-size:12px; font-family:math" class=''>ahmadiyya.ng.hq@gmail.com  <br/><span>+2347064290096</span></p>
+                                <p style="font-size:12px; font-family:math" class=''>ahmadiyya.ng.hq@gmail.com  <br /><span>+2347064290096</span></p>
                             </div>
-                            
+
                             <div class="bottom-back">
                                 <p style="font-size:12px; font-family:math; margin-bottom:-7px">If found, please kindly bring to the nearest </p>
                                 <p style="font-size:12px; font-family:math">Police Station or contact the above address</p>

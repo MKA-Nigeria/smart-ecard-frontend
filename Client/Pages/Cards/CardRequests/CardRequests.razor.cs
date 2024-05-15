@@ -26,6 +26,7 @@ namespace Client.Pages.Cards.CardRequests
             if (await ApiHelper.ExecuteCallGuardedAsync(() => CardRequestsClient.SearchAsync(SearchCardRequest), Snackbar) is PaginationResponseOfCardRequestDto cardRequests)
             {
                 CardRequestsResponse = cardRequests;
+                
             }
             else
             {

@@ -74,11 +74,11 @@ namespace Client.Pages.Cards.CardRequests
 
             _uploaded = true;
             StateHasChanged();
-            var fileRequest = await UploadFiles(e);
+            //var fileRequest = await UploadFiles(e);
 
             var image = "";// await CardRequestsClient.UploadImageAsync(_chandaNo, fileRequest);
             using MemoryStream ms = new();
-            await image.Stream.CopyToAsync(ms);
+            //await image.Stream.CopyToAsync(ms);
             _imageUrl = $"data:image/png;base64,{Convert.ToBase64String(ms.ToArray())}";
             _uploaded = false;
             StateHasChanged();

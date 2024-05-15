@@ -2,6 +2,7 @@
     margin: 00px;
     padding: 00px;
     box-sizing: content-box;
+    -webkit-print-color-adjust: exact !important;
 }
 
 .css-j8df3z-MuiPaper-root-MuiCard-root {

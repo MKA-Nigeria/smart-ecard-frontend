@@ -60,7 +60,7 @@
 
 .id-logo {
     height: 72px;
-    width: 70px;
+    width: 72px;
     background-color: white;
     border-radius: 100%;
     position: absolute;
@@ -80,13 +80,13 @@
 
 .top .id-img {
     height: 180px;
-    width: 155px;
+    width: 190px;
     background-color: white;
     position: absolute;
     border: 2px solid black;
     top: 86px;
     border-radius: 12px;
-    left: 67px;
+    left: 55px;
 }
 
 .top .id-back-logo {

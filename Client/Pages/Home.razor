@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using global::Shared.Authorization
 
 <PageTitle>Dashboard - ID Card Management</PageTitle>
 
@@ -39,6 +40,10 @@
 
 
 @code {
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthState { get; set; } = default!;
+
+
     private bool _drawerOpen = true;
 
     private DashboardData data = new DashboardData()
@@ -76,8 +81,13 @@
         {"Yearly", (new List<ChartSeries>{ /* Data for yearly stats */ }, new string[]{ /* Labels for yearly stats */ })}
     };
 
-    protected override void OnInitialized()
+    protected async override Task OnInitializedAsync()
     {
+        // var user = (await AuthState).User;
+        // if (user.GetRoles().Contains(AppRoles.Basic))
+        // {
+        //     Navigation.NavigateTo($"/{user.GetUserName()}");
+        // }
         UpdateChart(selectedPeriod);
     }
 

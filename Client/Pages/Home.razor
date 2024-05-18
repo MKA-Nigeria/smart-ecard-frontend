@@ -13,7 +13,7 @@
         <MudItem xs="12" md="3">
             <StatisticsCard Title="New Cards Issued" Value="@data.NewCardsIssued" Icon="@Icons.Filled.CreditCard" />
         </MudItem>
-      
+
         <!-- Requests and Approvals -->
         <MudItem xs="12" md="3">
             <StatisticsCard Title="Pending Approvals" Value="@data.PendingApprovals" Icon="@Icons.Filled.HourglassEmpty" />
@@ -28,8 +28,8 @@
             <MudCard>
                 <MudCardContent>
                     <MudText Typo="Typo.h5" Class="my-2">Card Record Breakdown</MudText>
-                  @*   <MudSelect T="string" Label="Select Time Period" SelectedValue="@selectedPeriod" SelectedValueChanged="@UpdateChart">
-                        <MudSelectItem Value="@selectedPeriod" />
+                    @*   <MudSelect T="string" Label="Select Time Period" SelectedValue="@selectedPeriod" SelectedValueChanged="@UpdateChart">
+                    <MudSelectItem Value="@selectedPeriod" />
                     </MudSelect> *@
                     <MudChart ChartType="ChartType.Bar" ChartSeries="@currentSeries" XAxisLabels="@currentLabels" Height="350px" />
                 </MudCardContent>
@@ -83,11 +83,12 @@
 
     protected async override Task OnInitializedAsync()
     {
-        // var user = (await AuthState).User;
-        // if (user.GetRoles().Contains(AppRoles.Basic))
-        // {
-        //     Navigation.NavigateTo($"/{user.GetUserName()}");
-        // }
+        var user = (await AuthState).User;
+        if (user.GetRoles().Contains(AppRoles.Basic))
+        {
+            Navigation.NavigateTo($"/{user.GetUserName()}");
+            return;
+        }
         UpdateChart(selectedPeriod);
     }
 

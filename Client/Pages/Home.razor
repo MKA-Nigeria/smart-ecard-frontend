@@ -40,9 +40,7 @@
 
 
 @code {
-    [CascadingParameter]
-    protected Task<AuthenticationState> AuthState { get; set; } = default!;
-
+   
 
     private bool _drawerOpen = true;
 
@@ -83,12 +81,7 @@
 
     protected async override Task OnInitializedAsync()
     {
-        var user = (await AuthState).User;
-        if (user.GetRoles().Contains(AppRoles.Basic))
-        {
-            Navigation.NavigateTo($"/{user.GetUserName()}");
-            return;
-        }
+       
         UpdateChart(selectedPeriod);
     }
 

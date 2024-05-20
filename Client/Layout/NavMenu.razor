@@ -2,21 +2,32 @@
 <MudNavMenu Class="" Color="Color.Success">
     <MudText Typo="Typo.subtitle2" Color="Color.Success" Class="ml-4 my-3">Smart E-Card</MudText>
     <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Filled.Dashboard">Dashboard</MudNavLink>
+
+    @if (_canSearchCardRequests || _canSearchCards || _canViewMyCard)
+    {
         <MudNavGroup Title="ID Cards" Expanded Icon="@Icons.Material.Filled.CardMembership">
-        @if (_canViewCards)
-        {
-            <MudNavLink Href="/cardrequests" Icon="@Icons.Material.Filled.AddCard" Class="fsh-nav-child">
-                Requests
-            </MudNavLink>
-        }
-       @if(_canViewCardRequests)
-        {
-            <MudNavLink Href="/cards" Icon="@Icons.Material.Filled.PhotoAlbum" Class="fsh-nav-child">
-                Cards
-            </MudNavLink>
-        }
-        
+            @if (_canViewMyCard)
+            {
+                <MudNavLink Href=@($"/{userName}") Icon="@Icons.Material.Filled.AddCard" Class="fsh-nav-child">
+                    My Card
+                </MudNavLink>
+            }
+            @if (_canSearchCards)
+            {
+                <MudNavLink Href="/cardrequests" Icon="@Icons.Material.Filled.AddCard" Class="fsh-nav-child">
+                    Requests
+                </MudNavLink>
+            }
+            @if (_canSearchCardRequests)
+            {
+                <MudNavLink Href="/cards" Icon="@Icons.Material.Filled.PhotoAlbum" Class="fsh-nav-child">
+                    Cards
+                </MudNavLink>
+            }
+
         </MudNavGroup>
+    }
+        
     @if (CanViewAdministrationGroup)
     {
         <MudText Typo="Typo.subtitle2" Color="Color.Success" Class="ml-4 my-3">Administration</MudText>

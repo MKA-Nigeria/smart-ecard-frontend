@@ -96,7 +96,7 @@ namespace Client.Pages.Member
                 () => CardRequestsClient.CreateAsync(cardRequest),
                 Snackbar) is Guid id)
             {
-                Navigation.NavigateTo($"/cardrequests");
+                Navigation.NavigateTo(Navigation.Uri, true);
             }
 
             BusySubmitting = false;

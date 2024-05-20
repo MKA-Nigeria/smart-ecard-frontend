@@ -30,8 +30,13 @@ public partial class RolePermissions
     private bool _canSearchRoleClaims;
     private bool _loaded;
 
-    static RolePermissions() => TypeAdapterConfig<Permission, PermissionViewModel>.NewConfig().MapToConstructor(true);
-
+    /*static RolePermissions() => TypeAdapterConfig<Permission, PermissionViewModel>.NewConfig().MapToConstructor(true);
+*/
+    static RolePermissions()
+    {
+        TypeAdapterConfig<Permission, PermissionViewModel>.NewConfig()
+            .ConstructUsing(src => new PermissionViewModel(src.Description, src.AppAction, src.Resource, src.IsBasic, src.IsRoot));
+    }
     protected override async Task OnInitializedAsync()
     {
         var state = await AuthState;

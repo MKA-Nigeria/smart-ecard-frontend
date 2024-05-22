@@ -1,5 +1,8 @@
 ﻿using Infrastructure.Preferences;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using System.Security.Claims;
 
 namespace Client.Layout
 {
@@ -12,11 +15,19 @@ namespace Client.Layout
         [Parameter]
         public EventCallback<bool> OnRightToLeftToggle { get; set; }
 
+        [CascadingParameter]
+        protected Task<AuthenticationState> AuthState { get; set; } = default!;
+
         private bool _drawerOpen;
         private bool _rightToLeft;
 
         protected override async Task OnInitializedAsync()
         {
+            var user = (await AuthState).User;
+            if(user.IsInRole("Nominal Member"))
+            {
+                Navigation.NavigateTo($"/member/{user.GetUserName()}");
+            }
             if (await ClientPreferences.GetPreference() is ClientPreference preference)
             {
                 _rightToLeft = preference.IsRTL;

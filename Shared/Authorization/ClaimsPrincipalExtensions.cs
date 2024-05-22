@@ -20,4 +20,8 @@ public static class ClaimsPrincipalExtensions
         principal is null
             ? throw new ArgumentNullException(nameof(principal))
             : principal.FindFirst(claimType)?.Value;
+    public static List<string> GetRoles(this ClaimsPrincipal principal) => principal.Claims
+   .Where(c => c.Type == ClaimTypes.Role)
+   .Select(c => c.Value)
+   .ToList();
 }

@@ -1,23 +1,30 @@
-﻿using Client.Components.Common;
-using Client.Shared;
+﻿using Client.Shared;
 using Infrastructure.ApiClient;
 using Infrastructure.Common;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components;
+using Client.Pages.Cards.CardRequests;
 
-namespace Client.Pages.Cards.CardRequests
+namespace Client.Pages.Member
 {
-    public partial class MemberDetails
+    public partial class Details
     {
         public bool _loaded;
+        public bool _hasCard;
+        public bool _hasCardRequest;
         [Parameter]
         public string ExternalId { get; set; }
         private IBrowserFile _selectedFile;
         public MemberData MemberData { get; set; }
+        public CardDto Card { get; set; }
+        public CardRequestDto CardRequest { get; set; }
         CreateCardRequest cardRequest = new();
         bool BusySubmitting;
         [Inject]
         protected ICardRequestsClient CardRequestsClient { get; set; } = default!;
+
+        [Inject]
+        protected ICardsClient CardsClient { get; set; } = default!;
 
 
         bool _showGenotype = true;
@@ -29,17 +36,39 @@ namespace Client.Pages.Cards.CardRequests
         private string? _imageUrl;
         protected override async Task OnInitializedAsync()
         {
+
+            var cardResponse = await ApiHelper.ExecuteCallGuardedAsync(
+                    () => CardsClient.GetAsync(ExternalId), Snackbar);
+            if (cardResponse != null)
+            {
+                _hasCard = true;
+                Card = cardResponse;
+                _loaded = true;
+                return;
+            }
+
+            var cardRequestresponse = await ApiHelper.ExecuteCallGuardedAsync(
+                    () => CardRequestsClient.Get2Async(ExternalId), Snackbar);
+
+            if (cardRequestresponse != null)
+            {
+                _hasCardRequest = true;
+                CardRequest = cardRequestresponse;
+                _loaded = true;
+
+                return;
+            }
+
             var response = await ApiHelper.ExecuteCallGuardedAsync(
                     () => CardRequestsClient.GetMemberDataAsync(ExternalId), Snackbar);
-            //BusySubmitting = true;
             if (response.Status)
             {
                 MemberData = response.Data;
                 cardRequest.ExternalId = ExternalId;
                 cardRequest.MemberData = MemberData;
                 _loaded = true;
+                return;
             }
-            //BusySubmitting = false;
         }
         public async Task SubmitCardRequestAsync()
         {
@@ -57,7 +86,7 @@ namespace Client.Pages.Cards.CardRequests
             }
 
             // Create card request
-            
+
             cardRequest.ExternalId = ExternalId;
             cardRequest.MemberData = MemberData;
             cardRequest.ImageRequest = await UploadFiles();
@@ -67,30 +96,11 @@ namespace Client.Pages.Cards.CardRequests
                 () => CardRequestsClient.CreateAsync(cardRequest),
                 Snackbar) is Guid id)
             {
-                Navigation.NavigateTo($"/cardrequests");
+                Navigation.NavigateTo(Navigation.Uri, true);
             }
 
             BusySubmitting = false;
         }
-
-        //private async Task UploadProfileImage()
-        //{
-        //    _uploaded = true;
-        //    StateHasChanged();
-
-        //    // Upload the selected file
-        //    var fileRequest = await UploadFiles();
-
-        //    // Call API to upload the image
-        //    var image = await CardRequestsClient.UploadImageAsync(fileRequest);
-
-        //    // Process the uploaded image
-        //    using MemoryStream ms = new();
-        //    await image.Stream.CopyToAsync(ms);
-        //    _imageUrl = $"data:image/png;base64,{Convert.ToBase64String(ms.ToArray())}";
-        //    _uploaded = false;
-        //    StateHasChanged();
-        //}
 
         private async Task<FileUploadRequest> UploadFiles()
         {
@@ -147,6 +157,19 @@ namespace Client.Pages.Cards.CardRequests
 
                 StateHasChanged();
             }
+        }
+        private async Task Cancel()
+        {
+
+            BusySubmitting = true;
+            if (await ApiHelper.ExecuteCallGuardedAsync(
+                () => CardRequestsClient.CancelAsync(CardRequest.Id),
+            Snackbar) is Guid id)
+            {
+                Navigation.NavigateTo($"/cardrequests");
+            }
+
+            BusySubmitting = false;
         }
 
     }

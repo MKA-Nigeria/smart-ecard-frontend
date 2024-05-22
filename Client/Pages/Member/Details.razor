@@ -1,0 +1,376 @@
+﻿@page "/{ExternalId}"
+
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+<MudGrid>
+    @if (!_loaded)
+    {
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+    }
+    else if (_hasCard)
+    {
+        <MudItem xs="12" sm="8" md="8">
+            <MudCard Elevation="25">
+                <div class="container" id="container">
+                    <div class="padding">
+                        <div class="font id-size">
+                            <div class="top">
+
+                                <div class=''>
+                                    <img class='id-logo' src='amjn-img/amjnLogo.png' alt="logo" width="2rem" />
+                                    <p class='ahm'><strong>AHMADIYYA</strong> <br /> <strong>MUSLIM JAMA'AT</strong> <br /> <span><strong>OF NIGERIA</strong></span></p>
+                                    <p class='ahm'><strong>AHMADIYYA</strong> <br /> <strong>MUSLIM JAMA'AT</strong> <br /> <span><strong>OF NIGERIA</strong></span></p>
+                                </div>
+                                @if (@Card.MemberData.PhotoUrl is not null)
+                                {
+                                    var ImageUri = Config[ConfigNames.ApiBaseUrl] + @Card.MemberData.PhotoUrl;
+                                    <img class='id-img' src="@ImageUri" alt="card" />
+
+                                }
+                                else
+                                {
+                                    <img class='id-img' src="ecard.jpg" alt="card" />
+                                }
+
+                            </div>
+                            <div class="bottom">
+                                <p style="font-size:19px; font-family:math; font-weight:bold">@Card.FullName</p>
+                                <p class="no"> @Card.MemberData.CustomData["JamaatName"] Jama'at, @Card.MemberData.CustomData["circuitName"]</p>
+                                <div style="margin-top:12px">
+                                    <p style="font-size:14px; font-family:math; font-weight:bold">Membership No: @Card.ExternalId</p>
+                                    @if (Card.MemberData.CustomData["wasiyatNo"] is not null)
+                                    {
+                                        <p style="font-size:14px; font-family:math; font-weight:bold">Wasiyat No: @Card.MemberData.CustomData["wasiyatNo"] </p>
+                                    }
+
+
+
+                                </div>
+                                <div class='end' style="background-color: green;">
+                                    <img src="qrcode.png" class='qr-des' />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="position: relative" class="font id-size">
+                            <div class="top">
+
+                                <div class=''>
+                                    <p class='back-head-info'>The holder whose name and photograph </p>
+                                    <p class='back-head-info-2'>appears overleaf is a member of</p>
+
+                                </div>
+                                @if (Card.MemberData.CustomData["auxillaryBodyName"] == "Lajna")
+                                {
+                                    <img class='id-back-logo' src="amjn-img/liman.png" alt="logo" width="2rem" />
+                                }
+
+                                @if (Card.MemberData.CustomData["auxillaryBodyName"] == "Khuddam")
+                                {
+                                    <img class='id-back-logo' src="amjn-img/mkan.png" alt="logo" width="2rem" />
+                                }
+                                @if (Card.MemberData.CustomData["auxillaryBodyName"] == "Ansarullah")
+                                {
+                                    <img class='id-back-logo' src="amjn-img/maan.png" alt="logo" width="2rem" />
+                                }
+
+                                @if (Card.MemberData.CustomData["auxillaryBodyName"] == "Khuddam")
+                                {
+                                    <p class='ahm-back'><strong>MAJLIS KHUDDAM-UL-AHMADIYYA NIGERIA</strong> <br /></p>
+                                    <p class='ahm-back-khu-2'><span><strong>(Ahmadiyya Muslim Youth Organization)</strong></span></p>
+                                    <p class='ahm-back-2'><span><strong>AN AFFILIATE OF NATIONAL YOUTH COUNCIL OF NIGERIA</strong></span></p>
+                                }
+
+                                @if (Card.MemberData.CustomData["auxillaryBodyName"] == "Ansarullah")
+                                {
+                                    <p class='ahm-back-maan'><strong>MAJLIS ANSARULLAH NIGERIA</strong> <br /></p>
+                                    <p class='ahm-back-maan-2'><span><strong>(Ahmadiyya Muslim Elders Association)</strong></span></p>
+                                    @* <p class='ahm-back-maan-3'><span><strong class='ahm-back-mr-2'>DILA: AGEGE</strong><strong>MUQAM: OJOKORO</strong></span></p> *@
+
+                                }
+
+
+                                @if (Card.MemberData.CustomData["auxillaryBodyName"] == "Lajna")
+                                {
+                                    <p class='ahm-back-maan'><strong>LAJNA IMAILLAH NIGERIA</strong> <br /></p>
+                                    <p class='ahm-back-laj-2'><span><strong>(Women servant of Allah)</strong></span></p>
+                                    <p class='ahm-back-laj-3'><span><strong class='ahm-back-mr-2'>REGION: 1</strong><strong class='ahm-back-mr-2'>DISTRICT: OJOKORO</strong><strong>MUQAM: OJOKORO</strong></span></p>
+                                }
+
+
+                                <p class='ahm-back-laj-4'><span><strong class='ahm-back-mr-2'>BLOOD GROUP: @Card.MemberData.CustomData["BloodGroup"]</strong><strong>GENOTYPE: @Card.MemberData.CustomData["Genotype"]</strong></span></p>
+
+                                @* {/* <p class='ahm-back'><strong>AHMADIYYA MUSLIM JAMA'AT</strong> <br /> </p> */}
+                            {/* <p class='ahm-back-2'><span><strong>NIGERIA</strong></span></p> */}
+                            *@
+
+
+                            </div>
+                            <div class='mid-info'>
+                                <p style="font-size:13px; font-family:math; font-weight:600; margin-bottom:-7px">Km 27, Lagos-Abeokuta Expressway,</p>
+                                <p style="font-size:13px; font-family:math; font-weight:600; margin-bottom:5px">Ojokoro, Via Agege, Abule Egba, Lagos</p>
+                                <p style="font-size:12px; font-family:math" class=''>ahmadiyya.ng.hq@gmail.com  <br /><span>+2347064290096</span></p>
+                            </div>
+
+                            <div class="bottom-back">
+                                <p style="font-size:12px; font-family:math; margin-bottom:-7px">If found, please kindly bring to the nearest </p>
+                                <p style="font-size:12px; font-family:math">Police Station or contact the above address</p>
+                                <p class="sig"> Authorized Signature </p>
+                                <hr class='underline' />
+                                <img class='sig-img' src="amjn-img/signature.png" alt="signature" />
+                                <p style="top: -1px" class="gensec"> General Secretary</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <MudCardActions Class="pb-4 pl-4">
+                    <MudButton Variant="Variant.Filled" Color="Color.Surface" Class="ml-auto" StartIcon="@Icons.Filled.Print"
+                               OnClick="Print" Disabled="@BusySubmitting">Print Card</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    }
+    else if (_hasCardRequest)
+    {
+        <MudItem xs="12" sm="8" md="8">
+            <MudCard Elevation="25">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText FontSize="FontSize.Large"><span style="color: green;">Member Card Request Information (@CardRequest.MemberData.EntityId)</span></MudText>
+                        <MudText FontSize="FontSize.Large"><span style="color: green;">STATUS: @CardRequest.Status.ToString()</span></MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Identification Number" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.EntityId</span></MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="FirstName" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.FirstName</span></MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="LastName" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.LastName</span></MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="MiddleName" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.MiddleName</span></MudField>
+                        </MudItem>
+
+                        <MudItem xs="12" md="6">
+                            <MudField Label="PhoneNumber" Variant="Variant.Outlined">
+                                <span style="color: green;">
+                                    @CardRequest.MemberData.PhoneNumber
+                                </span>
+                            </MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Email" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.Email</span></MudField>
+                        </MudItem>
+
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Date of Birth" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.DateOfBirth</span></MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Address" Variant="Variant.Outlined"><span style="color: green;">@CardRequest.MemberData.Address</span></MudField>
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+
+
+        <MudItem xs="12" sm="8" md="8">
+                <MudCard Elevation="25">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText FontSize="FontSize.Medium"><span style="color: green;">Member Additional Information</span></MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudGrid>
+                            @foreach (var data in CardRequest.MemberData.CustomData)
+                            {
+                                <MudItem xs="12" md="6">
+                                    <MudField Label="@data.Key" Variant="Variant.Outlined"><span style="color: green;">@data.Value</span></MudField>
+                                </MudItem>
+                            }
+                        </MudGrid>
+                    </MudCardContent>
+
+                    @if (CardRequest.Status == CardRequestStatus.Pending)
+                    {
+                        <MudGrid>
+                            <MudItem xs="12" sm="4" class="pb-4 pl-4">
+                                <MudButton Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Filled.Cancel"
+                                           @onclick="Cancel" Disabled="BusySubmitting">Cancel</MudButton>
+                            </MudItem>
+                        </MudGrid>
+                    }
+                </MudCard>
+        </MudItem>
+    }
+    else
+    {
+
+
+        <MudItem xs="12" sm="4" md="4">
+            <MudCard Elevation="25">
+                <MudCardContent Style="padding:0px!important">
+                    <div class="d-flex justify-center mb-4">
+                        @if (!string.IsNullOrEmpty(_imageUrl))
+                        {
+                            <MudAvatar Square="true" Image="@_imageUrl" Style=" width:100%;height:auto;"> </MudAvatar>
+                        }
+                        else if (dataLoaded)
+                        {
+                            <MudProgressCircular Color="Color.Success" Size="Size.Medium" Indeterminate="true" />
+                            <span>Loading Image ...</span>
+                        }
+                        else
+                        {
+                            <MudAvatar Square="true" Color="Color.Primary" Style="width:100%;height:300px;">
+                                <img src="ecard.jpg" alt="User Image" style="max-width: 100%; max-height: 100%; cursor: pointer;" onclick="enlargeImage(this)" />
+                            </MudAvatar>
+                        }
+                    </div>
+                </MudCardContent>
+                <MudCardActions Class="d-flex justify-center">
+                    <InputFile id="fileInput" OnChange="OnFileSelection" hidden accept=".jpg,.jpeg,.png" />
+                    <div style="padding-bottom:20px">
+                        @if (_uploaded)
+                        {
+
+                            <MudProgressCircular Color="Color.Success" Size="Size.Medium" Indeterminate="true" />
+                        }
+                        else
+                        {
+                            <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small"
+                                       StartIcon="@Icons.Filled.CloudUpload" for="fileInput">
+                                Upload
+                            </MudButton>
+                        }
+
+                    </div>
+
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+
+
+        <MudItem xs="12" sm="8" md="8">
+            <MudCard Elevation="25">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText FontSize="FontSize.Large"><span style="color: green;">Member Information</span></MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudGrid>
+
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Identification Number" Variant="Variant.Outlined"><span style="color: green;">@MemberData.EntityId</span></MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="FirstName" Variant="Variant.Outlined"><span style="color: green;">@MemberData.FirstName</span></MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="LastName" Variant="Variant.Outlined"><span style="color: green;">@MemberData.LastName</span></MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="MiddleName" Variant="Variant.Outlined"><span style="color: green;">@MemberData.MiddleName</span></MudField>
+                        </MudItem>
+
+                        <MudItem xs="12" md="6">
+                            <MudField Label="PhoneNumber" Variant="Variant.Outlined">
+                                <span style="color: green;">
+                                    @MemberData.PhoneNumber
+                                </span>
+                            </MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Email" Variant="Variant.Outlined"><span style="color: green;">@MemberData.Email</span></MudField>
+                        </MudItem>
+
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Date of Birth" Variant="Variant.Outlined"><span style="color: green;">@MemberData.DateOfBirth.Value.ToString("yyyy-MM-dd")</span></MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Address" Variant="Variant.Outlined"><span style="color: green;">@MemberData.Address</span></MudField>
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+        <MudItem xs="12" sm="8" md="8">
+            <EditForm Model="@MemberData" OnValidSubmit="SubmitCardRequestAsync">
+                <MudCard Elevation="25">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText FontSize="FontSize.Large"><span style="color: green;">Member Additional Information</span></MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudGrid>
+                            @foreach (var data in MemberData.CustomData)
+                            {
+                                <MudItem xs="12" md="6">
+                                    <MudField Label="@data.Key" Variant="Variant.Outlined"><span style="color: green;">@data.Value</span></MudField>
+                                </MudItem>
+                                if (data.Key.ToLower() == "bloodgroup")
+                                {
+                                    _showBloodGroup = false;
+                                }
+                                if (data.Key.ToLower() == "genotype")
+                                {
+                                    _showGenotype = false;
+                                }
+                            }
+
+                            @if (_showBloodGroup)
+                            {
+                                <MudItem xs="12" md="6">
+                                    <MudSelect Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" xs="12" md="6" T="string" Label="Blood Group" @bind-Value="@BloodGroup" For="@(() => BloodGroup)">
+                                        <MudSelectItem Value="@("BloodGroup")">APositive</MudSelectItem>
+                                        <MudSelectItem Value="@("ANegative")">ANegative</MudSelectItem>
+                                        <MudSelectItem Value="@("BPositive")">BPositive</MudSelectItem>
+                                        <MudSelectItem Value="@("BNegative")">BNegative</MudSelectItem>
+                                        <MudSelectItem Value="@("OPositive")">OPositive</MudSelectItem>
+                                        <MudSelectItem Value="@("ONegative")">ONegative</MudSelectItem>
+                                        <MudSelectItem Value="@("ABPositive")">ABPositive</MudSelectItem>
+                                    </MudSelect>
+                                </MudItem>
+                            }
+
+                            @if (_showGenotype)
+                            {
+                                <MudSelect Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" xs="12" md="6" T="string" Label="Genotype" @bind-Value="@Genotype" For="@(() => Genotype)" placeholder="Select Genotype">
+                                    <MudSelectItem Value="@("AA")">AA</MudSelectItem>
+                                    <MudSelectItem Value="@("AS")">AS</MudSelectItem>
+                                    <MudSelectItem Value="@("AC")">AC</MudSelectItem>
+                                    <MudSelectItem Value="@("SS")">SS</MudSelectItem>
+                                    <MudSelectItem Value="@("SC")">SC</MudSelectItem>
+                                </MudSelect>
+                            }
+                        </MudGrid>
+                    </MudCardContent>
+
+                    <MudCardActions Class="pb-4 pl-4">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" StartIcon="@Icons.Filled.Save"
+                                   ButtonType="ButtonType.Submit" Disabled="@BusySubmitting">Submit Card Request</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </EditForm>
+        </MudItem>
+
+    }
+</MudGrid>
+
+@code {
+    private async Task Print()
+    {
+        await JSRuntime.InvokeVoidAsync("printCard", "css/card.css");
+    }
+}

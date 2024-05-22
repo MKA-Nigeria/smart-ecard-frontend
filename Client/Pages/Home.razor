@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using global::Shared.Authorization
 
 <PageTitle>Dashboard - ID Card Management</PageTitle>
 
@@ -12,7 +13,7 @@
         <MudItem xs="12" md="3">
             <StatisticsCard Title="New Cards Issued" Value="@data.NewCardsIssued" Icon="@Icons.Filled.CreditCard" />
         </MudItem>
-      
+
         <!-- Requests and Approvals -->
         <MudItem xs="12" md="3">
             <StatisticsCard Title="Pending Approvals" Value="@data.PendingApprovals" Icon="@Icons.Filled.HourglassEmpty" />
@@ -27,8 +28,8 @@
             <MudCard>
                 <MudCardContent>
                     <MudText Typo="Typo.h5" Class="my-2">Card Record Breakdown</MudText>
-                  @*   <MudSelect T="string" Label="Select Time Period" SelectedValue="@selectedPeriod" SelectedValueChanged="@UpdateChart">
-                        <MudSelectItem Value="@selectedPeriod" />
+                    @*   <MudSelect T="string" Label="Select Time Period" SelectedValue="@selectedPeriod" SelectedValueChanged="@UpdateChart">
+                    <MudSelectItem Value="@selectedPeriod" />
                     </MudSelect> *@
                     <MudChart ChartType="ChartType.Bar" ChartSeries="@currentSeries" XAxisLabels="@currentLabels" Height="350px" />
                 </MudCardContent>
@@ -39,6 +40,8 @@
 
 
 @code {
+   
+
     private bool _drawerOpen = true;
 
     private DashboardData data = new DashboardData()
@@ -76,8 +79,9 @@
         {"Yearly", (new List<ChartSeries>{ /* Data for yearly stats */ }, new string[]{ /* Labels for yearly stats */ })}
     };
 
-    protected override void OnInitialized()
+    protected async override Task OnInitializedAsync()
     {
+       
         UpdateChart(selectedPeriod);
     }
 

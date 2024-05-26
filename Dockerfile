@@ -9,7 +9,7 @@ WORKDIR /src
 COPY ["src/Host/Host.csproj", "src/Host/"]
 COPY ["src/Shared/Shared.csproj", "src/Shared/"]
 COPY ["src/Client/Client.csproj", "src/Client/"]
-COPY ["src/Client.Infrastructure/Client.Infrastructure.csproj", "src/Client.Infrastructure/"]
+COPY ["src/Infrastructure/Infrastructure.csproj", "src/Infrastructure/"]
 
 RUN dotnet restore "src/Host/Host.csproj"
 

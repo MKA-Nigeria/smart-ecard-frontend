@@ -11,7 +11,7 @@ COPY ["Shared/Shared.csproj", "Shared/"]
 
 RUN dotnet restore "./Client/Client.csproj"
 COPY . .
-# WORKDIR "/Client"
+WORKDIR "/Client"
 
 RUN dotnet publish "Client.csproj" -c Release --no-restore -o /app/publish
 
@@ -20,5 +20,5 @@ WORKDIR /app
 
 COPY --from=build /app/publish .
 
-# ENTRYPOINT ["dotnet", "smart-ecard-frontend.Client.dll"]
-ENTRYPOINT ["dotnet", "Client.dll"]
+ENTRYPOINT ["dotnet", "smart-ecard-frontend.Client.dll"]
+# ENTRYPOINT ["dotnet", "Client.dll"]

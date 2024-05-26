@@ -23,4 +23,4 @@ WORKDIR /app
 
 COPY --from=build /app/publish .
 
-ENTRYPOINT ["dotnet", "MaanWebPortal.Host.dll"]
+ENTRYPOINT ["dotnet", "Host.dll"]

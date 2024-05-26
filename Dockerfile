@@ -9,7 +9,7 @@ COPY ["Client/Client.csproj", "Client/"]
 COPY ["Infrastructure/Infrastructure.csproj", "Infrastructure/"]
 COPY ["Shared/Shared.csproj", "Shared/"]
 
-RUN dotnet restore "./Client/Client.csproj"
+RUN dotnet restore "/Client/Client.csproj"
 COPY . .
 WORKDIR "/Client"
 
@@ -20,5 +20,5 @@ WORKDIR /app
 
 COPY --from=build /app/publish .
 
-ENTRYPOINT ["dotnet", "smart-ecard-frontend.Client.dll"]
-# ENTRYPOINT ["dotnet", "Client.dll"]
+# ENTRYPOINT ["dotnet", "smart-ecard-frontend.Client.dll"]
+ENTRYPOINT ["dotnet", "Client.dll"]

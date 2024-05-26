@@ -1,26 +1,27 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
-EXPOSE 8080
+EXPOSE 80
+EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
 
-WORKDIR /
+COPY ["src/Host/Host.csproj", "src/Host/"]
+COPY ["src/Shared/Shared.csproj", "src/Shared/"]
+COPY ["src/Client/Client.csproj", "src/Client/"]
+COPY ["src/Client.Infrastructure/Client.Infrastructure.csproj", "src/Client.Infrastructure/"]
 
-COPY ["Client/Client.csproj", "Client/"]
-COPY ["Infrastructure/Infrastructure.csproj", "Infrastructure/"]
-COPY ["Shared/Shared.csproj", "Shared/"]
+RUN dotnet restore "src/Host/Host.csproj"
 
 RUN dotnet restore "/Client/Client.csproj"
 COPY . .
-WORKDIR "/Client"
+WORKDIR "/src/src/Host"
 
-RUN dotnet publish "Client.csproj" -c Release --no-restore -o /app/publish
+RUN dotnet publish "Host.csproj" -c Release --no-restore -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 
 COPY --from=build /app/publish .
 
-# ENTRYPOINT ["dotnet", "smart-ecard-frontend.Client.dll"]
-ENTRYPOINT ["dotnet", "Client.dll"]
+ENTRYPOINT ["dotnet", "Host.dll"]

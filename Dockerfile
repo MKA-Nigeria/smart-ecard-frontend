@@ -1,9 +1,9 @@
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 COPY ["src/Host/Host.csproj", "src/Host/"]
@@ -13,7 +13,6 @@ COPY ["src/Client.Infrastructure/Client.Infrastructure.csproj", "src/Client.Infr
 
 RUN dotnet restore "src/Host/Host.csproj"
 
-RUN dotnet restore "/Client/Client.csproj"
 COPY . .
 WORKDIR "/src/src/Host"
 

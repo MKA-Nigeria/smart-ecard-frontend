@@ -8,16 +8,20 @@ namespace Client.Pages.Cards.CardRequests
     {
         [Inject]
         private ICardRequestsClient CardRequestsClient { get; set; }
+        [Inject]
+        private IAppConfigurationsClient AppConfigurationsClient { get; set; }
         public PaginationResponseOfCardRequestDto CardRequestsResponse = new();
 
         private MudTable<CardRequestDto> table;
         private int totalItems;
         private string searchString = null;
+        private string appClient = null;
         bool BusySubmitting;
 
         protected override async Task OnInitializedAsync()
         {
-         
+            var client = await AppConfigurationsClient.GetAppConfigurationByKeyAsync("AppDomain");
+            appClient = client.Value;
         }
 
 

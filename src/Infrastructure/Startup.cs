@@ -40,6 +40,7 @@ public static class Startup
             .AddHttpClient(ClientName, client =>
                 {
                     client.BaseAddress = new Uri(config[ConfigNames.ApiBaseUrl]);
+                    client.Timeout = TimeSpan.FromMinutes(20);
                 })
                 .AddAuthenticationHandler(config)
                 .Services

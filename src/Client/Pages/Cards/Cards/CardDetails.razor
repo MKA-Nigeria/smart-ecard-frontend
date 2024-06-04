@@ -1,4 +1,4 @@
-﻿@page "/card/{CardNumber}"
+﻿@page "/amjn/{CardNumber}"
 
 @using Microsoft.JSInterop
 @inject IJSRuntime JSRuntime
@@ -87,8 +87,7 @@ else
                                 </div>
                                 @if (@Card.MemberData.PhotoUrl is not null)
                                 {
-                                    var ImageUri = Config[ConfigNames.ApiBaseUrl] + @Card.MemberData.PhotoUrl;
-                                    <img class='id-img' src="@ImageUri" alt="card" />
+                                    <img class='id-img' src="data:image;base64,@Card.MemberData.PhotoUrl" alt="card" />
 
                                 }
                                 else
@@ -111,7 +110,7 @@ else
 
                                 </div>
                                 <div class='end' style="background-color: green;">
-                                    <img src="qrcode.png" class='qr-des' />
+                                    <img src="@Card.QrCode" class='qr-des' />
                                 </div>
                             </div>
                         </div>

@@ -14,8 +14,6 @@ namespace Client.Pages.Cards.Cards
         bool BusySubmitting;
         [Inject]
         protected ICardsClient CardsClient { get; set; } = default!;
-
-
         bool _showGenotype = true;
         bool _showBloodGroup = true;
         string BloodGroup;
@@ -69,6 +67,7 @@ namespace Client.Pages.Cards.Cards
         {
             Navigation.NavigateTo($"http://localhost:3000/idcard?print={CardNumber}");
         }
+        
     }
 }
 

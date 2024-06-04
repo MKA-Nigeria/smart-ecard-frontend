@@ -40,33 +40,21 @@
 
 
 @code {
-   
+
 
     private bool _drawerOpen = true;
 
-    private DashboardData data = new DashboardData()
-        {
-            TotalActiveCards = 800,
-            TotalInactiveCards = 224,
-            CardRenewalsThisMonth = 75,
-            NewCardsIssued = 90,
-            PendingApprovals = 45,
-            TotalRequests = 1024
-        };
+    [Inject]
+    private IDashboardClient DashboardClient { get; set; }
+
+
+    private DashboardData data = new();
 
     private string selectedPeriod = "Monthly";
     private List<ChartSeries> currentSeries;
     private string[] currentLabels;
 
-    public class DashboardData
-    {
-        public int TotalActiveCards { get; set; }
-        public int TotalInactiveCards { get; set; }
-        public int CardRenewalsThisMonth { get; set; }
-        public int NewCardsIssued { get; set; }
-        public int PendingApprovals { get; set; }
-        public int TotalRequests { get; set; }
-    }
+    
 
     private Dictionary<string, (List<ChartSeries>, string[])> chartData = new Dictionary<string, (List<ChartSeries>, string[])>
     {
@@ -81,7 +69,8 @@
 
     protected async override Task OnInitializedAsync()
     {
-       
+        var dashboardDataResponse = await DashboardClient.GetAsync();
+        data = dashboardDataResponse;
         UpdateChart(selectedPeriod);
     }
 

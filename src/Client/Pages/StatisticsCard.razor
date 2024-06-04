@@ -46,7 +46,7 @@
 
     private async Task AnimateValue(int start, int end, int duration)
     {
-        int stepTime = duration / Math.Abs(end - start);
+        int stepTime = (end != 0 ) ? duration / Math.Abs(end - start) : 0;
         stepTime = Math.Max(stepTime, 1);  // Ensure stepTime is at least 1 ms
 
         for (int i = start; i <= end; i++)

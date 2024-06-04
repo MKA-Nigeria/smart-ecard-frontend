@@ -1,6 +1,7 @@
 ﻿using Client.Shared;
 using Infrastructure.ApiClient;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 
 namespace Client.Pages.Cards.Cards
@@ -10,6 +11,8 @@ namespace Client.Pages.Cards.Cards
         public bool _loaded;
         [Parameter]
         public string CardNumber { get; set; }
+        [Parameter]
+        public string InputText { get; set; } = "Sample Text";
 
         public CardDto Card { get; set; }
         bool BusySubmitting;
@@ -37,10 +40,21 @@ namespace Client.Pages.Cards.Cards
                 Card = card;
                 _loaded = true;
             }
-            // Option 2: Generate QR code data directly in Blazor (if data is simple)
-           // string qrCodeData = "https://www.example.com"; // Replace with your data
+        }
 
-           // qrCodeUrl = await JsRuntime.InvokeAsync<string>("generateQRCode", qrCodeData);
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                await Task.Delay(10000);
+                await GenerateQRCode();
+            }
+        }
+
+        private async Task GenerateQRCode()
+        {
+            await JsRuntime.InvokeVoidAsync("qrcodeInterop.clearQRCode", "qrcode");
+            await JsRuntime.InvokeVoidAsync("qrcodeInterop.generateQRCode", "qrcode", InputText);
         }
         public async Task ActivateCard()
         {

@@ -129,7 +129,7 @@
     font-weight: bold;
 }
 
-.barcode img {
+.barcode div {
     height: 95px;
     width: 95px;
     text-align: center;
@@ -141,6 +141,9 @@
     text-align: center;
     position: relative;
     top: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .back {

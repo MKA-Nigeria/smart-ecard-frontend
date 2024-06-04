@@ -38,29 +38,26 @@ namespace Client.Pages.Cards.Cards
                     () => CardsClient.GetAsync(CardNumber), Snackbar) is CardDto card)
             {
                 Card = card;
-                //GenerateQRCode();
+                //GenerateQRCode();             
                 _loaded = true;
             }
         }
 
-        /*protected override async Task OnAfterRenderAsync(bool firstRender)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (firstRender)
-            {
-                await Task.Delay(10000);
-                await GenerateQRCode();
-            }
-        }*/
-       /* private void GenerateQRCode()
-        {
-            var qrCodeBytes = QrCodeService.GenerateQRCode(CardNumber);
-            qrCodeImage = $"data:image/png;base64,{Convert.ToBase64String(qrCodeBytes)}";
-        }*/
-        /* private async Task GenerateQRCode()
+            await Task.Delay(10000);
+            await GenerateQRCode();
+        }
+        /* private void GenerateQRCode()
          {
-             await JsRuntime.InvokeVoidAsync("qrcodeInterop.clearQRCode", "qrcode");
-             await JsRuntime.InvokeVoidAsync("qrcodeInterop.generateQRCode", "qrcode", InputText);
+             var qrCodeBytes = QrCodeService.GenerateQRCode(CardNumber);
+             qrCodeImage = $"data:image/png;base64,{Convert.ToBase64String(qrCodeBytes)}";
          }*/
+        private async Task GenerateQRCode()
+        {
+            await JsRuntime.InvokeVoidAsync("qrcodeInterop.clearQRCode", "qrcode");
+            await JsRuntime.InvokeVoidAsync("qrcodeInterop.generateQRCode", "qrcode", CardNumber);
+        }
         public async Task ActivateCard()
         {
 

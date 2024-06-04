@@ -45,7 +45,7 @@ namespace Client.Pages.Cards.Cards
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            await Task.Delay(30000);
+            await Task.Delay(10000);
             await GenerateQRCode();
         }
         /* private void GenerateQRCode()

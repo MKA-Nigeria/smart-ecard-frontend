@@ -1,0 +1,152 @@
+﻿@page "/mkan/{CardNumber}"
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+@using Microsoft.AspNetCore.Components.Authorization
+@if (!_loaded)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+
+    <MudGrid>
+        <MudItem xs="12" sm="8" md="8">
+            <MudCard Elevation="25">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText FontSize="FontSize.Large"><span style="color: green;">Card Information</span></MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Full name" Variant="Variant.Outlined"><span style="color: green;">@Card.FullName</span></MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Request Date" Variant="Variant.Outlined"><span style="color: green;">@Card.RequestDate</span></MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Approved Date" Variant="Variant.Outlined"><span style="color: green;">@Card.ApprovedDate</span></MudField>
+                        </MudItem>
+
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Approved By" Variant="Variant.Outlined">
+                                <span style="color: green;">
+                                    @Card.ApprovedBy
+                                </span>
+                            </MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Card Status" Variant="Variant.Outlined"><span style="color: green;">@Card.CardStatus</span></MudField>
+                        </MudItem>
+
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Print Status" Variant="Variant.Outlined"><span style="color: green;">@Card.PrintStatus</span></MudField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudField Label="Collected" Variant="Variant.Outlined"><span style="color: green;">@Card.IsCollected</span></MudField>
+                        </MudItem>
+                        @if (Card.IsCollected)
+                        {
+                            <MudItem xs="12" md="6">
+                                <MudField Label="Collected" Variant="Variant.Outlined"><span style="color: green;">@Card.DateCollected</span></MudField>
+                            </MudItem>
+                        }
+
+                    </MudGrid>
+                </MudCardContent>
+                <MudCardActions Class="pb-4 pl-4">
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" Class="ml-auto" StartIcon="@Icons.Filled.Save"
+                               ButtonType="ButtonType.Submit" OnClick="ViewCard" Disabled="@BusySubmitting">View ID Card</MudButton>
+                    @if (Card.CardStatus == CardStatus.Active)
+                    {
+                        <MudButton Variant="Variant.Filled" Color="Color.Error" Class="ml-auto" StartIcon="@Icons.Filled.RollerShadesClosed"
+                                   ButtonType="ButtonType.Submit" OnClick="DeactivateCard" Disabled="@BusySubmitting">Deactivate</MudButton>
+                    }
+                    else if (Card.CardStatus == CardStatus.InActive)
+                    {
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" StartIcon="@Icons.Filled.Save"
+                                   ButtonType="ButtonType.Submit" OnClick="ActivateCard" Disabled="@BusySubmitting">Activate</MudButton>
+                    }
+
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+        <MudItem xs="12" sm="8" md="8">
+            <MudCard Elevation="25">
+
+                <div class="container" id="container">
+                    <div class="padding">
+                        <div class="font id-size">
+                            <div class="top">
+                                <div class="headrers-design">
+                                    <div class="head-curve first"> </div>
+                                    <div class="head-curve sec"> </div>
+                                    <div class="head-curve third"> </div>
+                                </div>
+                                <div class=''>
+                                    <img class='id-logo' src="mkan-img/logo.png" alt="logo" width="2rem" />
+                                </div>
+                                <div class="title">
+                                    <p class='card-title' style="color:green">MAJLIS KHUDDAM-UL-AHMADIYYA NIGERIA</p>
+                                    <p class='card-title2' style="color:green">(Ahmadiyya Muslim Youth Organization)</p>
+                                    <p class='card-title2' style="color:black; font-weight: 700;font-size: 9px;margin: 7px;">AN AFFILIATE OF NATIONAL YOUTH COUNCIL OF NIGERIA</p>
+                                </div>
+
+                                @if (@Card.MemberData.PhotoUrl is not null)
+                                {
+                                    <img class='id-img' src="data:image;base64,@Card.MemberData.PhotoUrl" alt="card"/>
+
+                                }
+                                else
+                                {
+                                    <img class='id-img' src="ecard.jpg" alt="card" />
+                                }
+                            </div>
+                            <div class="bottom">
+                                <p>@Card.FullName.ToUpper()</p>
+                                @* <p id='cardNumber' hidden>591545</p> *@
+                                @* <p class="no">Oluwo-Bashorun Muqam, Monatan</p> *@
+                                <p class="no memNo">
+                                    ID: @Card.ExternalId
+                                    
+                                </p>
+                                <div class='end-design'>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="back id-size">
+                        <div class="details-info">
+                            <p style="color:black">This ID is a property of</p>
+                            <h5 style="font-weight:900; margin: 6px; color:black"> AHMADIYYA MUSLIM YOUTH ORGANIZATION</h5>
+                            <p style="color:black">If found, please return this identification card to the appropriate department or contact 07064290096</p>
+                        </div>
+                        <div class="barcode">
+                            <img src="qrcode.png" alt="qrcode">
+                        </div>
+                        <div class="logo">
+                            <img src="mkan-img/signature.png" class="signature-image" alt="signature" />
+                            <div class="auth">
+                                <hr />
+                                <span>SADR, MKAN</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <MudCardActions Class="pb-4 pl-4">
+                    <MudButton Variant="Variant.Filled" Color="Color.Surface" Class="ml-auto" StartIcon="@Icons.Filled.Print"
+                               OnClick="Print">Print Card</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+}
+
+@code {
+    private async Task Print()
+    {
+        await JSRuntime.InvokeVoidAsync("printCard", "css/mkancard.css");
+    }
+}

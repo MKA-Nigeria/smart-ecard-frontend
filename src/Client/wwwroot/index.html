@@ -62,8 +62,7 @@
 <body>
     <div id="app">
         <div class="loading-container" style="position:absolute; top:30vh; width:100%; text-align:center">
-            <img src="ecard.jpg" alt="Smart e-Card Portal Logo" style="width: 150px; height: auto;">
-            <!--  <h1>Smart E-Identity Card Portal</h1> -->
+            <img id="smart-e-card-logo" src="" alt="Smart e-Card Portal Logo" style="width: 150px; height: auto;">
             <div style="display:flex; gap:10px; justify-content:center; align-items:center">
                 <div class="spinner-border" role="status"></div>
                 <p class="loading-text">Smart-ID – The smart way to identify yourself...</p>
@@ -93,6 +92,7 @@
         }
     </script>
     <script src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
+    <script src="js/config.js" defer></script>
     <script src="_framework/blazor.webassembly.js"></script>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>

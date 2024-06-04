@@ -18,6 +18,8 @@
         <MudTh><MudTableSortLabel SortLabel="memberNumber" T="CardDto">Member Number</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="fullName" T="CardDto">Full name</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="cardStatus" T="CardDto">Card Status</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="printStatus" T="CardDto">Print Status</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="isCollected" T="CardDto">Collection Status</MudTableSortLabel></MudTh>
        @*  <MudTh><MudTableSortLabel SortLabel="isCollected" T="CardDto">Is Collected</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="printStatus" T="CardDto">Print status</MudTableSortLabel></MudTh> *@
     </HeaderContent>
@@ -25,70 +27,44 @@
         <MudTd>
             <div style="position: relative; text-align: center;">
                 <div style="max-width: 100px; max-height: 100px; position: relative;">
-                  @*   @if (@context.PictureUrl is not null)
+                    @if (@context.MemberData.PhotoUrl is not null)
                     {
-                    var ImageUri = Config[ConfigNames.ApiBaseUrl] + @context.MemberData.PictureUrl;
-                    <img src="@ImageUri" alt="User Image" style="max-width: 100%; max-height: 100%; cursor: pointer;" onclick="enlargeImage(this)" />
-                    <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); cursor: pointer; color: #084545; font-weight: bold; font-size:0.5em; text-decoration: underline;" onclick="enlargeImage(this.previousElementSibling)">ENLARGE</div>
+                        <img src="data:image;base64,@context.MemberData.PhotoUrl" alt="User Image" style="max-width: 100%; max-height: 100%; cursor: pointer;" onclick="enlargeImage(this)" />
+                        <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); cursor: pointer; color: #084545; font-weight: bold; font-size:0.5em; text-decoration: underline;" onclick="enlargeImage(this.previousElementSibling)">ENLARGE</div>
+
                     }
                     else
-                    { *@
-                    <img src="ecard.jpg" alt="User Image" style="max-width: 100%; max-height: 100%; cursor: pointer;" onclick="enlargeImage(this)" />
-                    <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); cursor: pointer; color: #084545; font-weight: bold; font-size:0.5em; text-decoration: underline;" onclick="enlargeImage(this.previousElementSibling)">ENLARGE</div>
-                    @* } *@
+                    {
+                        <img src="ecard.jpg" alt="User Image" style="max-width: 100%; max-height: 100%; cursor: pointer;" onclick="enlargeImage(this)" />
+                        <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); cursor: pointer; color: #084545; font-weight: bold; font-size:0.5em; text-decoration: underline;" onclick="enlargeImage(this.previousElementSibling)">ENLARGE</div>
+                    }
+                   
                 </div>
             </div>
         </MudTd>
         <MudTd DataLabel="CardNumber">
-            <MudLink Href="@("/card/" + @context.CardNumber)" Underline="Underline.None">@context.CardNumber</MudLink>
+            <MudLink Href="@($"/{appClient.ToLower()}/" + @context.CardNumber)" Underline="Underline.None">@context.CardNumber</MudLink>
             </MudTd>
         <MudTd DataLabel="MemberNumber">@context.ExternalId</MudTd>
         <MudTd DataLabel="FullName">@context.FullName</MudTd>
-
         @if (@context.CardStatus == CardStatus.Active)
         {
             <MudTd DataLabel="CardStatus"><MudChip Color="Color.Secondary">@context.CardStatus</MudChip></MudTd>
-            <MudTd>
-                <!-- Buttons -->
-                <div class="d-flex justify-content-between">
-                    <MudButton Variant="Variant.Filled" Class="light-button-error mr-2" StartIcon="@Icons.Filled.Cancel" OnClick="@(e => DeactivateCard(context.CardNumber))" Disabled="BusySubmitting">
-                        <MudIcon Icon="Icons.Filled.Cancel" Size="Size.Small" />
-                        <span class="text-error">Deactivate</span>
-                    </MudButton>
-                    <MudButton Variant="Variant.Filled" Class="light-button-warning ml-2" StartIcon="@Icons.Filled.Send" OnClick="@(e => Send(context.CardNumber))" Disabled="BusySubmitting">
-                        <MudIcon Icon="Icons.Filled.Send" Size="Size.Small" />
-                        <span class="text-warning">Send</span>
-                    </MudButton>
-                    <MudButton Variant="Variant.Filled" Class="light-button-info ml-2" StartIcon="@Icons.Filled.Print" OnClick="@(e => Print(context.CardNumber))" Disabled="BusySubmitting">
-                        <MudIcon Icon="Icons.Filled.Print" Size="Size.Small" />
-                        <span class="text-info">Print</span>
-                    </MudButton>
-                </div>
-            </MudTd>
         }
         else if (@context.CardStatus == CardStatus.InActive)
         {
             <MudTd DataLabel="CardStatus"><MudChip Color="Color.Error">@context.CardStatus</MudChip></MudTd>
-            <MudTd>
-                <!-- Buttons -->
-                <div class="d-flex justify-content-between">
-                    <MudButton Variant="Variant.Filled" Class="light-button-success mr-2" StartIcon="@Icons.Filled.Cancel" OnClick="@(e => ActivateCard(context.CardNumber))" Disabled="BusySubmitting">
-                        <MudIcon Icon="Icons.Filled." Size="Size.Small" />
-                        <span class="text-success">Activate</span>
-                    </MudButton>
-                </div>
-            </MudTd>
         }
-
-       @*  <MudTd DataLabel="ISCollected">@context.IsCollected</MudTd>
-        @if (@context.PrintStatus == PrintStatus.ReadyForPrint)
+       <MudTd DataLabel="PrintStatus"><MudChip Color="Color.Success">@context.PrintStatus</MudChip></MudTd>
+        <MudTd DataLabel="ISCollected">@context.IsCollected</MudTd>
+       @*  @if (@context.PrintStatus == PrintStatus.ReadyForPrint)
         {
             <MudTd DataLabel="PrintStatus"><MudChip Color="Color.Warning">@context.PrintStatus</MudChip></MudTd>
         }
         else if (@context.PrintStatus == PrintStatus.Printed)
         {
             <MudTd DataLabel="PrintStatus"><MudChip Color="Color.Success">@context.PrintStatus</MudChip></MudTd>
-        } *@
+        }  *@
     </RowTemplate>
     <NoRecordsContent>
         <MudText>No matching records found</MudText>

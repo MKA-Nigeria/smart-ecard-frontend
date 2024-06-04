@@ -20,7 +20,6 @@ namespace Client.Pages.Cards.Cards
         bool _showBloodGroup = true;
         string BloodGroup;
         string Genotype;
-
         private bool arrows = true;
         private bool bullets = true;
         private bool enableSwipeGesture = true;

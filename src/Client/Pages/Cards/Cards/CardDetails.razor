@@ -87,8 +87,7 @@ else
                                 </div>
                                 @if (@Card.MemberData.PhotoUrl is not null)
                                 {
-                                    var ImageUri = Config[ConfigNames.ApiBaseUrl] + @Card.MemberData.PhotoUrl;
-                                    <img class='id-img' src="@ImageUri" alt="card" />
+                                    <img class='id-img' src="data:image;base64,@Card.MemberData.PhotoUrl" alt="card" />
 
                                 }
                                 else

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Shared.Authorization;
 using Infrastructure.Auth;
 using System.Security.Claims;
+using Infrastructure.ApiClient;
 
 namespace Client.Layout
 {

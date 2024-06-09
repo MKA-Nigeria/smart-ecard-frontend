@@ -2,6 +2,8 @@
 using Client.Shared;
 using Infrastructure.ApiClient;
 using Microsoft.AspNetCore.Components;
+using static MudBlazor.CategoryTypes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Client.Pages.Cards.Cards
 {
@@ -17,6 +19,10 @@ namespace Client.Pages.Cards.Cards
         private MudTable<CardDto> table;
         private int totalItems;
         private string searchString = null;
+
+        private PrintStatus? printStatus = null;
+        private bool? _isCollected = null;
+        private CardStatus? cardStatus = null;
         private string appClient = null;
         bool BusySubmitting;
         protected override async Task OnInitializedAsync()
@@ -43,6 +49,9 @@ namespace Client.Pages.Cards.Cards
             var searchRequest = new SearchCardsRequest
             {
                 Keyword = searchString,
+                PrintStatus = printStatus,
+                IsCollected = _isCollected,
+                CardStatus = cardStatus,
                 PageNumber = state.Page,
                 PageSize = state.PageSize
             };
@@ -77,6 +86,18 @@ namespace Client.Pages.Cards.Cards
         {
             searchString = text;
             table.ReloadServerData();
+        }
+
+        private async Task IsPrinted(PrintStatus? status)
+        {
+            printStatus = status;
+            await table.ReloadServerData();
+        }
+
+        private async Task IsCollected(bool? value)
+        {
+            _isCollected = value;
+            await table.ReloadServerData();
         }
 
         public async Task ActivateCard(string CardNumber)

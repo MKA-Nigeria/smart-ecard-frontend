@@ -9,18 +9,17 @@ namespace Client.Pages
         private IAppConfigurationsClient AppConfigurationsClient { get; set; }
         [Inject]
         private IDashboardClient DashboardClient { get; set; }
-
+        private DashboardData data { get; set; }
         private string appClient = null;
         bool BusySubmitting;
         protected override async Task OnInitializedAsync()
         {
             var client = await AppConfigurationsClient.GetAppConfigurationByKeyAsync("AppDomain");
             appClient = client.Value;
-            _loaded = true;
 
-            /* var dashboardDataResponse = await DashboardClient.GetAsync();
+            var dashboardDataResponse = await DashboardClient.GetAsync();
              data = dashboardDataResponse;
-             UpdateChart(selectedPeriod);*/
+            _loaded = true;
         }
     }
 }

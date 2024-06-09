@@ -3,12 +3,27 @@
 @using Infrastructure.ApiClient
 @inject HttpClient httpClient
 
+<div style="display: flex; align-items: center;" class="col-12 col-xl-4">
+    <span style="margin-right: 10px;">Printed</span>
+    <MudSelect T="PrintStatus?" Value="printStatus" ValueChanged="@(s => IsPrinted(s))" Color="Color.Secondary" Class="mr-2">
+        <MudSelectItem T="PrintStatus?" Value="null">All</MudSelectItem>
+        <MudSelectItem T="PrintStatus?" Value="PrintStatus.Printed">Printed</MudSelectItem>
+        <MudSelectItem T="PrintStatus?" Value="PrintStatus.ReadyForPrint">Ready For Print</MudSelectItem>
+    </MudSelect>
 
+    <span style="margin-right: 10px;">Collected</span>
+    <MudSelect T="bool?" Value="_isCollected" ValueChanged="@(s => IsCollected(s))" Color="Color.Secondary" Class="mr-2">
+        <MudSelectItem T="bool?" Value="null">All</MudSelectItem>
+        <MudSelectItem T="bool?" Value="true">Issued</MudSelectItem>
+        <MudSelectItem T="bool?" Value="false">Not yet</MudSelectItem>
+    </MudSelect>
+</div>
 <MudTable ServerData="@(new Func<TableState, Task<TableData<CardDto>>>(ServerReload))"
           Dense="true" Hover="true" @ref="table">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Cards</MudText>
         <MudSpacer />
+         
         <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>

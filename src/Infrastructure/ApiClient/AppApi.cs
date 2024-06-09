@@ -6557,6 +6557,12 @@ namespace Infrastructure.ApiClient
         [Newtonsoft.Json.JsonProperty("totalActiveCards", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int TotalActiveCards { get; set; }
 
+        [Newtonsoft.Json.JsonProperty("totalPrintedCards", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int TotalPrintedCards { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("pendingPrintedCards", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int PendingPrintedCards { get; set; }
+
         [Newtonsoft.Json.JsonProperty("totalInactiveCards", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int TotalInactiveCards { get; set; }
 

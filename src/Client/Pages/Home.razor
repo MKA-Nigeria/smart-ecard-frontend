@@ -78,7 +78,7 @@ else if(appClient.ToLower() == "mkan")
                             <div class="card card-light-blue">
                                 <div class="card-body">
                                     <p class="mb-4">Total Printed</p>
-                                    <p class="fs-30 mb-2">@data.TotalActiveCards</p>
+                                    <p class="fs-30 mb-2">@data.TotalPrintedCards</p>
                                     <p></p>
                                 </div>
                             </div>
@@ -88,6 +88,26 @@ else if(appClient.ToLower() == "mkan")
                                 <div class="card-body">
                                     <p class="mb-4">Pending Approval</p>
                                     <p class="fs-30 mb-2">@data.PendingApprovals</p>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
+                            <div class="card card-light-blue">
+                                <div class="card-body">
+                                    <p class="mb-4">Total Active</p>
+                                    <p class="fs-30 mb-2">@data.TotalActiveCards</p>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 stretch-card transparent">
+                            <div class="card card-light-danger">
+                                <div class="card-body">
+                                    <p class="mb-4">Pending Printing</p>
+                                    <p class="fs-30 mb-2">@data.PendingPrintedCards</p>
                                     <p></p>
                                 </div>
                             </div>

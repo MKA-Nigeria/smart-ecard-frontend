@@ -88,6 +88,35 @@ namespace Client.Pages.Cards.Cards
             BusySubmitting = false;
         }
 
+        public async Task PrintCard()
+        {
+
+            BusySubmitting = true;
+
+            if (await ApiHelper.ExecuteCallGuardedAsync(
+                () => CardsClient.PrintCardAsync(CardNumber),
+            Snackbar) is Guid id)
+            {
+                Snackbar.Add("Card set to printed successfully", Severity.Success);
+            }
+
+            BusySubmitting = false;
+        }
+
+        public async Task CollectCard()
+        {
+
+            BusySubmitting = true;
+
+            if (await ApiHelper.ExecuteCallGuardedAsync(
+                () => CardsClient.CollectCardAsync(CardNumber),
+            Snackbar) is Guid id)
+            {
+                Snackbar.Add("Card set to collected successfully", Severity.Success);
+            }
+
+            BusySubmitting = false;
+        }
         public async Task ViewCard()
         {
             Navigation.NavigateTo($"http://localhost:3000/idcard?print={CardNumber}");

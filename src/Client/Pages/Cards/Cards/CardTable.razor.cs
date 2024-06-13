@@ -10,6 +10,7 @@ namespace Client.Pages.Cards.Cards
 {
     public partial class CardTable
     {
+        public bool _loaded;
         [Inject]
         private ICardsClient CardsClient { get; set; }
 
@@ -26,10 +27,16 @@ namespace Client.Pages.Cards.Cards
         private CardStatus? cardStatus = null;
         private string appClient = null;
         bool BusySubmitting;
+        private string keysString;
+        private List<string> keysToDisplay;
         protected override async Task OnInitializedAsync()
         {
             var client = await AppConfigurationsClient.GetAppConfigurationByKeyAsync("AppDomain");
+            var displayKeys = await AppConfigurationsClient.GetAppConfigurationByKeyAsync("DisplayKeys");
             appClient = client.Value;
+            keysString = displayKeys.Value;
+            keysToDisplay = keysString?.Split(',').ToList();
+            _loaded = true;
         }
 
 

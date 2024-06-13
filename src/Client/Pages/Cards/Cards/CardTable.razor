@@ -63,10 +63,15 @@
         <MudTd DataLabel="MemberNumber">@context.ExternalId</MudTd>
         <MudTd>
             <div style="position: relative">
-                <div class="" style="font: bolder; font-size:1.0em; color: #084545; font-weight: bold;">@context.MemberData.LastName.ToUpper() @context.MemberData.FirstName.ToUpper() @context.MemberData.MiddleName.ToUpper()</div>
-                @foreach (var data in context.MemberData.CustomData.Take(4))
+                <div class="" style="font: bolder; font-size:1.0em; color: #084545; font-weight: bold;">@context.MemberData.LastName?.ToUpper() @context.MemberData.FirstName?.ToUpper() @context.MemberData.MiddleName?.ToUpper()</div>
+                @foreach (var key in keysToDisplay)
                 {
-                    <div class="text-black justify-content-start" style="font: bolder; font-size:0.8em">@data.Value.ToUpper()</div>
+                    if (context.MemberData.CustomData.ContainsKey(key))
+                    {
+                        <div class="custom-data-item">
+                            <span>@key: @context.MemberData.CustomData[key]?.ToString().ToUpper()</span>
+                        </div>
+                    }
                 }
             </div>
         </MudTd>

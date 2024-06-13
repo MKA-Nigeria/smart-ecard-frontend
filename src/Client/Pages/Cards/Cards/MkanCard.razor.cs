@@ -56,7 +56,7 @@ namespace Client.Pages.Cards.Cards
         private async Task GenerateQRCode()
         {
             await JsRuntime.InvokeVoidAsync("qrcodeInterop.clearQRCode", "qrcode");
-            await JsRuntime.InvokeVoidAsync("qrcodeInterop.generateQRCode", "qrcode", $"https://ecard.khuddam.ng/profile/public?id={CardNumber}");
+            await JsRuntime.InvokeVoidAsync("qrcodeInterop.generateQRCode", "qrcode", $"https://ecard.khuddam.ng/profile/public?id={Card.ExternalId}");
         }
         public async Task ActivateCard()
         {

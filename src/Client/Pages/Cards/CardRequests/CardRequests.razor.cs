@@ -6,6 +6,7 @@ namespace Client.Pages.Cards.CardRequests
 {
     public partial class CardRequests
     {
+        public bool _loaded;
         [Inject]
         private ICardRequestsClient CardRequestsClient { get; set; }
         [Inject]
@@ -16,12 +17,18 @@ namespace Client.Pages.Cards.CardRequests
         private int totalItems;
         private string searchString = null;
         private string appClient = null;
+        private string keysString;
         bool BusySubmitting;
+        private List<string> keysToDisplay;
 
         protected override async Task OnInitializedAsync()
         {
             var client = await AppConfigurationsClient.GetAppConfigurationByKeyAsync("AppDomain");
+            var displayKeys = await AppConfigurationsClient.GetAppConfigurationByKeyAsync("DisplayKeys");
             appClient = client.Value;
+            keysString = displayKeys.Value;
+            keysToDisplay = keysString?.Split(',').ToList();
+            _loaded = true;
         }
 
 

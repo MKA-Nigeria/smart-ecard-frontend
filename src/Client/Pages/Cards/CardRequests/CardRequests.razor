@@ -3,103 +3,119 @@
 @using Infrastructure.ApiClient
 @inject HttpClient httpClient
 
-<MudText Typo="Typo.h6">Card Requests Dashboard</MudText>
-<MudTable ServerData="@(new Func<TableState, Task<TableData<CardRequestDto>>>(ServerReload))"
-          Dense="true" Hover="true" @ref="table">
-    <ToolBarContent>
-        <div style="border: none solid #084545; border-radius: 4px; width: 400px;">
-            <MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
-                          AdornmentIcon="@Icons.Material.Filled.Search" Style="color: #084545; border: none; outline: none;" IconSize="Size.Medium" Class="mt-0 p-1"></MudTextField>
-        </div>
-        <MudSpacer />
-        <MudText Typo="Typo.subtitle1" Class="text-center font-weight-bold text-black" style="color: #084545; font-weight: bold">Total Count: @totalItems</MudText>
-        <MudSpacer />
-        <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="@(NewRequest)">New Request</MudButton>
-    </ToolBarContent>
-    <HeaderContent>
-        <MudTh style="color: #084545; font-weight: bold"><MudTableSortLabel SortLabel="externalId" T="CardRequestDto">Photo</MudTableSortLabel></MudTh>
-        <MudTh style="color: #084545; font-weight: bold"><MudTableSortLabel SortLabel="externalId" T="CardRequestDto">Unique Id</MudTableSortLabel></MudTh>
-        <MudTh style="color: #084545; font-weight: bold">Information</MudTh>
-        <MudTh style="color: #084545; font-weight: bold"><MudTableSortLabel SortLabel="status" T="CardRequestDto">Request Date</MudTableSortLabel></MudTh>
-        <MudTh style="color: #084545; font-weight: bold"><MudTableSortLabel SortLabel="status" T="CardRequestDto">Status</MudTableSortLabel></MudTh>
-
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd>
-            <div style="position: relative; text-align: center;">
-                <div style="max-width: 100px; max-height: 100px; position: relative;">
-                    @if (@context.MemberData.PhotoUrl is not null)
-                    {
-                        <img src="data:image;base64,@context.MemberData.PhotoUrl" alt="User Image" style="max-width: 100%; max-height: 100%; cursor: pointer;" onclick="enlargeImage(this)" />
-                        <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); cursor: pointer; color: #084545; font-weight: bold; font-size:0.5em; text-decoration: underline;" onclick="enlargeImage(this.previousElementSibling)">ENLARGE</div>
-
-                    }
-                    else
-                    {
-                        <img src="ecard.jpg" alt="User Image" style="max-width: 100%; max-height: 100%; cursor: pointer;" onclick="enlargeImage(this)" />
-                        <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); cursor: pointer; color: #084545; font-weight: bold; font-size:0.5em; text-decoration: underline;" onclick="enlargeImage(this.previousElementSibling)">ENLARGE</div>
-                    }
-                </div>
+@if (!_loaded)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+    <MudText Typo="Typo.h6">Card Requests Dashboard</MudText>
+    <MudTable ServerData="@(new Func<TableState, Task<TableData<CardRequestDto>>>(ServerReload))"
+              Dense="true" Hover="true" @ref="table">
+        <ToolBarContent>
+            <div style="border: none solid #084545; border-radius: 4px; width: 400px;">
+                <MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Search" Style="color: #084545; border: none; outline: none;" IconSize="Size.Medium" Class="mt-0 p-1"></MudTextField>
             </div>
-        </MudTd>
-        <MudTd DataLabel="Id">
-            <MudLink style="color: #084545; font-weight: lighter" Href="@("/cardrequest/" + @context.Id)" Color="Color.Success" Underline="Underline.None">@context.ExternalId</MudLink>
+            <MudSpacer />
+            <MudText Typo="Typo.subtitle1" Class="text-center font-weight-bold text-black" style="color: #084545; font-weight: bold">Total Count: @totalItems</MudText>
+            <MudSpacer />
+            <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="@(NewRequest)">New Request</MudButton>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh style="color: #084545; font-weight: bold"><MudTableSortLabel SortLabel="externalId" T="CardRequestDto">Photo</MudTableSortLabel></MudTh>
+            <MudTh style="color: #084545; font-weight: bold"><MudTableSortLabel SortLabel="externalId" T="CardRequestDto">Unique Id</MudTableSortLabel></MudTh>
+            <MudTh style="color: #084545; font-weight: bold">Information</MudTh>
+            <MudTh style="color: #084545; font-weight: bold"><MudTableSortLabel SortLabel="status" T="CardRequestDto">Request Date</MudTableSortLabel></MudTh>
+            <MudTh style="color: #084545; font-weight: bold"><MudTableSortLabel SortLabel="status" T="CardRequestDto">Status</MudTableSortLabel></MudTh>
 
-        </MudTd>
-        <MudTd>
-            <div style="position: relative">
-                <div class="" style="font: bolder; font-size:1.0em; color: #084545; font-weight: bold;">@context.MemberData.LastName.ToUpper() @context.MemberData.FirstName.ToUpper() @context.MemberData.MiddleName.ToUpper()</div>
-                @foreach (var data in context.MemberData.CustomData.Take(4))
-                {
-                    <div class="text-black justify-content-start" style="font: bolder; font-size:0.8em">@data.Value.ToUpper()</div>
-                }
-
-
-            </div>
-        </MudTd>
-        <MudTd>@DateTime.UtcNow.ToLocalTime()</MudTd>
-        @if (@context.Status == CardRequestStatus.Pending)
-        {
-            <MudTd DataLabel="Name"><MudChip Color="Color.Warning">@context.Status</MudChip></MudTd>
+        </HeaderContent>
+        <RowTemplate>
             <MudTd>
-                <!-- Buttons -->
-                <div class="d-flex justify-content-between">
-                    <MudButton Variant="Variant.Filled" Class="light-button-success mr-2" StartIcon="@Icons.Filled.Approval" OnClick="@(e => Approve(context.Id))" Disabled="BusySubmitting">
-                        <MudIcon Icon="Icons.Filled.CheckCircleOutline" Size="Size.Small" />
-                        <span class="text-success">Approve</span>
-                    </MudButton>
-                    <MudButton Variant="Variant.Filled" Class="light-button-error ml-2" StartIcon="@Icons.Filled.Cancel" OnClick="@(e => Reject(context.Id))" Disabled="BusySubmitting">
-                        <MudIcon Icon="Icons.Filled.Cancel" Size="Size.Small" />
-                        <span class="text-error">Reject</span>
-                    </MudButton>
+                <div style="position: relative; text-align: center;">
+                    <div style="max-width: 100px; max-height: 100px; position: relative;">
+                        @if (@context.MemberData.PhotoUrl is not null)
+                        {
+                            <img src="data:image;base64,@context.MemberData.PhotoUrl" alt="User Image" style="max-width: 100%; max-height: 100%; cursor: pointer;" onclick="enlargeImage(this)" />
+                            <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); cursor: pointer; color: #084545; font-weight: bold; font-size:0.5em; text-decoration: underline;" onclick="enlargeImage(this.previousElementSibling)">ENLARGE</div>
+
+                        }
+                        else
+                        {
+                            <img src="ecard.jpg" alt="User Image" style="max-width: 100%; max-height: 100%; cursor: pointer;" onclick="enlargeImage(this)" />
+                            <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); cursor: pointer; color: #084545; font-weight: bold; font-size:0.5em; text-decoration: underline;" onclick="enlargeImage(this.previousElementSibling)">ENLARGE</div>
+                        }
+                    </div>
                 </div>
             </MudTd>
-        }
-        @if (@context.Status == CardRequestStatus.Approved)
-        {
-            <MudTd DataLabel="Name"><MudChip Color="Color.Success">@context.Status</MudChip></MudTd>
-        }
-        @if (@context.Status == CardRequestStatus.Cancelled)
-        {
-            <MudTd DataLabel="Name"><MudChip Color="Color.Secondary">@context.Status</MudChip></MudTd>
-        }
-        @if (@context.Status == CardRequestStatus.Rejected)
-        {
-            <MudTd DataLabel="Name"><MudChip Color="Color.Error">@context.Status</MudChip></MudTd>
-        }
-    </RowTemplate>
+            <MudTd DataLabel="Id">
+                <MudLink style="color: #084545; font-weight: lighter" Href="@("/cardrequest/" + @context.Id)" Color="Color.Success" Underline="Underline.None">@context.ExternalId</MudLink>
 
-    <NoRecordsContent>
-        <MudText>No matching records found</MudText>
-    </NoRecordsContent>
-    <LoadingContent>
-        <MudText>Loading...</MudText>
-    </LoadingContent>
-    <PagerContent>
-        <MudTablePager />
-    </PagerContent>
-</MudTable>
+            </MudTd>
+            <MudTd>
+                <div style="position: relative">
+                    <div class="" style="font: bolder; font-size:1.0em; color: #084545; font-weight: bold;">@context.MemberData.LastName?.ToUpper() @context.MemberData.FirstName?.ToUpper() @context.MemberData.MiddleName?.ToUpper()</div>
+                    @*  @foreach (var data in context.MemberData.CustomData.Take(4))
+                {
+                <div class="text-black justify-content-start" style="font: bolder; font-size:0.8em">@data.Value?.ToUpper()</div>
+                } *@
 
+                    @foreach (var key in keysToDisplay)
+                    {
+                        if (context.MemberData.CustomData.ContainsKey(key))
+                        {
+                            <div class="custom-data-item">
+                                <span>@key: @context.MemberData.CustomData[key]?.ToString().ToUpper()</span>
+                            </div>
+                        }
+                    }
+
+
+                </div>
+            </MudTd>
+            <MudTd>@DateTime.UtcNow.ToLocalTime()</MudTd>
+            @if (@context.Status == CardRequestStatus.Pending)
+            {
+                <MudTd DataLabel="Name"><MudChip Color="Color.Warning">@context.Status</MudChip></MudTd>
+                <MudTd>
+                    <!-- Buttons -->
+                    <div class="d-flex justify-content-between">
+                        <MudButton Variant="Variant.Filled" Class="light-button-success mr-2" StartIcon="@Icons.Filled.Approval" OnClick="@(e => Approve(context.Id))" Disabled="BusySubmitting">
+                            <MudIcon Icon="Icons.Filled.CheckCircleOutline" Size="Size.Small" />
+                            <span class="text-success">Approve</span>
+                        </MudButton>
+                        <MudButton Variant="Variant.Filled" Class="light-button-error ml-2" StartIcon="@Icons.Filled.Cancel" OnClick="@(e => Reject(context.Id))" Disabled="BusySubmitting">
+                            <MudIcon Icon="Icons.Filled.Cancel" Size="Size.Small" />
+                            <span class="text-error">Reject</span>
+                        </MudButton>
+                    </div>
+                </MudTd>
+            }
+            @if (@context.Status == CardRequestStatus.Approved)
+            {
+                <MudTd DataLabel="Name"><MudChip Color="Color.Success">@context.Status</MudChip></MudTd>
+            }
+            @if (@context.Status == CardRequestStatus.Cancelled)
+            {
+                <MudTd DataLabel="Name"><MudChip Color="Color.Secondary">@context.Status</MudChip></MudTd>
+            }
+            @if (@context.Status == CardRequestStatus.Rejected)
+            {
+                <MudTd DataLabel="Name"><MudChip Color="Color.Error">@context.Status</MudChip></MudTd>
+            }
+        </RowTemplate>
+
+        <NoRecordsContent>
+            <MudText>No matching records found</MudText>
+        </NoRecordsContent>
+        <LoadingContent>
+            <MudText>Loading...</MudText>
+        </LoadingContent>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
+}
 
 <script>
     function enlargeImage(img) {

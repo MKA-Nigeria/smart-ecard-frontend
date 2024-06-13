@@ -3,114 +3,126 @@
 @using Infrastructure.ApiClient
 @inject HttpClient httpClient
 
-<div style="display: flex; align-items: center;" class="col-12 col-xl-4">
-    <span style="margin-right: 10px;">Printed</span>
-    <MudSelect T="PrintStatus?" Value="printStatus" ValueChanged="@(s => IsPrinted(s))" Color="Color.Secondary" Class="mr-2">
-        <MudSelectItem T="PrintStatus?" Value="null">All</MudSelectItem>
-        <MudSelectItem T="PrintStatus?" Value="PrintStatus.Printed">Printed</MudSelectItem>
-        <MudSelectItem T="PrintStatus?" Value="PrintStatus.ReadyForPrint">Ready For Print</MudSelectItem>
-    </MudSelect>
+@if (!_loaded)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+    <div style="display: flex; align-items: center;" class="col-12 col-xl-4">
+        <span style="margin-right: 10px;">Printed</span>
+        <MudSelect T="PrintStatus?" Value="printStatus" ValueChanged="@(s => IsPrinted(s))" Color="Color.Secondary" Class="mr-2">
+            <MudSelectItem T="PrintStatus?" Value="null">All</MudSelectItem>
+            <MudSelectItem T="PrintStatus?" Value="PrintStatus.Printed">Printed</MudSelectItem>
+            <MudSelectItem T="PrintStatus?" Value="PrintStatus.ReadyForPrint">Ready For Print</MudSelectItem>
+        </MudSelect>
 
-    <span style="margin-right: 10px;">Collected</span>
-    <MudSelect T="bool?" Value="_isCollected" ValueChanged="@(s => IsCollected(s))" Color="Color.Secondary" Class="mr-2">
-        <MudSelectItem T="bool?" Value="null">All</MudSelectItem>
-        <MudSelectItem T="bool?" Value="true">Issued</MudSelectItem>
-        <MudSelectItem T="bool?" Value="false">Not yet</MudSelectItem>
-    </MudSelect>
-</div>
-<MudTable ServerData="@(new Func<TableState, Task<TableData<CardDto>>>(ServerReload))"
-          Dense="true" Hover="true" @ref="table">
-    <ToolBarContent>
-        <MudText Typo="Typo.h6">Cards</MudText>
-        <MudSpacer />
-         
-        <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
-                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-    </ToolBarContent>
-    <HeaderContent>
-        <MudTh style="color: #084545; font-weight: bold"><MudTableSortLabel SortLabel="externalId" T="CardDto">Photo</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="cardNumber" T="CardDto">Card Number</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="memberNumber" T="CardDto">Member Number</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="fullName" T="CardDto">Full name</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="cardStatus" T="CardDto">Card Status</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="printStatus" T="CardDto">Print Status</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortLabel="isCollected" T="CardDto">Collection Status</MudTableSortLabel></MudTh>
-       @*  <MudTh><MudTableSortLabel SortLabel="isCollected" T="CardDto">Is Collected</MudTableSortLabel></MudTh>
+        <span style="margin-right: 10px;">Collected</span>
+        <MudSelect T="bool?" Value="_isCollected" ValueChanged="@(s => IsCollected(s))" Color="Color.Secondary" Class="mr-2">
+            <MudSelectItem T="bool?" Value="null">All</MudSelectItem>
+            <MudSelectItem T="bool?" Value="true">Issued</MudSelectItem>
+            <MudSelectItem T="bool?" Value="false">Not yet</MudSelectItem>
+        </MudSelect>
+    </div>
+    <MudTable ServerData="@(new Func<TableState, Task<TableData<CardDto>>>(ServerReload))"
+              Dense="true" Hover="true" @ref="table">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Cards</MudText>
+            <MudSpacer />
+
+            <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh style="color: #084545; font-weight: bold"><MudTableSortLabel SortLabel="externalId" T="CardDto">Photo</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortLabel="cardNumber" T="CardDto">Card Number</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortLabel="memberNumber" T="CardDto">Member Number</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortLabel="fullName" T="CardDto">Full name</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortLabel="cardStatus" T="CardDto">Card Status</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortLabel="printStatus" T="CardDto">Print Status</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortLabel="isCollected" T="CardDto">Collection Status</MudTableSortLabel></MudTh>
+            @*  <MudTh><MudTableSortLabel SortLabel="isCollected" T="CardDto">Is Collected</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortLabel="printStatus" T="CardDto">Print status</MudTableSortLabel></MudTh> *@
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd>
-            <div style="position: relative; text-align: center;">
-                <div style="max-width: 100px; max-height: 100px; position: relative;">
-                    @if (@context.MemberData.PhotoUrl is not null)
-                    {
-                        <img src="data:image;base64,@context.MemberData.PhotoUrl" alt="User Image" style="max-width: 100%; max-height: 100%; cursor: pointer;" onclick="enlargeImage(this)" />
-                        <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); cursor: pointer; color: #084545; font-weight: bold; font-size:0.5em; text-decoration: underline;" onclick="enlargeImage(this.previousElementSibling)">ENLARGE</div>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>
+                <div style="position: relative; text-align: center;">
+                    <div style="max-width: 100px; max-height: 100px; position: relative;">
+                        @if (@context.MemberData.PhotoUrl is not null)
+                        {
+                            <img src="data:image;base64,@context.MemberData.PhotoUrl" alt="User Image" style="max-width: 100%; max-height: 100%; cursor: pointer;" onclick="enlargeImage(this)" />
+                            <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); cursor: pointer; color: #084545; font-weight: bold; font-size:0.5em; text-decoration: underline;" onclick="enlargeImage(this.previousElementSibling)">ENLARGE</div>
 
-                    }
-                    else
-                    {
-                        <img src="ecard.jpg" alt="User Image" style="max-width: 100%; max-height: 100%; cursor: pointer;" onclick="enlargeImage(this)" />
-                        <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); cursor: pointer; color: #084545; font-weight: bold; font-size:0.5em; text-decoration: underline;" onclick="enlargeImage(this.previousElementSibling)">ENLARGE</div>
-                    }
-                   
+                        }
+                        else
+                        {
+                            <img src="ecard.jpg" alt="User Image" style="max-width: 100%; max-height: 100%; cursor: pointer;" onclick="enlargeImage(this)" />
+                            <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); cursor: pointer; color: #084545; font-weight: bold; font-size:0.5em; text-decoration: underline;" onclick="enlargeImage(this.previousElementSibling)">ENLARGE</div>
+                        }
+
+                    </div>
                 </div>
-            </div>
-        </MudTd>
-        <MudTd DataLabel="CardNumber">
-            <MudLink Href="@($"/{appClient.ToLower()}/" + @context.CardNumber)" Underline="Underline.None">@context.CardNumber.ToUpper()</MudLink>
             </MudTd>
-        <MudTd DataLabel="MemberNumber">@context.ExternalId</MudTd>
-        <MudTd>
-            <div style="position: relative">
-                <div class="" style="font: bolder; font-size:1.0em; color: #084545; font-weight: bold;">@context.MemberData.LastName.ToUpper() @context.MemberData.FirstName.ToUpper() @context.MemberData.MiddleName.ToUpper()</div>
-                @foreach (var data in context.MemberData.CustomData.Take(4))
+            <MudTd DataLabel="CardNumber">
+                <MudLink Href="@($"/{appClient.ToLower()}/" + @context.CardNumber)" Underline="Underline.None">@context.CardNumber.ToUpper()</MudLink>
+            </MudTd>
+            <MudTd DataLabel="MemberNumber">@context.ExternalId</MudTd>
+            <MudTd>
+                <div style="position: relative">
+                    <div class="" style="font: bolder; font-size:1.0em; color: #084545; font-weight: bold;">@context.MemberData.LastName?.ToUpper() @context.MemberData.FirstName?.ToUpper() @context.MemberData.MiddleName?.ToUpper()</div>
+                    @foreach (var key in keysToDisplay)
+                    {
+                        if (context.MemberData.CustomData.ContainsKey(key))
+                        {
+                            <div class="custom-data-item">
+                                <span>@key: @context.MemberData.CustomData[key]?.ToString().ToUpper()</span>
+                            </div>
+                        }
+                    }
+                </div>
+            </MudTd>
+            @if (@context.CardStatus == CardStatus.Active)
+            {
+                <MudTd DataLabel="CardStatus"><MudChip Color="Color.Secondary">@context.CardStatus</MudChip></MudTd>
+            }
+            else if (@context.CardStatus == CardStatus.InActive)
+            {
+                <MudTd DataLabel="CardStatus"><MudChip Color="Color.Error">@context.CardStatus</MudChip></MudTd>
+            }
+            <MudTd DataLabel="PrintStatus">
+                <MudChip Color="Color.Success">@context.PrintStatus</MudChip>
+                @if (@context.PrintStatus == PrintStatus.ReadyForPrint)
                 {
-                    <div class="text-black justify-content-start" style="font: bolder; font-size:0.8em">@data.Value.ToUpper()</div>
+                    var cardNumber = @context.CardNumber;
+                    string text = "print";
+                    <MudIconButton Icon="@Icons.Material.Outlined.Print" Color="Color.Primary"
+                                   @onclick="() => ShowConfirmationDialog(cardNumber, text)" Disabled="@BusySubmitting"
+                                   Class="align-middle ml-2" />
                 }
-            </div>
-        </MudTd>
-        @if (@context.CardStatus == CardStatus.Active)
-        {
-            <MudTd DataLabel="CardStatus"><MudChip Color="Color.Secondary">@context.CardStatus</MudChip></MudTd>
-        }
-        else if (@context.CardStatus == CardStatus.InActive)
-        {
-            <MudTd DataLabel="CardStatus"><MudChip Color="Color.Error">@context.CardStatus</MudChip></MudTd>
-        }
-        <MudTd DataLabel="PrintStatus">
-            <MudChip Color="Color.Success">@context.PrintStatus</MudChip>
-            @if (@context.PrintStatus == PrintStatus.ReadyForPrint)
-            {
-                var cardNumber = @context.CardNumber;
-                string text = "print";
-                <MudIconButton Icon="@Icons.Material.Outlined.Print" Color="Color.Primary"
-                               @onclick="() => ShowConfirmationDialog(cardNumber, text)" Disabled="@BusySubmitting"
-                               Class="align-middle ml-2" />
-            }
-        </MudTd>
-        <MudTd DataLabel="IsCollected">
-            @context.IsCollected
-            @if (@context.IsCollected == false && @context.PrintStatus == PrintStatus.Printed)
-            {
-                var cardNumber = @context.CardNumber;
-                string text = "collect";
-                <MudIconButton Icon="@Icons.Material.Outlined.DoneAll" Color="Color.Primary"
-                               @onclick="() => ShowConfirmationDialog(cardNumber, text)" Disabled="@BusySubmitting"
-                               Class="align-middle ml-2" />
-            }
-        </MudTd>
-    </RowTemplate>
-    <NoRecordsContent>
-        <MudText>No matching records found</MudText>
-    </NoRecordsContent>
-    <LoadingContent>
-        <MudText>Loading...</MudText>
-    </LoadingContent>
-    <PagerContent>
-        <MudTablePager />
-    </PagerContent>
-</MudTable>
+            </MudTd>
+            <MudTd DataLabel="IsCollected">
+                @context.IsCollected
+                @if (@context.IsCollected == false && @context.PrintStatus == PrintStatus.Printed)
+                {
+                    var cardNumber = @context.CardNumber;
+                    string text = "collect";
+                    <MudIconButton Icon="@Icons.Material.Outlined.DoneAll" Color="Color.Primary"
+                                   @onclick="() => ShowConfirmationDialog(cardNumber, text)" Disabled="@BusySubmitting"
+                                   Class="align-middle ml-2" />
+                }
+            </MudTd>
+        </RowTemplate>
+        <NoRecordsContent>
+            <MudText>No matching records found</MudText>
+        </NoRecordsContent>
+        <LoadingContent>
+            <MudText>Loading...</MudText>
+        </LoadingContent>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
+}
 
 <script>
     function enlargeImage(img) {

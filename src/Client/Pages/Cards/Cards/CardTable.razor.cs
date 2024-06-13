@@ -1,4 +1,5 @@
-﻿using Client.Pages.Cards.CardRequests;
+﻿using Client.Dialogs;
+using Client.Pages.Cards.CardRequests;
 using Client.Shared;
 using Infrastructure.ApiClient;
 using Microsoft.AspNetCore.Components;
@@ -132,6 +133,38 @@ namespace Client.Pages.Cards.Cards
             BusySubmitting = false;
         }
 
+        public async Task PrintCard(string CardNumber)
+        {
+
+            BusySubmitting = true;
+
+            if (await ApiHelper.ExecuteCallGuardedAsync(
+                () => CardsClient.PrintCardAsync(CardNumber),
+            Snackbar) is Guid id)
+            {
+                Snackbar.Add("Card set to printed successfully", Severity.Success);
+                table.ReloadServerData();
+            }
+
+            BusySubmitting = false;
+        }
+
+        public async Task CollectCard(string CardNumber)
+        {
+
+            BusySubmitting = true;
+
+            if (await ApiHelper.ExecuteCallGuardedAsync(
+                () => CardsClient.CollectCardAsync(CardNumber),
+            Snackbar) is Guid id)
+            {
+                Snackbar.Add("Card set to collected successfully", Severity.Success);
+                table.ReloadServerData();
+            }
+
+            BusySubmitting = false;
+        }
+
         private async Task Print(string CardNumber)
         {
 
@@ -142,6 +175,58 @@ namespace Client.Pages.Cards.Cards
         {
 
             Navigation.NavigateTo($"/cardrequests");
+        }
+
+        private async Task ShowConfirmationDialog(string cardNumber, string action)
+        {
+            var message = action == "print" ? "Are you sure you want to set this card to print?"
+                                            : "Are you sure you want to set this card to collected?";
+
+            var parameters = new DialogParameters { ["Message"] = message, ["OnConfirmed"] = EventCallback.Factory.Create(this, () => ConfirmAction(cardNumber, action)) };
+
+            var options = new DialogOptions { CloseOnEscapeKey = true, MaxWidth = MaxWidth.Small, FullWidth = true };
+
+            DialogService.Show<CardConfirmation>("Confirmation", parameters, options);
+        }
+
+        private async Task ConfirmAction(string cardNumber, string action)
+        {
+            BusySubmitting = true;
+
+            if (action == "print")
+            {
+                var response = await ApiHelper.ExecuteCallGuardedAsync(
+                    () => CardsClient.PrintCardAsync(cardNumber),
+                    Snackbar);
+
+                if (response is Guid id)
+                {
+                    Snackbar.Add("Card set to printed successfully", Severity.Success);
+                    await table.ReloadServerData();
+                }
+                else
+                {
+                    Snackbar.Add("Failed to set card to printed", Severity.Error);
+                }
+            }
+            else if (action == "collect")
+            {
+                var response = await ApiHelper.ExecuteCallGuardedAsync(
+                    () => CardsClient.CollectCardAsync(cardNumber),
+                    Snackbar);
+
+                if (response is Guid id)
+                {
+                    Snackbar.Add("Card set to collected successfully", Severity.Success);
+                    await table.ReloadServerData();
+                }
+                else
+                {
+                    Snackbar.Add("Failed to set card to collected", Severity.Error);
+                }
+            }
+
+            BusySubmitting = false;
         }
     }
 }

@@ -48,10 +48,10 @@
         </MudTd>
         <MudTd>
             <div style="position: relative">
-                <div class="" style="font: bolder; font-size:1.0em; color: #084545; font-weight: bold;">@context.MemberData.FirstName.ToUpper() @context.MemberData.LastName.ToUpper() @context.MemberData.MiddleName.ToUpper()</div>
-                @foreach (var data in context.MemberData.CustomData.Take(2))
+                <div class="" style="font: bolder; font-size:1.0em; color: #084545; font-weight: bold;">@context.MemberData.LastName.ToUpper() @context.MemberData.FirstName.ToUpper() @context.MemberData.MiddleName.ToUpper()</div>
+                @foreach (var data in context.MemberData.CustomData.Take(4))
                 {
-                    <div class="text-black justify-content-start" style="font: bolder; font-size:0.8em">@data.Value</div>
+                    <div class="text-black justify-content-start" style="font: bolder; font-size:0.8em">@data.Value.ToUpper()</div>
                 }
 
 

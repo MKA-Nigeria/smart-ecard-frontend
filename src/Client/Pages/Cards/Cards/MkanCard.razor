@@ -56,8 +56,6 @@ else
                     </MudGrid>
                 </MudCardContent>
                 <MudCardActions Class="pb-4 pl-4">
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" Class="ml-auto" StartIcon="@Icons.Filled.Save"
-                               ButtonType="ButtonType.Submit" OnClick="ViewCard" Disabled="@BusySubmitting">View ID Card</MudButton>
                     @if (Card.PrintStatus == PrintStatus.ReadyForPrint)
                     {
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" StartIcon="@Icons.Filled.RollerShadesClosed"
@@ -68,7 +66,7 @@ else
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" StartIcon="@Icons.Filled.Save"
                                    ButtonType="ButtonType.Submit" OnClick="ActivateCard" Disabled="@BusySubmitting">Activate</MudButton>
                     } *@
-                    @if (!Card.IsCollected)
+                    @if (!Card.IsCollected && Card.PrintStatus == PrintStatus.Printed)
                     {
                         <MudButton Variant="Variant.Filled" Color="Color.Success" Class="ml-auto" StartIcon="@Icons.Filled.RollerShadesClosed"
                                    ButtonType="ButtonType.Submit" OnClick="CollectCard" Disabled="@BusySubmitting">Set Card to Collected</MudButton>

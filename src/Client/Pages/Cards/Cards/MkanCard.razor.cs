@@ -26,6 +26,7 @@ namespace Client.Pages.Cards.Cards
         bool _showBloodGroup = true;
         string BloodGroup;
         string Genotype;
+        string entityId;
         private string qrCodeUrl = "";
         private bool arrows = true;
         private bool bullets = true;
@@ -38,7 +39,7 @@ namespace Client.Pages.Cards.Cards
                     () => CardsClient.GetAsync(CardNumber), Snackbar) is CardDto card)
             {
                 Card = card;
-                //GenerateQRCode();             
+                entityId = card.ExternalId;
                 _loaded = true;
             }
         }
@@ -56,7 +57,7 @@ namespace Client.Pages.Cards.Cards
         private async Task GenerateQRCode()
         {
             await JsRuntime.InvokeVoidAsync("qrcodeInterop.clearQRCode", "qrcode");
-            await JsRuntime.InvokeVoidAsync("qrcodeInterop.generateQRCode", "qrcode", $"https://ecard.khuddam.ng/profile/public?id={Card.ExternalId}");
+            await JsRuntime.InvokeVoidAsync("qrcodeInterop.generateQRCode", "qrcode", $"https://ecard.khuddam.ng/profile/public?id={entityId}");
         }
         public async Task ActivateCard()
         {

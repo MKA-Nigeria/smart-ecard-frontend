@@ -1,100 +1,88 @@
 ﻿@page "/login"
-@using System.Text.RegularExpressions
-@using System.ComponentModel.DataAnnotations
+@attribute [AllowAnonymous]
 
-<style>
-    .full-height {
-        height: 100%;
-    }
-
-    h2 {
-        color: #6ACFC7; /* Downy Teal for highlights */
-    }
-
-    p {
-        color: #ffffff;
-        font-size: large;/* White text for readability on a dark background */
-    }
-
-    img {
-        border-radius: 8px; /* Rounded corners for images */
-        max-width: 100%; /* Ensure the image is responsive and does not overflow the container */
-    }
-
-    .info-section, .form-section {
-        height: 100%; /* Ensure both sections fill the container vertically */
-    }
-
-    .info-section {
-        background-color: #084545; /* Cardin Green background */
-    }
-
-    .form-section {
-        display: flex;
-        flex-direction: column;
-        justify-content: center; /* Vertically center the form content */
-    }
-</style>
-
-<MudGrid Class="full-height">
-    <!-- Left Grid for Images and Information -->
-    <MudItem xs="12" md="6" Class="info-section">
-        <h2>Smart e-Card</h2>
-        <p>The Smart-ID portal is easy to use, even if it is your first portal experience 
-            or the first time you’ve used electronic authentication. 
-            Give it a go, the digital revolution has never been easier!.</p>
-        <p>
-            Discover the convenience and security of our digital e-card services
-        .</p>
-        <MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
-            <MudCarouselItem Transition="transition">
-                <div class="d-flex" style="height:100%; width:100%">
-                    <img src="logecard.jpg" alt="E-Card Information" />
+@* <div class="d-flex justify-center">
+    <img src="ecard.jpg" Style="height:120px" />
+</div>
+<div class="fsh-center-text">
+    <MudText Typo="Typo.h4" GutterBottom="true">E-Card Portal</MudText>
+    <MudText>
+    </MudText>
+</div>
+<br />
+<EditForm Model="@_tokenRequest" OnValidSubmit="SubmitAsync" class="justify-center">
+    <MudGrid>
+        <DataAnnotationsValidator />
+        <CustomValidation @ref="_customValidation" />
+            <MudItem xs="12">
+                <MudTextField T="string" Label="UserName" Variant="Variant.Outlined" @bind-Value="_tokenRequest.UserName"
+                              For="@(() => _tokenRequest.UserName)" />
+            </MudItem>
+            <MudItem xs="12">
+                <MudTextField Label="Password" Variant="Variant.Outlined" @bind-Value="_tokenRequest.Password"
+                              For="@(() => _tokenRequest.Password)" InputType="@_passwordInput" Adornment="Adornment.End"
+                              AdornmentIcon="@_passwordInputIcon" OnAdornmentClick="TogglePasswordVisibility" />
+            </MudItem>
+            <MudItem xs="12" Class="d-flex justify-center">
+                <MudButton ButtonType="ButtonType.Submit" Disabled="BusySubmitting" Variant="Variant.Filled"
+                           Style="background-color:#084545; color:white" Size="Size.Large" StartIcon="@Icons.Filled.Login">Sign In</MudButton>
+            </MudItem>
+    </MudGrid>
+    
+</EditForm> *@
+<EditForm Model="@_tokenRequest" OnValidSubmit="SubmitAsync" class="form-02-main d-flex justify-center">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="_lk_de">
+              <div class="form-03-main">
+                <div class="logo">
+                  <img src="ecard.jpg">
+                 
                 </div>
-            </MudCarouselItem>
-            <MudCarouselItem Transition="transition">
-                <div class="d-flex" style="height:100%; width:100%">
-                    <img src="logecard2.jpg" alt="E-Card Information" />
+                        <div class="fsh-center-text">
+                            <MudText Typo="Typo.h6" GutterBottom="true">E-Card Portal</MudText>
+                            <MudText>
+                            </MudText>
+                        </div>
+                <DataAnnotationsValidator />
+                <CustomValidation @ref="_customValidation" />
+                <div class="form-group">
+                            <MudTextField T="string" Label="UserName" Variant="Variant.Outlined" @bind-Value="_tokenRequest.UserName"
+                                          For="@(() => _tokenRequest.UserName)" />
                 </div>
-            </MudCarouselItem>
-            <MudCarouselItem Transition="transition">
-                <div class="d-flex" style="height:100%; width:100%">
-                    <img src="logecard.jpg" alt="E-Card Information" />
-                </div>
-            </MudCarouselItem>
-        </MudCarousel>
-    </MudItem>
 
-    <!-- Right Grid for Login Form -->
-    <MudItem xs="12" md="6" Class="form-section p-5">
-        <div class="d-flex justify-content-center">
-            <img src="ecard.jpg" style="height: 120px; border-radius: 100%" />
+                <div class="form-group">
+                            <MudTextField Label="Password" Variant="Variant.Outlined" @bind-Value="_tokenRequest.Password"
+                                          For="@(() => _tokenRequest.Password)" InputType="@_passwordInput" Adornment="Adornment.End"
+                                          AdornmentIcon="@_passwordInputIcon" OnAdornmentClick="TogglePasswordVisibility" />
+                </div>
+                <div class="form-group">
+                            <MudButton ButtonType="ButtonType.Submit" Disabled="BusySubmitting" Variant="Variant.Filled"
+                                       Style="background-color:#084545; color:white" Size="Size.Large" StartIcon="@Icons.Filled.Login">Login</MudButton>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <EditForm Model="@_tokenRequest" OnSubmit="Submit">
-            <MudGrid>
-                <MudItem xs="12">
-                    <MudTextField T="string" Label="Username" Required="true" RequiredError="User name is required!" @bind-Value="_tokenRequest.UserName"
-                                  For="@(() => _tokenRequest.UserName)" />
-                </MudItem>
-                <MudItem xs="12">
-                    <MudTextField T="string" Label="Password" InputType="InputType.Password" @bind-Value="_tokenRequest.Password"
-                                  For="@(() => _tokenRequest.Password)" Adornment="Adornment.End" Required="true" RequiredError="Password is required!" />
-                </MudItem>
-                <MudItem xs="12" md="6">
-                    <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Style="background-color:#6ACFC7; color:white" Class="ml-auto">Login</MudButton>
-                </MudItem>
-               @*  <MudItem xs="12">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Forget Password</MudButton>
-                </MudItem> *@
-            </MudGrid>
-        </EditForm>
-    </MudItem>
-</MudGrid>
+      </div>
+    </EditForm>
 
+@* Dynamic CSS Injection *@
 @code {
-    private bool arrows = false;
-    private bool bullets = false;
-    private bool enableSwipeGesture = false;
-    private bool autocycle = true;
-    private Transition transition = Transition.Slide;
+    protected override async Task OnInitializedAsync()
+    {
+        await AddCssLink("login/assets/css/bootstrap.min.css");
+        await AddCssLink("login/assets/css/font-awesome.min.css");
+        await AddCssLink("login/assets/css/style.css");
+    }
+
+    private async Task AddCssLink(string href)
+    {
+        var script = $"var link = document.createElement('link'); link.rel = 'stylesheet'; link.href = '{href}'; document.head.appendChild(link);";
+        await JSRuntime.InvokeVoidAsync("eval", script);
+    }
+
+    [Inject]
+    private IJSRuntime JSRuntime { get; set; }
 }

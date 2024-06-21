@@ -4,7 +4,7 @@ namespace Client.Shared;
 public static class ApiHelper
 {
     public static async Task<T?> ExecuteCallGuardedAsync<T>(
-        Func<Task<T>> call,
+        Func<Task<T?>> call,
         ISnackbar snackbar,
         CustomValidation? customValidation = null,
         string? successMessage = null)

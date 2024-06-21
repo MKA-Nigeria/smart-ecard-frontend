@@ -4897,14 +4897,14 @@ namespace Infrastructure.ApiClient
         /// Get card requests
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<CardDto> GetAsync(string cardNumber);
+        System.Threading.Tasks.Task<BaseResponseOfCardDto> GetAsync(string cardNumber);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Get card requests
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<CardDto> GetAsync(string cardNumber, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<BaseResponseOfCardDto> GetAsync(string cardNumber, System.Threading.CancellationToken cancellationToken);
 
         /// <exception cref="ApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> GenerateQRCodeAsync(string text);
@@ -5377,7 +5377,7 @@ namespace Infrastructure.ApiClient
         /// Get card requests
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<CardDto> GetAsync(string cardNumber)
+        public virtual System.Threading.Tasks.Task<BaseResponseOfCardDto> GetAsync(string cardNumber)
         {
             return GetAsync(cardNumber, System.Threading.CancellationToken.None);
         }
@@ -5387,7 +5387,7 @@ namespace Infrastructure.ApiClient
         /// Get card requests
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<CardDto> GetAsync(string cardNumber, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<BaseResponseOfCardDto> GetAsync(string cardNumber, System.Threading.CancellationToken cancellationToken)
         {
             if (cardNumber == null)
                 throw new System.ArgumentNullException("cardNumber");
@@ -5428,7 +5428,7 @@ namespace Infrastructure.ApiClient
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<CardDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<BaseResponseOfCardDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -5709,14 +5709,14 @@ namespace Infrastructure.ApiClient
         /// Get card requests
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<CardRequestDto> Get2Async(string entityId);
+        System.Threading.Tasks.Task<BaseResponseOfCardRequestDto> Get2Async(string entityId);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Get card requests
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<CardRequestDto> Get2Async(string entityId, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<BaseResponseOfCardRequestDto> Get2Async(string entityId, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Get member information
@@ -6104,7 +6104,7 @@ namespace Infrastructure.ApiClient
         /// Get card requests
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<CardRequestDto> Get2Async(string entityId)
+        public virtual System.Threading.Tasks.Task<BaseResponseOfCardRequestDto> Get2Async(string entityId)
         {
             return Get2Async(entityId, System.Threading.CancellationToken.None);
         }
@@ -6114,7 +6114,7 @@ namespace Infrastructure.ApiClient
         /// Get card requests
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<CardRequestDto> Get2Async(string entityId, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<BaseResponseOfCardRequestDto> Get2Async(string entityId, System.Threading.CancellationToken cancellationToken)
         {
             if (entityId == null)
                 throw new System.ArgumentNullException("entityId");
@@ -6155,7 +6155,7 @@ namespace Infrastructure.ApiClient
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<CardRequestDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<BaseResponseOfCardRequestDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -7437,6 +7437,20 @@ namespace Infrastructure.ApiClient
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.20.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class BaseResponseOfCardDto
+    {
+        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Message { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool Status { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public CardDto Data { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.20.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class PaginationResponseOfCardRequestDto
     {
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -7501,6 +7515,20 @@ namespace Infrastructure.ApiClient
 
         [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Value { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.20.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class BaseResponseOfCardRequestDto
+    {
+        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Message { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool Status { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public CardRequestDto Data { get; set; }
 
     }
 

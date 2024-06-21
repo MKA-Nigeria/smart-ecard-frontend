@@ -1,7 +1,10 @@
 ﻿@using MudBlazor
 <MudNavMenu Class="" Color="Color.Success">
     <MudText Typo="Typo.subtitle2" Color="Color.Success" Class="ml-4 my-3">Smart E-Card</MudText>
-    <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Filled.Dashboard">Dashboard</MudNavLink>
+    @if (_canSearchCardRequests)
+    {
+        <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Filled.Dashboard">Dashboard</MudNavLink>
+    }
 
     @if (_canSearchCardRequests || _canSearchCards || _canViewMyCard)
     {

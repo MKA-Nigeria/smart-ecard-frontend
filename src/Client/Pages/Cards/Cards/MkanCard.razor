@@ -56,21 +56,21 @@ else
                     </MudGrid>
                 </MudCardContent>
                 <MudCardActions Class="pb-4 pl-4">
-                    @if (Card.PrintStatus == PrintStatus.ReadyForPrint)
+                  @*   @if (Card.PrintStatus == PrintStatus.ReadyForPrint)
                     {
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" StartIcon="@Icons.Filled.RollerShadesClosed"
                                    ButtonType="ButtonType.Submit" OnClick="PrintCard" Disabled="@BusySubmitting">Set Card to Printed</MudButton>
-                    }
+                    } *@
                     @* else if (Card.CardStatus == CardStatus.InActive)
                     {
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" StartIcon="@Icons.Filled.Save"
                                    ButtonType="ButtonType.Submit" OnClick="ActivateCard" Disabled="@BusySubmitting">Activate</MudButton>
                     } *@
-                    @if (!Card.IsCollected && Card.PrintStatus == PrintStatus.Printed)
+                  @*   @if (!Card.IsCollected && Card.PrintStatus == PrintStatus.Printed)
                     {
                         <MudButton Variant="Variant.Filled" Color="Color.Success" Class="ml-auto" StartIcon="@Icons.Filled.RollerShadesClosed"
                                    ButtonType="ButtonType.Submit" OnClick="CollectCard" Disabled="@BusySubmitting">Set Card to Collected</MudButton>
-                    }
+                    } *@
                 </MudCardActions>
             </MudCard>
         </MudItem>
@@ -138,10 +138,10 @@ else
                         </div>
                     </div>
                 </div>
-                <MudCardActions Class="pb-4 pl-4">
+              @*   <MudCardActions Class="pb-4 pl-4">
                     <MudButton Variant="Variant.Filled" Color="Color.Surface" Class="ml-auto" StartIcon="@Icons.Filled.Print"
                                OnClick="Print">Print Card</MudButton>
-                </MudCardActions>
+                </MudCardActions> *@
             </MudCard>
         </MudItem>
     </MudGrid>

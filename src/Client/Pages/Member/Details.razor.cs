@@ -4,6 +4,8 @@ using Infrastructure.Common;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components;
 using Client.Pages.Cards.CardRequests;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Buffers.Text;
 
 namespace Client.Pages.Member
 {
@@ -38,12 +40,17 @@ namespace Client.Pages.Member
         private bool _uploaded;
         private bool dataLoaded;
         private string? _imageUrl;
+        private List<string> keysToDisplay;
+        private string keysString;
         protected override async Task OnInitializedAsync()
         {
             var client = await AppConfigurationsClient.GetAppConfigurationByKeyAsync("AppDomain");
             appClient = client.Value;
             //var cardResponse = await ApiHelper.ExecuteCallGuardedAsync(
             //() => CardsClient.GetAsync(ExternalId), Snackbar);
+            //var displayKeys = await AppConfigurationsClient.GetAppConfigurationByKeyAsync("DisplayKeys");
+            //keysString = displayKeys.Value;
+            keysToDisplay = ["Muqam", "DilaName", "Ilaqa", "RegionName"];
             var cardResponse = await CardsClient.GetAsync(ExternalId);
             if (cardResponse.Status)
             {
@@ -53,7 +60,7 @@ namespace Client.Pages.Member
                 _loaded = true;
                 if (appClient == "MKAN")
                 {
-                    Navigation.NavigateTo($"/mkan/profile/{ExternalId}");
+                    Navigation.NavigateTo($"/mkan/{ExternalId}");
                 }
                 return;
             }
@@ -65,6 +72,7 @@ namespace Client.Pages.Member
             {
                 _hasCardRequest = true;
                 CardRequest = cardRequestresponse.Data;
+               // _imageUrl = $"data:image; base64 {CardRequest.MemberData.PhotoUrl}";
                 _loaded = true;
 
                 return;

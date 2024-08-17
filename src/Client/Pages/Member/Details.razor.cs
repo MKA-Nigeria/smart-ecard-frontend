@@ -4,6 +4,8 @@ using Infrastructure.Common;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components;
 using Client.Pages.Cards.CardRequests;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Buffers.Text;
 
 namespace Client.Pages.Member
 {
@@ -12,6 +14,7 @@ namespace Client.Pages.Member
         public bool _loaded;
         public bool _hasCard;
         public bool _hasCardRequest;
+        public bool _hasInfo;
         [Parameter]
         public string ExternalId { get; set; }
         private IBrowserFile _selectedFile;
@@ -20,8 +23,11 @@ namespace Client.Pages.Member
         public CardRequestDto CardRequest { get; set; }
         CreateCardRequest cardRequest = new();
         bool BusySubmitting;
+        private string appClient = null;
         [Inject]
         protected ICardRequestsClient CardRequestsClient { get; set; } = default!;
+        [Inject]
+        private IAppConfigurationsClient AppConfigurationsClient { get; set; }
 
         [Inject]
         protected ICardsClient CardsClient { get; set; } = default!;
@@ -34,40 +40,59 @@ namespace Client.Pages.Member
         private bool _uploaded;
         private bool dataLoaded;
         private string? _imageUrl;
+        private List<string> keysToDisplay;
+        private string keysString;
         protected override async Task OnInitializedAsync()
         {
-
-            var cardResponse = await ApiHelper.ExecuteCallGuardedAsync(
-                    () => CardsClient.GetAsync(ExternalId), Snackbar);
-            if (cardResponse != null)
+            var client = await AppConfigurationsClient.GetAppConfigurationByKeyAsync("AppDomain");
+            appClient = client.Value;
+            //var cardResponse = await ApiHelper.ExecuteCallGuardedAsync(
+            //() => CardsClient.GetAsync(ExternalId), Snackbar);
+            //var displayKeys = await AppConfigurationsClient.GetAppConfigurationByKeyAsync("DisplayKeys");
+            //keysString = displayKeys.Value;
+            keysToDisplay = ["Muqam", "DilaName", "Ilaqa", "RegionName"];
+            var cardResponse = await CardsClient.GetAsync(ExternalId);
+            if (cardResponse.Status)
             {
                 _hasCard = true;
-                Card = cardResponse;
+                Card = cardResponse.Data;
+           
                 _loaded = true;
+                if (appClient == "MKAN")
+                {
+                    Navigation.NavigateTo($"/mkan/{ExternalId}");
+                }
                 return;
             }
 
-            var cardRequestresponse = await ApiHelper.ExecuteCallGuardedAsync(
-                    () => CardRequestsClient.Get2Async(ExternalId), Snackbar);
-
-            if (cardRequestresponse != null)
+            // var cardRequestresponse = await ApiHelper.ExecuteCallGuardedAsync(
+            //() => CardRequestsClient.Get2Async(ExternalId), Snackbar);
+            var cardRequestresponse = await CardRequestsClient.Get2Async(ExternalId);
+            if (cardRequestresponse.Status)
             {
                 _hasCardRequest = true;
-                CardRequest = cardRequestresponse;
+                CardRequest = cardRequestresponse.Data;
+               // _imageUrl = $"data:image; base64 {CardRequest.MemberData.PhotoUrl}";
                 _loaded = true;
 
                 return;
             }
 
-            var response = await ApiHelper.ExecuteCallGuardedAsync(
-                    () => CardRequestsClient.GetMemberDataAsync(ExternalId), Snackbar);
-            if (response.Status)
+            /* var response = await ApiHelper.ExecuteCallGuardedAsync(
+                     () => CardRequestsClient.GetMemberDataAsync(ExternalId), Snackbar);*/
+            var response = await CardRequestsClient.GetMemberDataAsync(ExternalId);
+            if (response.Status && response.Data is not null)
             {
+                _hasInfo = true;
                 MemberData = response.Data;
                 cardRequest.ExternalId = ExternalId;
                 cardRequest.MemberData = MemberData;
                 _loaded = true;
                 return;
+            }
+            else
+            {
+                //handle error or navigate to contact admin page
             }
         }
         public async Task SubmitCardRequestAsync()

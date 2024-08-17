@@ -26,10 +26,11 @@ namespace Client.Pages.Cards.Cards
         private Transition transition = Transition.Slide;
         protected override async Task OnInitializedAsync()
         {
-            if (await ApiHelper.ExecuteCallGuardedAsync(
-                    () => CardsClient.GetAsync(CardNumber), Snackbar) is CardDto card)
+            var card = await ApiHelper.ExecuteCallGuardedAsync(
+                    () => CardsClient.GetAsync(CardNumber), Snackbar);
+            if (card.Status)
             {
-                Card = card;
+                Card = card.Data;
                 _loaded = true;
             }
         }

@@ -143,6 +143,25 @@
                         <MudText FontSize="FontSize.Large"><span style="color: green;">STATUS: @CardRequest.Status.ToString()</span></MudText>
                     </CardHeaderContent>
                 </MudCardHeader>
+                <MudCardContent Style="padding:0px!important">
+                    <div class="d-flex justify-center mb-4">
+                        @if (!string.IsNullOrEmpty(_imageUrl))
+                        {
+                            <MudAvatar Square="true" Image="@_imageUrl" Style=" width:100%;height:auto;"> </MudAvatar>
+                        }
+                        else if (dataLoaded)
+                        {
+                            <MudProgressCircular Color="Color.Success" Size="Size.Medium" Indeterminate="true" />
+                            <span>Loading Image ...</span>
+                        }
+                        else
+                        {
+                            <MudAvatar Square="true" Color="Color.Primary" Style="width:100%;height:300px;">
+                                <img src="ecard.jpg" alt="User Image" style="max-width: 100%; max-height: 100%; cursor: pointer;" onclick="enlargeImage(this)" />
+                            </MudAvatar>
+                        }
+                    </div>
+                </MudCardContent>
                 <MudCardContent>
                     <MudGrid>
                         <MudItem xs="12" md="6">
@@ -193,9 +212,14 @@
                         <MudGrid>
                             @foreach (var data in CardRequest.MemberData.CustomData)
                             {
-                                <MudItem xs="12" md="6">
-                                    <MudField Label="@data.Key" Variant="Variant.Outlined"><span style="color: green;">@data.Value</span></MudField>
-                                </MudItem>
+                                var key = @data.Key;
+                                if (keysToDisplay.Contains(key))
+                                    {
+
+                                    <MudItem xs="12" md="6">
+                                        <MudField Label="@data.Key" Variant="Variant.Outlined"><span style="color: green;">@data.Value</span></MudField>
+                                    </MudItem>
+                                    }                            
                             }
                         </MudGrid>
                     </MudCardContent>
@@ -212,7 +236,7 @@
                 </MudCard>
         </MudItem>
     }
-    else
+    else if( _hasInfo)
     {
 
 
@@ -365,6 +389,10 @@
             </EditForm>
         </MudItem>
 
+    }
+    else
+    {
+      <p>Unable to process your request!. Kindly contact the Admin</p>
     }
 </MudGrid>
 

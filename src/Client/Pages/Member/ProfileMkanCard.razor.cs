@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 
-namespace Client.Pages.Cards.Cards
+namespace Client.Pages.Member
 {
-    public partial class MkanCard
+    public partial class ProfileMkanCard
     {
         public bool _loaded;
         [Parameter]

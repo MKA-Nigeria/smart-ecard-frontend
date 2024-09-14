@@ -1,11 +1,10 @@
 ﻿@page "/login"
 @attribute [AllowAnonymous]
-
 <div class="d-flex justify-center">
     <img src="mkanid.jpeg" Style="height:120px" />
 </div>
 <div class="fsh-center-text">
-    <MudText Typo="Typo.h4" GutterBottom="true">E-Card Portal</MudText>
+    <MudText Typo="Typo.h4" GutterBottom="true">MKAN ID-Card Portal</MudText>
     <MudText>
     </MudText>
 </div>
@@ -51,7 +50,6 @@
                             <MudTextField T="string" Label="UserName" Variant="Variant.Outlined" @bind-Value="_tokenRequest.UserName"
                                           For="@(() => _tokenRequest.UserName)" />
                 </div>
-
                 <div class="form-group">
                             <MudTextField Label="Password" Variant="Variant.Outlined" @bind-Value="_tokenRequest.Password"
                                           For="@(() => _tokenRequest.Password)" InputType="@_passwordInput" Adornment="Adornment.End"

@@ -1,15 +1,15 @@
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 8000
+ENV ASPNETCORE_URLS=http://+:8000
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 COPY ["src/Host/Host.csproj", "src/Host/"]
 COPY ["src/Shared/Shared.csproj", "src/Shared/"]
 COPY ["src/Client/Client.csproj", "src/Client/"]
-COPY ["src/Client.Infrastructure/Client.Infrastructure.csproj", "src/Client.Infrastructure/"]
+COPY ["src/Infrastructure/Infrastructure.csproj", "src/Infrastructure/"]
 
 RUN dotnet restore "src/Host/Host.csproj"
 

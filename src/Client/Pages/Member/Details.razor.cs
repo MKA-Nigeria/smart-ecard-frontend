@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Components;
 using Client.Pages.Cards.CardRequests;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Buffers.Text;
+using Microsoft.JSInterop;
+using Microsoft.JSInterop.Implementation;
 
 namespace Client.Pages.Member
 {
@@ -26,6 +28,7 @@ namespace Client.Pages.Member
         private string appClient = null;
         [Inject]
         protected ICardRequestsClient CardRequestsClient { get; set; } = default!;
+
         [Inject]
         private IAppConfigurationsClient AppConfigurationsClient { get; set; }
 
@@ -93,11 +96,24 @@ namespace Client.Pages.Member
             else
             {
                 //handle error or navigate to contact admin page
+                Snackbar.Add($"Kindly contact the Admin!. Request can not be made at this time", Severity.Info);
+             
+                // Navigate to the "Contact Admin" page
+                Navigation.NavigateTo("/contact-admin");
             }
         }
         public async Task SubmitCardRequestAsync()
         {
             BusySubmitting = true;
+
+            // Validate the image before proceeding
+            if (string.IsNullOrEmpty(_imageUrl))
+            {
+                // Show Snackbar alert if the image is missing
+                Snackbar.Add("Photo is required before submitting the card request.", Severity.Error);
+                BusySubmitting = false;
+                return; // Exit the method to prevent further execution
+            }
 
             // Prepare member data
             MemberData.PhotoUrl = _imageUrl;
@@ -127,7 +143,7 @@ namespace Client.Pages.Member
             BusySubmitting = false;
         }
 
-        private async Task<FileUploadRequest> UploadFiles()
+        private async Task<FileUploadRequest> UploadFiles2()
         {
             var file = _selectedFile;
             if (file != null)
@@ -151,6 +167,61 @@ namespace Client.Pages.Member
             return null;
         }
 
+        private async Task<FileUploadRequest> UploadFiles()
+        {
+            var file = _selectedFile;
+            if (file != null)
+            {
+                string extension = Path.GetExtension(file.Name);
+                if (!ApplicationConstants.SupportedImageFormats.Contains(extension.ToLower()))
+                {
+                    Snackbar.Add("Image Format Not Supported.", Severity.Error);
+                    return null;
+                }
+
+                // Resize image
+                var resizedImageBase64 = await ResizeImageAsync(file);
+                if (resizedImageBase64 == null)
+                {
+                    return null;
+                }
+
+                string fileName = $"{ExternalId}-{Guid.NewGuid():N}";
+                fileName = fileName[..Math.Min(fileName.Length, 90)];
+                var fileUploadRequest = new FileUploadRequest() { Name = fileName, Data = resizedImageBase64, Extension = extension };
+                return fileUploadRequest;
+            }
+            return null;
+        }
+
+        private async Task<string> ConvertToBase64StringAsync(IBrowserFile file)
+        {
+            using (var stream = file.OpenReadStream())
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await stream.CopyToAsync(memoryStream);
+                    var base64String = Convert.ToBase64String(memoryStream.ToArray());
+                    return $"data:{file.ContentType};base64,{base64String}";
+                }
+            }
+        }
+
+        private async Task<string> ResizeImageAsync(IBrowserFile file)
+        {
+            try
+            {
+                var base64Image = await ConvertToBase64StringAsync(file);
+                var resizedImageBase64 = await JSRuntime.InvokeAsync<string>("imageResizerInterop.resizeImage", base64Image, 225, 225);
+                return resizedImageBase64;
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions or errors
+                Snackbar.Add($"Error resizing image: {ex.Message}", Severity.Error);
+                return null;
+            }
+        }
         private async Task OnFileSelection(InputFileChangeEventArgs e)
         {
             var files = e.GetMultipleFiles();

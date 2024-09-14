@@ -17,7 +17,11 @@ namespace Client.Pages.Cards.Cards
         bool BusySubmitting;
         [Inject]
         protected ICardsClient CardsClient { get; set; } = default!;
-      
+        public CardRequestDto CardRequest { get; set; }
+        private string appClient = null;
+        [Inject]
+        protected ICardRequestsClient CardRequestsClient { get; set; } = default!;
+        private List<string> keysToDisplay;
         [Inject]
         protected IJSRuntime JsRuntime { get; set; } = default!;
         private string qrCodeImage;
@@ -35,12 +39,17 @@ namespace Client.Pages.Cards.Cards
         private Transition transition = Transition.Slide;
         protected override async Task OnInitializedAsync()
         {
+            keysToDisplay = ["Muqam", "DilaName", "Ilaqa", "RegionName"];
             var card = await ApiHelper.ExecuteCallGuardedAsync(
                    () => CardsClient.GetAsync(CardNumber), Snackbar);
+            
             if (card.Status)
             {
                 Card = card.Data;
+                
                 entityId = card.Data.ExternalId;
+                var cardRequestresponse = await CardRequestsClient.Get2Async(entityId);
+                CardRequest = cardRequestresponse.Data;
                 _loaded = true;
             }
         }

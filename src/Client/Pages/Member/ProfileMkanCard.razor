@@ -22,6 +22,19 @@ else
                         <MudItem xs="12" md="6">
                             <MudField Label="Full name" Variant="Variant.Outlined"><span style="color: green;">@Card.FullName</span></MudField>
                         </MudItem>
+                        <MudGrid>
+                            @foreach (var data in CardRequest.MemberData.CustomData)
+                            {
+                                var key = @data.Key;
+                                if (keysToDisplay.Contains(key))
+                                {
+
+                                    <MudItem xs="12" md="6">
+                                        <MudField Label="@data.Key" Variant="Variant.Outlined"><span style="color: green;">@data.Value</span></MudField>
+                                    </MudItem>
+                                }
+                            }
+                        </MudGrid>
                         <MudItem xs="12" md="6">
                             <MudField Label="Request Date" Variant="Variant.Outlined"><span style="color: green;">@Card.RequestDate</span></MudField>
                         </MudItem>
@@ -29,13 +42,13 @@ else
                             <MudField Label="Approved Date" Variant="Variant.Outlined"><span style="color: green;">@Card.ApprovedDate</span></MudField>
                         </MudItem>
 
-                        <MudItem xs="12" md="6">
-                            <MudField Label="Approved By" Variant="Variant.Outlined">
-                                <span style="color: green;">
-                                    @Card.ApprovedBy
-                                </span>
-                            </MudField>
-                        </MudItem>
+                        @*  <MudItem xs="12" md="6">
+                    <MudField Label="Approved By" Variant="Variant.Outlined">
+                    <span style="color: green;">
+                    @Card.ApprovedBy
+                    </span>
+                    </MudField>
+                    </MudItem> *@
                         <MudItem xs="12" md="6">
                             <MudField Label="Card Status" Variant="Variant.Outlined"><span style="color: green;">@Card.CardStatus</span></MudField>
                         </MudItem>
@@ -46,12 +59,12 @@ else
                         <MudItem xs="12" md="6">
                             <MudField Label="Collected" Variant="Variant.Outlined"><span style="color: green;">@Card.IsCollected</span></MudField>
                         </MudItem>
-                        @if (Card.IsCollected)
-                        {
-                            <MudItem xs="12" md="6">
-                                <MudField Label="Collected" Variant="Variant.Outlined"><span style="color: green;">@Card.DateCollected</span></MudField>
-                            </MudItem>
-                        }
+                        @*   @if (Card.IsCollected)
+                    {
+                    <MudItem xs="12" md="6">
+                    <MudField Label="Collected" Variant="Variant.Outlined"><span style="color: green;">@Card.DateCollected</span></MudField>
+                    </MudItem>
+                    } *@
 
                     </MudGrid>
                 </MudCardContent>

@@ -1,4 +1,5 @@
-﻿using Client.Shared;
+﻿using Client.Pages.Cards.CardRequests;
+using Client.Shared;
 using Infrastructure.ApiClient;
 using Infrastructure.Common;
 using Microsoft.AspNetCore.Components;
@@ -17,7 +18,11 @@ namespace Client.Pages.Member
         bool BusySubmitting;
         [Inject]
         protected ICardsClient CardsClient { get; set; } = default!;
-      
+        public CardRequestDto CardRequest { get; set; }
+        private string appClient = null;
+        [Inject]
+        protected ICardRequestsClient CardRequestsClient { get; set; } = default!;
+        private List<string> keysToDisplay;
         [Inject]
         protected IJSRuntime JsRuntime { get; set; } = default!;
         private string qrCodeImage;
@@ -35,13 +40,24 @@ namespace Client.Pages.Member
         private Transition transition = Transition.Slide;
         protected override async Task OnInitializedAsync()
         {
+            keysToDisplay = ["Muqam", "DilaName", "Ilaqa", "RegionName"];
             var card = await ApiHelper.ExecuteCallGuardedAsync(
                    () => CardsClient.GetAsync(CardNumber), Snackbar);
+            var cardRequestresponse = await CardRequestsClient.Get2Async(card.Data.ExternalId);
             if (card.Status)
             {
                 Card = card.Data;
+                CardRequest = cardRequestresponse.Data;
                 entityId = card.Data.ExternalId;
                 _loaded = true;
+            }
+            else
+            {
+                //handle error or navigate to contact admin page
+                Snackbar.Add($"Kindly contact the Admin!. Request can not be made at this time", Severity.Info);
+
+                // Navigate to the "Contact Admin" page
+                Navigation.NavigateTo("/contact-admin");
             }
         }
 

@@ -331,12 +331,12 @@
         <MudItem xs="12" sm="8" md="8">
             <EditForm Model="@MemberData" OnValidSubmit="SubmitCardRequestAsync">
                 <MudCard Elevation="25">
-                    <MudCardHeader>
+                    @* <MudCardHeader>
                         <CardHeaderContent>
                             <MudText FontSize="FontSize.Large"><span style="color: green;">Member Additional Information</span></MudText>
                         </CardHeaderContent>
-                    </MudCardHeader>
-                    <MudCardContent>
+                    </MudCardHeader> *@
+                    @* <MudCardContent>
                         <MudGrid>
                             @foreach (var data in MemberData.CustomData)
                             {
@@ -379,7 +379,7 @@
                                 </MudSelect>
                             }
                         </MudGrid>
-                    </MudCardContent>
+                    </MudCardContent> *@
 
                     <MudCardActions Class="pb-4 pl-4">
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" StartIcon="@Icons.Filled.Save"

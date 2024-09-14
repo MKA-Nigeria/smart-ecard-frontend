@@ -4,7 +4,7 @@
     <img src="mkanid.jpeg" Style="height:120px" />
 </div>
 <div class="fsh-center-text">
-    <MudText Typo="Typo.h4" GutterBottom="true">MKAN ID-Card Portal</MudText>
+    <MudText Typo="Typo.h6" GutterBottom="true">Welcome to MKAN Digital Identity Card Portal</MudText>
     <MudText>
     </MudText>
 </div>
@@ -14,7 +14,7 @@
         <DataAnnotationsValidator />
         <CustomValidation @ref="_customValidation" />
             <MudItem xs="12">
-                <MudTextField T="string" Label="UserName" Variant="Variant.Outlined" @bind-Value="_tokenRequest.UserName"
+                <MudTextField T="string" Label="Membership Number" Variant="Variant.Outlined" @bind-Value="_tokenRequest.UserName"
                               For="@(() => _tokenRequest.UserName)" />
             </MudItem>
             <MudItem xs="12">

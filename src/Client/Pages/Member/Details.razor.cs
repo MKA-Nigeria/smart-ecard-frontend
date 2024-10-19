@@ -77,7 +77,10 @@ namespace Client.Pages.Member
                 CardRequest = cardRequestresponse.Data;
                // _imageUrl = $"data:image; base64 {CardRequest.MemberData.PhotoUrl}";
                 _loaded = true;
-
+                /*if (appClient == "MKAN")
+                {
+                    Navigation.NavigateTo($"/mkan/request/{ExternalId}");
+                }*/
                 return;
             }
 

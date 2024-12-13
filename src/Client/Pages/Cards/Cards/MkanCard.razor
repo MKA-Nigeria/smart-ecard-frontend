@@ -134,25 +134,29 @@ else
                             </div>
                         </div>
                     </div>
-                    <div class="back id-size">
-                        <div class="details-info">
-                            <p style="color:black">This ID is a property of</p>
-                            <h5 style="font-weight:900; margin: 6px; color:black"> AHMADIYYA MUSLIM YOUTH ORGANIZATION</h5>
-                            <p style="color:black">If found, please return this identification card to the appropriate department or contact 07064290096</p>
-                        </div>
-                        <div class="barcode">
-                            <div id="qrcode" class="barcode"></div>
-                           @*  <img src="@qrCodeImage" alt="QR Code" /> *@
-                        </div>
-                        <div class="logo">
-                            <img src="mkan-img/signature.png" class="signature-image" alt="signature" />
-                            <div class="auth">
-                                <hr />
-                                <span>SADR, MKAN</span>
+                    @if (_canSearchCardRequests)
+                    {
+                        <div class="back id-size">
+                            <div class="details-info">
+                                <p style="color:black">This ID is a property of</p>
+                                <h5 style="font-weight:900; margin: 6px; color:black"> AHMADIYYA MUSLIM YOUTH ORGANIZATION</h5>
+                                <p style="color:black">If found, please return this identification card to the appropriate department or contact 07064290096</p>
                             </div>
+                            <div class="barcode">
+                                <div id="qrcode" class="barcode"></div>
+                                @*  <img src="@qrCodeImage" alt="QR Code" /> *@
+                            </div>
+                            <div class="logo">
+                                <img src="mkan-img/signature.png" class="signature-image" alt="signature" />
+                                <div class="auth">
+                                    <hr />
+                                    <span>SADR, MKAN</span>
+                                </div>
 
+                            </div>
                         </div>
-                    </div>
+                    }
+                    
                 </div>
                 @if (_canSearchCardRequests)
                 {

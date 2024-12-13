@@ -1,17 +1,27 @@
 ﻿using Client.Shared;
 using Infrastructure.ApiClient;
+using Infrastructure.Auth;
 using Infrastructure.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
+using Shared.Authorization;
 
 namespace Client.Pages.Cards.Cards
 {
     public partial class MkanCard
     {
+        [CascadingParameter]
+        protected Task<AuthenticationState> AuthState { get; set; } = default!;
+        [Inject]
+        protected IAuthorizationService AuthService { get; set; } = default!;
         public bool _loaded;
         [Parameter]
         public string CardNumber { get; set; }
+
+        private bool _canSearchCardRequests;
 
         public CardDto Card { get; set; }
         bool BusySubmitting;
@@ -37,6 +47,12 @@ namespace Client.Pages.Cards.Cards
         private bool enableSwipeGesture = true;
         private bool autocycle = true;
         private Transition transition = Transition.Slide;
+
+        protected override async Task OnParametersSetAsync()
+        {
+            var user = (await AuthState).User;
+            _canSearchCardRequests = await AuthService.HasPermissionAsync(user, AppAction.Search, Resource.CardRequest);
+        }
         protected override async Task OnInitializedAsync()
         {
             keysToDisplay = ["Muqam", "DilaName", "Ilaqa", "RegionName"];

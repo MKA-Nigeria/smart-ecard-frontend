@@ -1,6 +1,5 @@
 ﻿using Shared.Authorization;
 using Microsoft.AspNetCore.Authorization;
-using Shared.Authorization;
 using System.Security.Claims;
 
 namespace Infrastructure.Auth;

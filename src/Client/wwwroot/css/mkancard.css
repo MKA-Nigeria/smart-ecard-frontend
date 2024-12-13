@@ -20,29 +20,13 @@
     flex-flow: wrap;
 }
 
-.id-size {
-    height: calc(3.4in * 96px); /* 326.4px */
-    width: calc(2.2in * 96px); /* 211.2px */
-    border: 5px solid white;
-}
-
 .font {
-    height: calc(3.4in * 96px - 10px); /* Adjusted for border */
-    width: calc(2.2in * 96px - 10px); /* Adjusted for border */
-    position: relative;
-    border-radius: 10px;
-    background-color: white;
-    padding: 0.2in; /* Add padding to prevent text from touching edges */
-    box-sizing: border-box;
-}
-
-/*.font {
     height: 375px;
     width: 250px;
     position: relative;
     border-radius: 10px;
     background-color: white;
-}*/
+}
 
 .top {
     height: 30%;
@@ -134,11 +118,11 @@
     font-weight: normal;
 }
 
-/*.id-size {
+.id-size {
     height: 446px;
     width: 277.39px;
     border: 5px solid white;
-}*/
+}
 
 .bottom .no {
     font-size: 10px;

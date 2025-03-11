@@ -41,16 +41,4 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            # Stop existing container
-            docker container stop mkancard-prod
-            
-            # Remove existing container
-            docker container prune -f
-            
-            # Remove existing image
-            docker image rm adyemisworld/mkancard:latest -f
-            docker system prune -f
-            
-            docker run -d --name mkancard-prod --network ecardnetwork adyemisworld/mkancard
-            
-            docker image prune -f
+            bash /opt/deploy.sh ecardweb
